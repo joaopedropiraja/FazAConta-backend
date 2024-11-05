@@ -7,6 +7,9 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
+uvicorn = "^0.32.0"
+fastapi = "^0.115.4"
+lato = "^0.11.1"
 
 
 [tool.poetry.group.dev.dependencies]
