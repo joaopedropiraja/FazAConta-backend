@@ -1,4 +1,3 @@
-from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -8,9 +7,9 @@ class Settings(BaseSettings):
     )
 
     # MongoDB Settings
-    mongo_uri: str = Field(default="mongodb://my_mongo_host:27017")
-    database_name: str = Field(default="fazaconta_db")
+    mongo_uri: str = "mongodb://my_mongo_host:27017"
+    database_name: str = "fazaconta_db"
 
     # Redis Settings
-    redis_host: str = Field(default="localhost")
-    redis_port: int = Field(default=6379)
+    redis_host: str = "localhost"
+    redis_port: int = 6379

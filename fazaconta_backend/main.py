@@ -1,4 +1,3 @@
-from asyncio import events
 from contextlib import asynccontextmanager
 from uuid import UUID, uuid4
 from fastapi import FastAPI, HTTPException
@@ -12,6 +11,7 @@ from beanie import (
     init_beanie,
     Document,
 )
+from fazaconta_backend.config.settings import Settings
 from motor.motor_asyncio import AsyncIOMotorClient
 import redis.asyncio as redis
 import os
@@ -29,12 +29,12 @@ class DomainEvents:
 
 
 # MongoDB settings
-MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
-DATABASE_NAME = "fazaconta_db"
+MONGO_URI = os.getenv("MONGO_URI", Settings().mongo_uri)
+DATABASE_NAME = Settings().database_name
 
 # Redis settings
-REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
-REDIS_PORT = int(os.getenv("REDIS_PORT", 6379))
+REDIS_HOST = os.getenv("REDIS_HOST", Settings().redis_host)
+REDIS_PORT = int(os.getenv("REDIS_PORT", Settings().redis_port))
 
 
 # User model for MongoDB (Beanie)
