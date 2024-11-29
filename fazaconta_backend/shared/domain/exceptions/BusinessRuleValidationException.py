@@ -1,4 +1,4 @@
-from exceptions.DomainException import DomainException
+from fazaconta_backend.shared.domain.exceptions.DomainException import DomainException
 
 
 class BusinessRuleValidationException(DomainException):

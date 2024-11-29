@@ -1,5 +1,5 @@
 from uuid import UUID, uuid4
-from Identifier import Identifier
+from fazaconta_backend.shared.domain.Identifier import Identifier
 
 
 class UniqueEntityId(Identifier[UUID | int]):
