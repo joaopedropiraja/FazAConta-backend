@@ -7,7 +7,7 @@ class Settings(BaseSettings):
     )
 
     # MongoDB Settings
-    mongo_uri: str = "mongodb://my_mongo_host:27017"
+    mongo_uri: str = "mongodb://localhost:27017"
     database_name: str = "fazaconta_db"
 
     # Redis Settings
