@@ -22,9 +22,7 @@ class DomainEvents:
             DomainEvents._remove_entity_from_marked_dispatch_list(entity)
 
     @staticmethod
-    def register(
-        callback: Callable[[IDomainEvent], None], event_class_name: str
-    ) -> None:
+    def register(callback: Callable, event_class_name: str) -> None:
         if event_class_name not in DomainEvents._handlers_map:
             DomainEvents._handlers_map[event_class_name] = []
         DomainEvents._handlers_map[event_class_name].append(callback)

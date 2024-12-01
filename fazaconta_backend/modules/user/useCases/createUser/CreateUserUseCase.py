@@ -34,14 +34,15 @@ class CreateUserUseCase(IUseCase[CreateUserDTO, CreateUserResponse]):
             email = UserEmail(request.email)
             password = UserPassword(request.password)
 
-            new_user = User(
-                user_name=request.user_name,
-                email=email,
-                password=password,
-                image_src=request.image_src,
-                pix=request.pix,
+            created_user = await uow.users.add(
+                User(
+                    user_name=request.user_name,
+                    email=email,
+                    password=password,
+                    image_src=request.image_src,
+                    pix=request.pix,
+                )
             )
-            created_user = await uow.users.add(new_user)
             await uow.commit()
 
             return CreateUserResponse(

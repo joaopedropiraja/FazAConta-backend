@@ -19,12 +19,8 @@ users_router = APIRouter()
 
 
 @users_router.post("/users", status_code=status.HTTP_201_CREATED)
-async def create_pokemon(
+async def create_user(
     body: CreateUserDTO, uow: Annotated[AbstractUnitOfWork, Depends(UnitOfWork())]
 ) -> CreateUserResponse:
-    # doc = UserDocument(**body.model_dump())
-    # await doc.insert()
-
-    # return doc
     use_case = CreateUserUseCase(uow)
     return await use_case.execute(body)

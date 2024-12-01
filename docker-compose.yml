@@ -19,4 +19,4 @@ services:
       - "6379:6379"
 
 volumes:
-  mongo_data:
+  mongo_data: ./data
