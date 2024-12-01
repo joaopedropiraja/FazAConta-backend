@@ -1,5 +1,5 @@
-from contextlib import asynccontextmanager
 from beanie import init_beanie
+from fazaconta_backend.modules.user.infra.models.UserDocument import UserDocument
 from fazaconta_backend.shared.infra.config.logger import logger
 from motor.motor_asyncio import AsyncIOMotorClient
 
@@ -13,7 +13,7 @@ class MongoManager:
         client = AsyncIOMotorClient(Settings().mongo_uri)
         await init_beanie(
             database=client[Settings().database_name],
-            document_models=[],
+            document_models=[UserDocument],
         )
         logger.info("✅ Established connection with mongodb")
 

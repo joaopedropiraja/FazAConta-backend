@@ -7,14 +7,18 @@ from fazaconta_backend.shared.domain.BusinessRuleValidationMixin import (
 from fazaconta_backend.shared.domain.UniqueEntityId import UniqueEntityId
 from fazaconta_backend.shared.domain.events.DomainEvents import DomainEvents
 from fazaconta_backend.shared.domain.events.IDomainEvent import IDomainEvent
-from pydantic import BaseModel
+from fazaconta_backend.shared.infra.config.logger import logger
+
 
 T = TypeVar("T")
 
 
-class Entity(ABC, BaseModel, BusinessRuleValidationMixin):
+class Entity(ABC, BusinessRuleValidationMixin):
     id: UniqueEntityId = UniqueEntityId()
     _domain_events: list[IDomainEvent] = []
+
+    def __init__(self, id: UniqueEntityId | None) -> None:
+        self.id = id if id is not None else UniqueEntityId()
 
     def equals(self, obj: Entity):
         if obj is None or not isinstance(obj, Entity):
@@ -37,4 +41,6 @@ class Entity(ABC, BaseModel, BusinessRuleValidationMixin):
     def _log_domain_event_added(self, domain_event: IDomainEvent) -> None:
         aggregate_class_name = self.__class__.__name__
         event_class_name = domain_event.__class__.__name__
-        print(f"[Domain Event Created]: {aggregate_class_name} ==> {event_class_name}")
+        logger.info(
+            f"[Domain Event Created]: {aggregate_class_name} ==> {event_class_name}"
+        )

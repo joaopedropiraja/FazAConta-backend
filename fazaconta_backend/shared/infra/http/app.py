@@ -1,8 +1,12 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
-from fazaconta_backend.shared.infra.config.mongo import MongoManager
+from fazaconta_backend.modules.user.infra.routes import users_router
+from fazaconta_backend.shared.infra.database.mongodb.MongoManager import MongoManager
 from fazaconta_backend.shared.infra.config.redis import RedisManager
+from fazaconta_backend.shared.infra.database.mongodb.MongoUnitOfWork import (
+    MongoUnitOfWork,
+)
 
 
 class App:
@@ -16,15 +20,17 @@ class App:
         return app
 
     @staticmethod
-    def set_routes(app: FastAPI): ...
+    def set_routes(app: FastAPI):
+        app.include_router(users_router)
 
     @staticmethod
     @asynccontextmanager
     async def lifespan(app: FastAPI):
-        app.state.mongo_client = await MongoManager.connect()
-        app.state.redis = await RedisManager.connect()
+        mongo_client = await MongoManager.connect()
+        redis = await RedisManager.connect()
+        uow = MongoUnitOfWork(mongo_client)
 
-        yield
+        yield {"mongo_client": mongo_client, "redis_client": redis, "uow": uow}
 
-        await MongoManager.close(app.state.mongo_client)
-        await RedisManager.close(app.state.redis)
+        await MongoManager.close(mongo_client)
+        await RedisManager.close(redis)

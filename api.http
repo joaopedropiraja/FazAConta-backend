@@ -1,8 +1,8 @@
-POST http://0.0.0.0:8000/todo HTTP/1.1
+POST http://0.0.0.0:8000/users HTTP/1.1
 content-type: application/json
 
 {
-    "title": "Estudar",
-    "description": "Prova de atr",
-    "due_at": "2024-04-04"
+    "name": "jplp",
+    "email": "jplp100@hotmail.com",
+    "age": 5
 }

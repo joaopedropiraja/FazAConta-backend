@@ -15,6 +15,7 @@ setuptools = "^75.6.0"
 redis = "^5.2.0"
 pydantic-settings = "^2.6.1"
 pydantic = "^2.10.2"
+bcrypt = "^4.2.1"
 
 
 [tool.poetry.group.dev.dependencies]

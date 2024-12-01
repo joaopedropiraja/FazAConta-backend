@@ -1,5 +1,5 @@
 from fazaconta_backend.shared.domain.BusinessRule import BusinessRule
-from fazaconta_backend.shared.domain.exceptions.BusinessRuleValidationException import (
+from fazaconta_backend.shared.exceptions.BusinessRuleValidationException import (
     BusinessRuleValidationException,
 )
 
