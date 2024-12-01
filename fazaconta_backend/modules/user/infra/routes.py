@@ -1,5 +1,6 @@
 from typing import Annotated
 from fastapi import APIRouter, Depends, status
+from fazaconta_backend.modules.user.infra.models.UserDocument import UserDocument
 from fazaconta_backend.modules.user.useCases.createUser.CreateUserDTO import (
     CreateUserDTO,
 )
@@ -21,5 +22,9 @@ users_router = APIRouter()
 async def create_pokemon(
     body: CreateUserDTO, uow: Annotated[AbstractUnitOfWork, Depends(UnitOfWork())]
 ) -> CreateUserResponse:
+    # doc = UserDocument(**body.model_dump())
+    # await doc.insert()
+
+    # return doc
     use_case = CreateUserUseCase(uow)
     return await use_case.execute(body)

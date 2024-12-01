@@ -2,7 +2,7 @@ POST http://0.0.0.0:8000/users HTTP/1.1
 content-type: application/json
 
 {
-    "name": "jplp",
-    "email": "jplp100@hotmail.com",
-    "age": 5
+    "user_name": "opa2",
+    "email": "opa2@hotmail.com",
+    "password": "mudar123"
 }

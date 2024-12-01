@@ -42,6 +42,7 @@ class CreateUserUseCase(IUseCase[CreateUserDTO, CreateUserResponse]):
                 pix=request.pix,
             )
             created_user = await uow.users.add(new_user)
+            await uow.commit()
 
             return CreateUserResponse(
                 id=created_user.id.value,

@@ -2,9 +2,12 @@ version: "3.8"
 
 services:
   mongodb:
-    image: mongo:5
+    image: mongo:6
+    environment:
+      MONGO_INITDB_DATABASE: fazaconta
     volumes:
       - ./scripts/mongodb-init.sh:/init-replica.sh
+      - mongo_data:/data/db
     command: /init-replica.sh
     ports:
       - 27017:27017
