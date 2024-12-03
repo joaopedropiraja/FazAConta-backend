@@ -10,9 +10,9 @@ class MongoManager:
 
     @staticmethod
     async def connect() -> AsyncIOMotorClient:
-        client = AsyncIOMotorClient(Settings().mongo_uri)
+        client = AsyncIOMotorClient(Settings().MONGO_URI)
         await init_beanie(
-            database=client[Settings().database_name],
+            database=client[Settings().DATABASE_NAME],
             document_models=[UserDocument],
         )
         logger.info("✅ Established connection with mongodb")

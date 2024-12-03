@@ -16,6 +16,8 @@ redis = "^5.2.0"
 pydantic-settings = "^2.6.1"
 pydantic = "^2.10.2"
 bcrypt = "^4.2.1"
+boto3 = "^1.35.72"
+python-multipart = "^0.0.19"
 
 
 [tool.poetry.group.dev.dependencies]

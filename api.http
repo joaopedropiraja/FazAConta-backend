@@ -1,8 +1,9 @@
 POST http://0.0.0.0:8000/users HTTP/1.1
-content-type: application/json
+content-type: multipart/form-data
+
 
 {
-    "user_name": "opa2",
-    "email": "opa2@hotmail.com",
+    "user_name": "opa3",
+    "email": "opa3@hotmail.com",
     "password": "mudar123"
 }

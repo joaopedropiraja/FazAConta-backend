@@ -8,6 +8,7 @@ from fazaconta_backend.modules.user.useCases.createUser.CreateUserResponse impor
     CreateUserResponse,
 )
 from fazaconta_backend.shared.domain.UseCase import IUseCase
+from fazaconta_backend.shared.domain.files.CloudUpload import CloudUpload
 from fazaconta_backend.shared.exceptions.ApplicationException import (
     ApplicationException,
 )
@@ -18,9 +19,11 @@ from fazaconta_backend.shared.infra.database.AbstractUnitOfWork import (
 
 class CreateUserUseCase(IUseCase[CreateUserDTO, CreateUserResponse]):
     uow: AbstractUnitOfWork
+    file_handler: CloudUpload
 
-    def __init__(self, uow: AbstractUnitOfWork) -> None:
+    def __init__(self, uow: AbstractUnitOfWork, file_handler: CloudUpload) -> None:
         self.uow = uow
+        self.file_handler = file_handler
 
     async def execute(self, request: CreateUserDTO) -> CreateUserResponse:
 
@@ -31,6 +34,11 @@ class CreateUserUseCase(IUseCase[CreateUserDTO, CreateUserResponse]):
             if found_user is not None:
                 raise ApplicationException("Email or username already registered.")
 
+            uploaded_image = (
+                await self.file_handler.upload(request.image)
+                if request.image is not None
+                else None
+            )
             email = UserEmail(request.email)
             password = UserPassword(request.password)
 
@@ -39,7 +47,9 @@ class CreateUserUseCase(IUseCase[CreateUserDTO, CreateUserResponse]):
                     user_name=request.user_name,
                     email=email,
                     password=password,
-                    image_src=request.image_src,
+                    image_src=(
+                        str(uploaded_image.url) if uploaded_image is not None else None
+                    ),
                     pix=request.pix,
                 )
             )

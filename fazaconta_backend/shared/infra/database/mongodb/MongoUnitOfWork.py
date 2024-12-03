@@ -25,7 +25,9 @@ class MongoUnitOfWork(AbstractUnitOfWork, ABC):
     async def __aenter__(self) -> MongoUnitOfWork:
         self._session = await self._client.start_session()
         self._session.start_transaction()
+
         self.users = MongoUserRepo(UserDocument, UserMapper(), self._session)
+
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback):

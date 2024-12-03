@@ -9,7 +9,7 @@ class RedisManager:
     @staticmethod
     async def connect() -> redis.Redis:
         client = redis.from_url(
-            f"redis://{Settings().redis_host}:{Settings().redis_port}?decode_responses=True"
+            f"redis://{Settings().REDIS_HOST}:{Settings().REDIS_PORT}?decode_responses=True"
         )
         logger.info("✅ Established connection with redis")
 
