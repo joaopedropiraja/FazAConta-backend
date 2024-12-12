@@ -22,12 +22,17 @@ class UserMapper(Mapper[User, UserDocument]):
             pix=model.pix,
         )
 
-    def to_model(self, entity: User) -> UserDocument:
+    async def to_model(self, entity: User) -> UserDocument:
+        if entity.password.is_already_hashed():
+            password = entity.password.value
+        else:
+            password = await entity.password.get_hashed_value()
+
         return UserDocument(
             id=entity.id.value,
             user_name=entity.user_name,
             email=entity.email.value,
-            password=entity.password.value,
+            password=password,
             image_src=entity.image_src,
             pix=entity.pix,
         )

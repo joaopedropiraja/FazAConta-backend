@@ -8,4 +8,4 @@ class CreateUserDTO(BaseModel):
     email: str
     password: str
     pix: str | None = None
-    image: UploadFile | None
+    image: UploadFile | None = None

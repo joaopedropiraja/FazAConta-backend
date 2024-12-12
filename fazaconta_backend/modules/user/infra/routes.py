@@ -17,6 +17,9 @@ from fazaconta_backend.modules.user.useCases.getUser.GetUserResponse import (
 from fazaconta_backend.modules.user.useCases.getUser.GetUserUseCase import (
     GetUserUseCase,
 )
+from fazaconta_backend.modules.user.useCases.getUsers.GetUsersUseCase import (
+    GetUsersUseCase,
+)
 from fazaconta_backend.shared.domain.files.CloudUpload import CloudUpload
 from fazaconta_backend.shared.infra.database.AbstractUnitOfWork import (
     AbstractUnitOfWork,
@@ -47,8 +50,7 @@ async def create_user(
 
 @users_router.get("/users", status_code=status.HTTP_200_OK)
 async def get_user(
-    query: Annotated[GetUserDTO, Query()],
     uow: Annotated[AbstractUnitOfWork, Depends(UnitOfWork())],
-) -> GetUserResponse:
-    use_case = GetUserUseCase(uow)
-    return await use_case.execute(query)
+) -> list[GetUserResponse]:
+    use_case = GetUsersUseCase(uow)
+    return await use_case.execute()

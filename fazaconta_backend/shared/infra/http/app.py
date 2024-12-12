@@ -9,7 +9,7 @@ from fazaconta_backend.shared.infra.config.redis import RedisManager
 from fazaconta_backend.shared.infra.database.mongodb.MongoUnitOfWork import (
     MongoUnitOfWork,
 )
-from fazaconta_backend.shared.infra.files.S3 import S3
+from fazaconta_backend.shared.infra.services.S3 import S3
 
 
 class App:

@@ -34,7 +34,7 @@ services:
       - EDGE_PORT=4566
       - SERVICES=s3
       - DEBUG=1
-      - DATA_DIR=/tmp/localstack/data
+      - DATA_DIR=./tmp/localstack/data
     volumes:
       - "./scripts/aws-init.sh:/etc/localstack/init/ready.d/aws-init.sh"
       - "./dockervolume/localstack:/var/lib/localstack"

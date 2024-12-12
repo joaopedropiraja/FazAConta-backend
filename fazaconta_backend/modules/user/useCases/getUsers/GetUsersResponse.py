@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 
 class GetUserResponse(BaseModel):
-    id: str
+    id: UniqueEntityId
     user_name: str
     email: str
     image_src: str | None = None
