@@ -8,7 +8,7 @@ from fazaconta_backend.shared.infra.database.Mapper import Mapper
 
 class UserMapper(Mapper[User, UserDocument]):
 
-    def to_domain(self, model: UserDocument) -> User:
+    async def to_domain(self, model: UserDocument) -> User:
         id = UniqueEntityId(model.id)
         email = UserEmail(model.email)
         password = UserPassword(model.password, hashed=True)

@@ -14,4 +14,4 @@ class MongoUserRepo(GenericMongoRepository[User, UserDocument], AbstractUserRepo
         doc = await self._model_cls.find_one(
             {"$or": [{"email": email}, {"user_name": user_name}]}
         )
-        return self._mapper.to_domain(doc) if doc else None
+        return await self._mapper.to_domain(doc) if doc else None

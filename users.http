@@ -1,0 +1,23 @@
+GET http://0.0.0.0:8000/users HTTP/1.1
+
+POST http://localhost:8000/users
+Content-Type: multipart/form-data; boundary=WebKitFormBoundary
+
+--WebKitFormBoundary
+Content-Disposition: form-data; name="user_name"
+
+Gabi
+--WebKitFormBoundary
+Content-Disposition: form-data; name="email"
+
+gabizinha@example.com
+--WebKitFormBoundary
+Content-Disposition: form-data; name="password"
+
+password
+--WebKitFormBoundary
+Content-Disposition: form-data; name="image"; filename="moon-sunset-horizon-1920x1080-15494.jpg"
+Content-Type: application/jpg
+
+< ./moon-sunset-horizon-1920x1080-15494.jpg
+--WebKitFormBoundary--

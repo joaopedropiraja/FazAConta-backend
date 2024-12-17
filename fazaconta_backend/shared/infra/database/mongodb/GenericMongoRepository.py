@@ -27,26 +27,26 @@ class GenericMongoRepository(Generic[T, D], AbstractGenericRepository[T], ABC):
 
     async def get_by_id(self, id: str) -> Optional[T]:
         doc = await self._model_cls.get(id)
-        return self._mapper.to_domain(doc) if doc else None
+        return await self._mapper.to_domain(doc) if doc else None
 
     async def find(self, **filters) -> T | None:
         doc = await self._model_cls.find_one(filters)
-        return self._mapper.to_domain(doc) if doc else None
+        return await self._mapper.to_domain(doc) if doc else None
 
     async def list(self, **filters) -> List[T]:
         query = self._model_cls.find(filters)
         docs = await query.to_list()
-        return [self._mapper.to_domain(doc) for doc in docs]
+        return [await self._mapper.to_domain(doc) for doc in docs]
 
     async def add(self, entity: T) -> T:
-        doc = self._mapper.to_model(entity)
+        doc = await self._mapper.to_model(entity)
         createdDoc = await doc.insert(session=self._session)
-        return self._mapper.to_domain(createdDoc)
+        return await self._mapper.to_domain(createdDoc)
 
     async def update(self, entity: T) -> T:
-        doc = self._mapper.to_model(entity)
+        doc = await self._mapper.to_model(entity)
         updatedDoc = await doc.save(session=self._session)
-        return self._mapper.to_domain(updatedDoc)
+        return await self._mapper.to_domain(updatedDoc)
 
     async def delete(self, id: str) -> None:
         document = await self._model_cls.get(id)

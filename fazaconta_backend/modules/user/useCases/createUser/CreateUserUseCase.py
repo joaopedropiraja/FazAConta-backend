@@ -59,7 +59,6 @@ class CreateUserUseCase(IUseCase[CreateUserDTO, CreateUserResponse]):
                 id=created_user.id.value,
                 user_name=created_user.user_name,
                 email=created_user.email.value,
-                password=created_user.password.value,
                 image_src=created_user.image_src,
                 pix=created_user.pix,
             )

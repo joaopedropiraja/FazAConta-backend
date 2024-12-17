@@ -22,19 +22,15 @@ services:
       - "6379:6379"
     volumes:
       - ./dockervolume/redis:/data
-
   localstack:
     image: localstack/localstack:latest
+    container_name: localstack
     ports:
       - "4566-4583:4566-4583"
     environment:
-      - AWS_DEFAULT_REGION=eu-west-1
-      - AWS_ACCESS_KEY_ID=test
-      - AWS_SECRET_ACCESS_KEY=test
-      - EDGE_PORT=4566
-      - SERVICES=s3
+      - LOCALSTACK_SERVICES=s3
+      - PERSISTENCE=1
       - DEBUG=1
-      - DATA_DIR=./tmp/localstack/data
     volumes:
       - "./scripts/aws-init.sh:/etc/localstack/init/ready.d/aws-init.sh"
       - "./dockervolume/localstack:/var/lib/localstack"
