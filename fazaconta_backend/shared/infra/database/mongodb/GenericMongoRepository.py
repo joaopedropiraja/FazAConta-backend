@@ -18,11 +18,11 @@ class GenericMongoRepository(Generic[T, D], AbstractGenericRepository[T], ABC):
     def __init__(
         self,
         model_cls: Type[D],
-        mapper: Mapper[T, D],
+        mapper: Type[Mapper[T, D]],
         session: AsyncIOMotorClientSession | None,
     ):
         self._model_cls = model_cls
-        self._mapper = mapper
+        self._mapper = mapper()
         self._session = session
 
     async def get_by_id(self, id: str) -> Optional[T]:

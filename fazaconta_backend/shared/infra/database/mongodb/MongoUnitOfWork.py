@@ -1,5 +1,5 @@
 from __future__ import annotations
-from abc import ABC, abstractmethod
+from abc import ABC
 from fazaconta_backend.modules.user.infra.models.UserDocument import UserDocument
 from fazaconta_backend.modules.user.mappers.UserMapper import UserMapper
 from fazaconta_backend.modules.user.repos.implementations.MongoUserRepo import (
@@ -26,7 +26,7 @@ class MongoUnitOfWork(AbstractUnitOfWork, ABC):
         self._session = await self._client.start_session()
         self._session.start_transaction()
 
-        self.users = MongoUserRepo(UserDocument, UserMapper(), self._session)
+        self.users = MongoUserRepo(UserDocument, UserMapper, self._session)
 
         return self
 
