@@ -17,6 +17,7 @@ from fazaconta_backend.modules.user.useCases.getUser.GetUserResponse import (
 from fazaconta_backend.modules.user.useCases.getUser.GetUserUseCase import (
     GetUserUseCase,
 )
+from fazaconta_backend.modules.user.useCases.getUsers.GetUsersDTO import GetUsersDTO
 from fazaconta_backend.modules.user.useCases.getUsers.GetUsersUseCase import (
     GetUsersUseCase,
 )
@@ -51,6 +52,7 @@ async def create_user(
 @users_router.get("/users", status_code=status.HTTP_200_OK)
 async def get_user(
     uow: Annotated[AbstractUnitOfWork, Depends(UnitOfWork())],
+    dto: Annotated[GetUsersDTO, Query()],
 ) -> list[GetUserResponse]:
     use_case = GetUsersUseCase(uow)
-    return await use_case.execute()
+    return await use_case.execute(dto)

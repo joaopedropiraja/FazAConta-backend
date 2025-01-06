@@ -1,11 +1,13 @@
 from abc import ABC
 from typing import Type, TypeVar, Generic, Optional, List
+from xml.etree.ElementInclude import LimitedRecursiveIncludeError
 
 from fazaconta_backend.shared.domain.AbstractGenericRepository import (
     AbstractGenericRepository,
 )
 from motor.motor_asyncio import AsyncIOMotorClientSession
 from fazaconta_backend.shared.domain.Entity import Entity
+from fazaconta_backend.shared.domain.UniqueEntityId import UniqueEntityId
 from fazaconta_backend.shared.infra.database.Mapper import Mapper
 from fazaconta_backend.shared.infra.database.mongodb.BaseDocument import BaseDocument
 
@@ -25,20 +27,28 @@ class GenericMongoRepository(Generic[T, D], AbstractGenericRepository[T], ABC):
         self._mapper = mapper()
         self._session = session
 
-    async def get_by_id(self, id: str) -> Optional[T]:
+    async def get_by_id(self, id: UniqueEntityId) -> Optional[T]:
         doc = await self._model_cls.get(id)
         return await self._mapper.to_domain(doc) if doc else None
 
-    async def find(self, **filters) -> T | None:
+    async def get_one(self, **filters) -> T | None:
         doc = await self._model_cls.find_one(filters)
         return await self._mapper.to_domain(doc) if doc else None
 
-    async def list(self, **filters) -> List[T]:
+    async def get(self, limit: int, skip: int, **filters) -> List[T]:
+
         query = self._model_cls.find(filters)
+
+        if limit is not None:
+            query = query.limit(limit)
+
+        if skip is not None:
+            query = query.skip(skip)
+
         docs = await query.to_list()
         return [await self._mapper.to_domain(doc) for doc in docs]
 
-    async def add(self, entity: T) -> T:
+    async def create(self, entity: T) -> T:
         doc = await self._mapper.to_model(entity)
         createdDoc = await doc.insert(session=self._session)
         return await self._mapper.to_domain(createdDoc)
@@ -48,7 +58,7 @@ class GenericMongoRepository(Generic[T, D], AbstractGenericRepository[T], ABC):
         updatedDoc = await doc.save(session=self._session)
         return await self._mapper.to_domain(updatedDoc)
 
-    async def delete(self, id: str) -> None:
+    async def delete(self, id: UniqueEntityId) -> None:
         document = await self._model_cls.get(id)
         if document:
             await document.delete(session=self._session)

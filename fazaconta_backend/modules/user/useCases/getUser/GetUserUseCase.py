@@ -20,7 +20,7 @@ class GetUserUseCase(IUseCase[GetUserDTO, GetUserResponse]):
     async def execute(self, dto: GetUserDTO) -> GetUserResponse:
 
         async with self.uow as uow:
-            foundUser = await uow.users.find(**dto.model_dump(exclude_none=True))
+            foundUser = await uow.users.get_one(**dto.model_dump(exclude_none=True))
             if foundUser is None:
                 raise ApplicationException("User not found.")
 
