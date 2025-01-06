@@ -1,17 +1,17 @@
 import asyncio
 from urllib.parse import quote as urlencode
 from functools import cache
-
+import uuid
 import boto3
 from fastapi import UploadFile
+
 from fazaconta_backend.shared.domain.files.CloudUpload import CloudUpload
 from fazaconta_backend.shared.domain.files.FileData import FileData
 from fazaconta_backend.shared.exceptions.DomainException import DomainException
-from fazaconta_backend.shared.infra.config.logger import logger
 from fazaconta_backend.shared.infra.config.settings import Settings
 
 
-class S3(CloudUpload):
+class S3FileHandler(CloudUpload):
     @property
     @cache
     def client(self):
@@ -33,18 +33,21 @@ class S3(CloudUpload):
         if not file.filename or not file.content_type or not file.size:
             raise DomainException("Invalid file.")
 
+        key = f"{uuid.uuid4()}{file.filename}"
+
         bucket = Settings().AWS_BUCKET_NAME
         await asyncio.to_thread(
             self.client.upload_fileobj,
             file.file,
             bucket,
-            file.filename,
+            key,
         )
 
-        url = f"{Settings().AWS_S3_URL}/{Settings().AWS_BUCKET_NAME}/{urlencode(file.filename.encode('utf8'))}"
+        url = f"{Settings().AWS_S3_URL}/{Settings().AWS_BUCKET_NAME}/{urlencode(key.encode("utf8"))}"
 
         return FileData(
-            url=url,
+            key=key,
+            src=url,
             filename=file.filename,
             content_type=file.content_type,
             size=file.size,

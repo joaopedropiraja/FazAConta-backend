@@ -25,6 +25,7 @@ class GetUserUseCase(IUseCase[GetUserDTO, GetUserResponse]):
                 raise ApplicationException("User not found.")
 
             return GetUserResponse(
+                id=str(foundUser.id),
                 user_name=foundUser.user_name,
                 email=foundUser.email.value,
                 image_src=foundUser.image_src,

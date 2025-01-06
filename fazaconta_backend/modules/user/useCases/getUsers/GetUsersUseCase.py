@@ -13,7 +13,7 @@ class GetUsersUseCase(IUseCase[None, list[GetUserResponse]]):
     def __init__(self, uow: AbstractUnitOfWork) -> None:
         self.uow = uow
 
-    async def execute(self) -> list[GetUserResponse]:
+    async def execute(self, request) -> list[GetUserResponse]:
 
         async with self.uow as uow:
             users = await uow.users.list()

@@ -22,7 +22,7 @@ class Entity(ABC, BusinessRuleValidationMixin):
 
     def equals(self, obj: Entity):
         if obj is None or not isinstance(obj, Entity):
-            return false
+            return False
 
         return self.id == obj.id
 
@@ -41,6 +41,7 @@ class Entity(ABC, BusinessRuleValidationMixin):
     def _log_domain_event_added(self, domain_event: IDomainEvent) -> None:
         aggregate_class_name = self.__class__.__name__
         event_class_name = domain_event.__class__.__name__
+
         logger.info(
             f"[Domain Event Created]: {aggregate_class_name} ==> {event_class_name}"
         )

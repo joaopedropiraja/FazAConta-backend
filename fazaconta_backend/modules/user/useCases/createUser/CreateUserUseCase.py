@@ -48,7 +48,7 @@ class CreateUserUseCase(IUseCase[CreateUserDTO, CreateUserResponse]):
                     email=email,
                     password=password,
                     image_src=(
-                        str(uploaded_image.url) if uploaded_image is not None else None
+                        str(uploaded_image.src) if uploaded_image is not None else None
                     ),
                     pix=request.pix,
                 )

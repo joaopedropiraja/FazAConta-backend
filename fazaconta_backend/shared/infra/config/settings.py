@@ -7,6 +7,9 @@ class Settings(BaseSettings):
     )
 
     ENV: str = "development"
+    PORT: int = 8000
+    HOST: str = "0.0.0.0"
+    FILES_PATH: str = "./temp"
 
     # MongoDB Settings
     MONGO_URI: str = "mongodb://localhost:27017"

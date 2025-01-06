@@ -41,6 +41,3 @@ class UserPassword(ValueObject):
     async def _hash_password(self, password: str) -> str:
         hashed = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
         return hashed.decode("utf-8")
-
-
-UserPassword(password="alow")
