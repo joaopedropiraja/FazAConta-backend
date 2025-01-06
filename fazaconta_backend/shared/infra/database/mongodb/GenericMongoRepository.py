@@ -1,6 +1,5 @@
 from abc import ABC
 from typing import Type, TypeVar, Generic, Optional, List
-from xml.etree.ElementInclude import LimitedRecursiveIncludeError
 
 from fazaconta_backend.shared.domain.AbstractGenericRepository import (
     AbstractGenericRepository,
@@ -35,16 +34,8 @@ class GenericMongoRepository(Generic[T, D], AbstractGenericRepository[T], ABC):
         doc = await self._model_cls.find_one(filters)
         return await self._mapper.to_domain(doc) if doc else None
 
-    async def get(self, limit: int, skip: int, **filters) -> List[T]:
-
-        query = self._model_cls.find(filters)
-
-        if limit is not None:
-            query = query.limit(limit)
-
-        if skip is not None:
-            query = query.skip(skip)
-
+    async def get(self, limit: int = 0, skip: int = 0, **filters) -> List[T]:
+        query = self._model_cls.find(filters).limit(limit).skip(skip)
         docs = await query.to_list()
         return [await self._mapper.to_domain(doc) for doc in docs]
 

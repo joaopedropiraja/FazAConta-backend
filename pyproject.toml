@@ -37,7 +37,7 @@ pythonpath = "."
 profile = "black"
 
 [tool.poe.tasks]
-start = "python fazaconta_backend/main.py"
+start = "python -B fazaconta_backend/main.py"
 format = "black ."
 sort-imports = "isort ."
 lint = ["format", "sort-imports"]

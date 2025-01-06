@@ -6,6 +6,7 @@ class Settings(BaseSettings):
         case_sensitive=False, env_file=".env", env_file_encoding="utf-8"
     )
 
+    APP_VERSION: str = "1"
     ENV: str = "development"
     PORT: int = 8000
     HOST: str = "0.0.0.0"

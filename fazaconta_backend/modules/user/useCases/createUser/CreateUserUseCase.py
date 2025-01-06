@@ -42,7 +42,7 @@ class CreateUserUseCase(IUseCase[CreateUserDTO, CreateUserResponse]):
             email = UserEmail(request.email)
             password = UserPassword(request.password)
 
-            created_user = await uow.users.add(
+            created_user = await uow.users.create(
                 User(
                     user_name=request.user_name,
                     email=email,

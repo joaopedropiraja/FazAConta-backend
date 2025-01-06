@@ -1,15 +1,15 @@
 import re
 
+from fazaconta_backend.modules.user.domain.exceptions import InvalidEmail
 from fazaconta_backend.shared.domain.ValueObject import ValueObject
-from fazaconta_backend.shared.exceptions.DomainException import DomainException
 
 
 class UserEmail(ValueObject):
     def __init__(self, email: str):
-        if UserEmail.is_valid(email):
-            self.email = UserEmail.format(email)
-        else:
-            raise DomainException("E-mail inválido.")
+        if not UserEmail.is_valid(email):
+            raise InvalidEmail()
+
+        self.email = UserEmail.format(email)
 
     @property
     def value(self) -> str:

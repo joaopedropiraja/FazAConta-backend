@@ -11,6 +11,7 @@ class UserPassword(ValueObject):
     def __init__(self, password: str | None, hashed: bool = False):
         if not password:
             raise DomainException("A senha é obrigatória.")
+
         self.password = password
         self.hashed = hashed
 
