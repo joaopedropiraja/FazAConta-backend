@@ -7,7 +7,7 @@ from fastapi import UploadFile
 
 from fazaconta_backend.shared.domain.files.CloudUpload import CloudUpload
 from fazaconta_backend.shared.domain.files.FileData import FileData
-from fazaconta_backend.shared.exceptions.DomainException import DomainException
+from fazaconta_backend.shared.domain.exceptions import DomainException
 from fazaconta_backend.shared.infra.config.settings import Settings
 
 

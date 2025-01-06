@@ -1,3 +1,5 @@
+from typing import Any
+from fazaconta_backend.modules.user.dtos.UserDTO import UserDTO
 from fazaconta_backend.modules.user.infra.models.UserDocument import UserDocument
 from fazaconta_backend.modules.user.domain.User import User
 from fazaconta_backend.modules.user.domain.UserEmail import UserEmail
@@ -33,6 +35,16 @@ class UserMapper(Mapper[User, UserDocument]):
             user_name=entity.user_name,
             email=entity.email.value,
             password=password,
+            image_src=entity.image_src,
+            pix=entity.pix,
+        )
+
+    @staticmethod
+    def to_dto(entity: User) -> Any:
+        return UserDTO(
+            id=str(entity.id),
+            user_name=entity.user_name,
+            email=entity.email.value,
             image_src=entity.image_src,
             pix=entity.pix,
         )

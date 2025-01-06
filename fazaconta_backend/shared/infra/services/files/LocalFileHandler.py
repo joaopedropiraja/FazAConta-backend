@@ -6,7 +6,7 @@ from fastapi import UploadFile
 
 from fazaconta_backend.shared.domain.files.CloudUpload import CloudUpload
 from fazaconta_backend.shared.domain.files.FileData import FileData
-from fazaconta_backend.shared.exceptions.DomainException import DomainException
+from fazaconta_backend.shared.domain.exceptions import DomainException
 from fazaconta_backend.shared.infra.config.settings import Settings
 
 
@@ -22,11 +22,21 @@ class LocalFileHandler(CloudUpload):
 
         content = await file.read()
 
-        key = f"{uuid.uuid4()}{file.filename}"
+        key = f"{uuid.uuid4()}_{file.filename}"
         local_path = os.path.join(Settings().FILES_PATH, key)
 
         with open(local_path, "wb") as f:
             f.write(content)
+
+        print(
+            FileData(
+                key=key,
+                src=f"http://{Settings().HOST}:{Settings().PORT}/files/{key}",
+                size=len(content),
+                filename=file.filename,
+                content_type=file.content_type,
+            )
+        )
 
         return FileData(
             key=key,

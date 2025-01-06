@@ -4,7 +4,7 @@ from fazaconta_backend.shared.infra.config.settings import Settings
 from fazaconta_backend.shared.infra.http.app import MyAPIApp
 
 my_api_app = MyAPIApp()
-app = my_api_app.get_app()
+app = my_api_app.app
 
 if __name__ == "__main__":
     uvicorn.run(

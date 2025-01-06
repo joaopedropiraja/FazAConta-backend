@@ -7,9 +7,9 @@ from fazaconta_backend.modules.user.useCases.createUser.CreateUserDTO import (
 from fazaconta_backend.modules.user.useCases.createUser.CreateUserResponse import (
     CreateUserResponse,
 )
-from fazaconta_backend.shared.domain.UseCase import IUseCase
+from fazaconta_backend.shared.application.UseCase import IUseCase
 from fazaconta_backend.shared.domain.files.CloudUpload import CloudUpload
-from fazaconta_backend.shared.exceptions.ApplicationException import (
+from fazaconta_backend.shared.application.exceptions import (
     ApplicationException,
 )
 from fazaconta_backend.shared.infra.database.AbstractUnitOfWork import (

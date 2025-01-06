@@ -9,7 +9,7 @@ class User {
   - email: UserEmail
   - password: UserPassword
   - phone_number: UserPhoneNumber
-  - profile_photo: File | None
+  - profile_photo: FileData | None
   - pix: Pix | None
   - devices: List<Device>
 
@@ -19,7 +19,7 @@ class User {
   + <<getter>> email: UserEmail
   + <<getter>> password: UserPassword
   + <<getter>> phone_number: PhoneNumber
-  + <<getter>> profile_photo: File | None
+  + <<getter>> profile_photo: FileData | None
   + <<getter>> pix: Pix | None
   + <<getter>> devices: List<Device>
 
@@ -60,14 +60,15 @@ class UserPhoneNumber {
   + is_valid(phone_number: str) : bool
 }
 
-class File {
+class FileData {
   - key: str
-  - name: str
-  - mime_type: MimeType
   - src: str
+  - size: int
+  - filename: str
+  - content_type: ContentType
 }
 
-enum MimeType {
+enum ContentType {
   image/jpeg
   image/pjpeg
   image/png
@@ -120,11 +121,11 @@ class UserDetail {
 User *-- UserEmail
 User *-- UserPassword
 User *-- UserPhoneNumber
-User *-- File
+User *-- FileData
 User *-- Pix
 User "1" *-- "n" Device
 
-File --> MimeType
+FileData --> ContentType
 Pix --> PixType
 Device --> Plataform
 
@@ -134,7 +135,7 @@ class Group {
   - id: UUID
   - title: str
   - description: str
-  - image: File | None
+  - image: FileData | None
   - total_expense: float
   - members: List<Member>
   - pending_payments: List<PendingPayment>
@@ -142,7 +143,7 @@ class Group {
   + <<getter>> id: UUID
   + <<getter>> title: str
   + <<getter>> description: str
-  + <<getter>> image: File | None
+  + <<getter>> image: FileData | None
   + <<getter>> total_expense: float
   + <<getter>> members: List<Member>
   + <<getter>> pending_payments: List<PendingPayment>
@@ -216,7 +217,7 @@ class PendingPayment {
 
 Group "1" *-- "1..*" Member
 Group "1" *-- "0..*" PendingPayment
-Group *-- File
+Group *-- FileData
 
 Member *-- UserDetail
 PendingPayment *-- UserDetail

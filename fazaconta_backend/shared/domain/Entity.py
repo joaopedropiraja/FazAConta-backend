@@ -1,9 +1,7 @@
 from __future__ import annotations
 from abc import ABC
 from ast import TypeVar
-from fazaconta_backend.shared.domain.BusinessRuleValidationMixin import (
-    BusinessRuleValidationMixin,
-)
+
 from fazaconta_backend.shared.domain.UniqueEntityId import UniqueEntityId
 from fazaconta_backend.shared.domain.events.DomainEvents import DomainEvents
 from fazaconta_backend.shared.domain.events.IDomainEvent import IDomainEvent
@@ -13,7 +11,7 @@ from fazaconta_backend.shared.infra.config.logger import logger
 T = TypeVar("T")
 
 
-class Entity(ABC, BusinessRuleValidationMixin):
+class Entity(ABC):
     id: UniqueEntityId = UniqueEntityId()
     _domain_events: list[IDomainEvent] = []
 

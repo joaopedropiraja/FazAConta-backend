@@ -1,15 +1,18 @@
 import re
 
 from fazaconta_backend.modules.user.domain.exceptions import InvalidEmail
+from fazaconta_backend.shared.domain.Guard import Guard
 from fazaconta_backend.shared.domain.ValueObject import ValueObject
 
 
 class UserEmail(ValueObject):
-    def __init__(self, email: str):
-        if not UserEmail.is_valid(email):
+    def __init__(self, email: str | None):
+        Guard.against_undefined(argument=email, argument_name="email")
+
+        if not UserEmail.is_valid(email):  # type: ignore
             raise InvalidEmail()
 
-        self.email = UserEmail.format(email)
+        self.email = UserEmail.format(email)  # type: ignore
 
     @property
     def value(self) -> str:

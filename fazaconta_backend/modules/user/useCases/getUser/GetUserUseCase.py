@@ -1,9 +1,10 @@
+from fazaconta_backend.modules.user.mappers.UserMapper import UserMapper
 from fazaconta_backend.modules.user.useCases.getUser.GetUserDTO import GetUserDTO
 from fazaconta_backend.modules.user.useCases.getUser.GetUserResponse import (
     GetUserResponse,
 )
-from fazaconta_backend.shared.domain.UseCase import IUseCase
-from fazaconta_backend.shared.exceptions.ApplicationException import (
+from fazaconta_backend.shared.application.UseCase import IUseCase
+from fazaconta_backend.shared.application.exceptions import (
     ApplicationException,
 )
 from fazaconta_backend.shared.infra.database.AbstractUnitOfWork import (
@@ -24,10 +25,4 @@ class GetUserUseCase(IUseCase[GetUserDTO, GetUserResponse]):
             if foundUser is None:
                 raise ApplicationException("User not found.")
 
-            return GetUserResponse(
-                id=str(foundUser.id),
-                user_name=foundUser.user_name,
-                email=foundUser.email.value,
-                image_src=foundUser.image_src,
-                pix=foundUser.pix,
-            )
+            return UserMapper.to_dto(foundUser)

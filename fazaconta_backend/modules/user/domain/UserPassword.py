@@ -1,7 +1,8 @@
 import bcrypt
 
+from fazaconta_backend.shared.domain.Guard import Guard
 from fazaconta_backend.shared.domain.ValueObject import ValueObject
-from fazaconta_backend.shared.exceptions.DomainException import DomainException
+from fazaconta_backend.shared.domain.exceptions import DomainException
 
 
 class UserPassword(ValueObject):
@@ -9,10 +10,9 @@ class UserPassword(ValueObject):
     hashed: bool
 
     def __init__(self, password: str | None, hashed: bool = False):
-        if not password:
-            raise DomainException("A senha é obrigatória.")
+        Guard.against_undefined(argument=password, argument_name="password")
 
-        self.password = password
+        self.password = password  # type: ignore
         self.hashed = hashed
 
     @property
