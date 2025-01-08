@@ -8,8 +8,8 @@ from fazaconta_backend.shared.infra.database.mongodb.BaseDocument import BaseDoc
 
 
 class AbstractUserRepo(AbstractGenericRepository[User], ABC):
-
-    @abstractmethod
-    async def find_by_email_or_user_name(
-        self, email: str, user_name: str
-    ) -> User | None: ...
+    ...
+    # @abstractmethod
+    # async def find_by_email_or_user_name(
+    #     self, email: str, user_name: str
+    # ) -> User | None: ...

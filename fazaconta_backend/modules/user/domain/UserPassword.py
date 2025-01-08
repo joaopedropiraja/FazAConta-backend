@@ -1,31 +1,21 @@
 import bcrypt
+from pydantic import Field
 
-from fazaconta_backend.shared.domain.Guard import Guard
 from fazaconta_backend.shared.domain.ValueObject import ValueObject
 from fazaconta_backend.shared.domain.exceptions import DomainException
 
 
 class UserPassword(ValueObject):
-    password: str
-    hashed: bool
-
-    def __init__(self, password: str | None, hashed: bool = False):
-        Guard.against_undefined(argument=password, argument_name="password")
-
-        self.password = password  # type: ignore
-        self.hashed = hashed
-
-    @property
-    def value(self) -> str:
-        return self.password
+    value: str
+    hashed: bool = Field(default=False)
 
     def is_already_hashed(self) -> bool:
         return self.hashed
 
     async def compare_password(self, plain_text_password: str) -> bool:
         if self.is_already_hashed():
-            return await self._bcrypt_compare(plain_text_password, self.password)
-        return self.password == plain_text_password
+            return await self._bcrypt_compare(plain_text_password, self.value)
+        return self.value == plain_text_password
 
     async def _bcrypt_compare(self, plain_text: str, hashed: str) -> bool:
         try:
@@ -35,9 +25,9 @@ class UserPassword(ValueObject):
 
     async def get_hashed_value(self) -> str:
         if self.is_already_hashed():
-            return self.password
+            return self.value
 
-        return await self._hash_password(self.password)
+        return await self._hash_password(self.value)
 
     async def _hash_password(self, password: str) -> str:
         hashed = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())

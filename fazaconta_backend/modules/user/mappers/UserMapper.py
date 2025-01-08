@@ -1,4 +1,5 @@
 from typing import Any
+from fazaconta_backend.modules.user.domain.UserPhoneNumber import UserPhoneNumber
 from fazaconta_backend.modules.user.dtos.UserDTO import UserDTO
 from fazaconta_backend.modules.user.infra.models.UserDocument import UserDocument
 from fazaconta_backend.modules.user.domain.User import User
@@ -12,16 +13,20 @@ class UserMapper(Mapper[User, UserDocument]):
 
     async def to_domain(self, model: UserDocument) -> User:
         id = UniqueEntityId(model.id)
-        email = UserEmail(model.email)
-        password = UserPassword(model.password, hashed=True)
+        email = UserEmail(value=model.email)
+        password = UserPassword(value=model.password, hashed=True)
+        phone_number = UserPhoneNumber(value=model.phone_number)
 
         return User(
             id=id,
-            user_name=model.user_name,
             email=email,
             password=password,
-            image_src=model.image_src,
+            phone_number=phone_number,
+            name=model.name,
+            nickname=model.nickname,
             pix=model.pix,
+            devices=model.devices,
+            profile_photo=model.profile_photo,
         )
 
     async def to_model(self, entity: User) -> UserDocument:
@@ -32,19 +37,24 @@ class UserMapper(Mapper[User, UserDocument]):
 
         return UserDocument(
             id=entity.id.value,
-            user_name=entity.user_name,
             email=entity.email.value,
             password=password,
-            image_src=entity.image_src,
+            phone_number=entity.phone_number.value,
+            name=entity.name,
+            nickname=entity.nickname,
             pix=entity.pix,
+            devices=entity.devices,
+            profile_photo=entity.profile_photo,
         )
 
     @staticmethod
     def to_dto(entity: User) -> Any:
         return UserDTO(
-            id=str(entity.id),
-            user_name=entity.user_name,
+            id=entity.id.value,
             email=entity.email.value,
-            image_src=entity.image_src,
+            phone_number=entity.phone_number.value,
+            name=entity.name,
+            nickname=entity.nickname,
             pix=entity.pix,
+            profile_photo=entity.profile_photo,
         )

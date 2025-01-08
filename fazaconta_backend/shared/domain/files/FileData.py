@@ -1,7 +1,9 @@
-from pydantic import BaseModel, HttpUrl
+from pydantic import HttpUrl
+
+from fazaconta_backend.shared.domain.ValueObject import ValueObject
 
 
-class FileData(BaseModel):
+class FileData(ValueObject):
     key: str
     src: HttpUrl | str
     size: int

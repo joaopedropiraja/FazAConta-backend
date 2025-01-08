@@ -10,130 +10,130 @@ from fazaconta_backend.shared.domain.UniqueEntityId import UniqueEntityId
 from fazaconta_backend.shared.domain.files.FileData import FileData
 
 
-class User(Entity):
-    user_name: str
-    email: UserEmail
-    password: UserPassword
-    image_src: str | None
-    pix: str | None
-
-    def __init__(
-        self,
-        email: UserEmail,
-        user_name: str,
-        password: UserPassword,
-        image_src: str | None = None,
-        pix: str | None = None,
-        id: UniqueEntityId | None = None,
-    ):
-        super().__init__(id)
-
-        Guard.against_undefined(argument=user_name, argument_name="user_name")
-
-        self.email = email
-        self.password = password
-        self.user_name = user_name
-        self.image_src = image_src
-        self.pix = pix
-
-        is_new_user = id is None
-        if is_new_user:
-            self.add_domain_event(UserCreated(self.id))
-
-
-# # The User class
 # class User(Entity):
+#     user_name: str
+#     email: UserEmail
+#     password: UserPassword
+#     image_src: str | None
+#     pix: str | None
 
 #     def __init__(
 #         self,
-#         name: str,
-#         nickname: str,
 #         email: UserEmail,
+#         user_name: str,
 #         password: UserPassword,
-#         phone_number: UserPhoneNumber,
-#         profile_photo: FileData | None = None,
-#         pic: Pix | None = None,
-#         devices: list[Device] | None = None,
+#         image_src: str | None = None,
+#         pix: str | None = None,
 #         id: UniqueEntityId | None = None,
-#     ) -> None:
-
-#         Guard.against_undefined_bulk(
-#             [
-#                 {"argument": name, "argumentName": "name"},
-#                 {"argument": nickname, "argumentName": "nickname"},
-#             ]
-#         )
-
+#     ):
 #         super().__init__(id)
 
-#         self._name = name
-#         self._nickname = nickname
-#         self._email = email
-#         self._password = password
-#         self._phone_number = phone_number
-#         self._profile_photo = profile_photo
-#         self._pic = pic
-#         self._devices = devices or []
+#         Guard.against_undefined(argument=user_name, argument_name="user_name")
+
+#         self.email = email
+#         self.password = password
+#         self.user_name = user_name
+#         self.image_src = image_src
+#         self.pix = pix
 
 #         is_new_user = id is None
 #         if is_new_user:
 #             self.add_domain_event(UserCreated(self.id))
 
-#     @property
-#     def name(self) -> str:
-#         return self._name
 
-#     @property
-#     def nickname(self) -> str:
-#         return self._nickname
+# The User class
+class User(Entity):
 
-#     @property
-#     def email(self) -> UserEmail:
-#         return self._email
+    def __init__(
+        self,
+        name: str,
+        nickname: str,
+        email: UserEmail,
+        password: UserPassword,
+        phone_number: UserPhoneNumber,
+        profile_photo: FileData | None = None,
+        pix: Pix | None = None,
+        devices: list[Device] | None = None,
+        id: UniqueEntityId | None = None,
+    ) -> None:
 
-#     @property
-#     def password(self) -> UserPassword:
-#         return self._password
+        Guard.against_undefined_bulk(
+            [
+                {"argument": name, "argumentName": "name"},
+                {"argument": nickname, "argumentName": "nickname"},
+            ]
+        )
 
-#     @property
-#     def phone_number(self) -> UserPhoneNumber:
-#         return self._phone_number
+        super().__init__(id)
 
-#     @property
-#     def profile_photo(self) -> FileData | None:
-#         return self._profile_photo
+        self._name = name
+        self._nickname = nickname
+        self._email = email
+        self._password = password
+        self._phone_number = phone_number
+        self._profile_photo = profile_photo
+        self._pix = pix
+        self._devices = devices or []
 
-#     @property
-#     def pic(self) -> Pix | None:
-#         return self._pic
+        is_new_user = id is None
+        if is_new_user:
+            self.add_domain_event(UserCreated(self.id))
 
-#     @property
-#     def devices(self) -> list[Device]:
-#         return self._devices
+    @property
+    def name(self) -> str:
+        return self._name
 
-#     @name.setter
-#     def name(self, value: str) -> None:
-#         self._name = value
+    @property
+    def nickname(self) -> str:
+        return self._nickname
 
-#     @nickname.setter
-#     def nickname(self, value: str) -> None:
-#         self._nickname = value
+    @property
+    def email(self) -> UserEmail:
+        return self._email
 
-#     @password.setter
-#     def password(self, value: UserPassword) -> None:
-#         self._password = value
+    @property
+    def password(self) -> UserPassword:
+        return self._password
 
-#     @phone_number.setter
-#     def phone_number(self, value: UserPhoneNumber) -> None:
-#         self._phone_number = value
+    @property
+    def phone_number(self) -> UserPhoneNumber:
+        return self._phone_number
 
-#     @profile_photo.setter
-#     def profile_photo(self, value: FileData | None) -> None:
-#         self._profile_photo = value
+    @property
+    def profile_photo(self) -> FileData | None:
+        return self._profile_photo
 
-#     @pic.setter
-#     def pic(self, value: Pix | None) -> None:
-#         self._pic = value
+    @property
+    def pix(self) -> Pix | None:
+        return self._pix
 
-#     def add_device(self, device: Device) -> None:
-#         self._devices.append(device)
+    @property
+    def devices(self) -> list[Device]:
+        return self._devices
+
+    @name.setter
+    def name(self, value: str) -> None:
+        self._name = value
+
+    @nickname.setter
+    def nickname(self, value: str) -> None:
+        self._nickname = value
+
+    @password.setter
+    def password(self, value: UserPassword) -> None:
+        self._password = value
+
+    @phone_number.setter
+    def phone_number(self, value: UserPhoneNumber) -> None:
+        self._phone_number = value
+
+    @profile_photo.setter
+    def profile_photo(self, value: FileData | None) -> None:
+        self._profile_photo = value
+
+    @pix.setter
+    def pix(self, value: Pix | None) -> None:
+        self._pix = value
+
+    def add_device(self, device: Device) -> None:
+        self._devices.append(device)

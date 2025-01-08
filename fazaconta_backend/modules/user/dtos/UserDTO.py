@@ -1,9 +1,15 @@
+from uuid import UUID
 from pydantic import BaseModel
+
+from fazaconta_backend.modules.user.domain.Pix import Pix
+from fazaconta_backend.shared.domain.files.FileData import FileData
 
 
 class UserDTO(BaseModel):
-    id: str
-    user_name: str
+    id: UUID
+    name: str
+    nickname: str
     email: str
-    image_src: str | None = None
-    pix: str | None = None
+    phone_number: str
+    profile_photo: FileData | None
+    pix: Pix | None

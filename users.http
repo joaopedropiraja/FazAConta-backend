@@ -1,20 +1,38 @@
-GET http://0.0.0.0:8000/users?user_name=Gabi HTTP/1.1
+GET http://0.0.0.0:8000/users HTTP/1.1
+
+GET http://0.0.0.0:8000/users/be16f3d0-9c54-44cf-8a65-72a32d7b1393 HTTP/1.1
 
 POST http://localhost:8000/users
 Content-Type: multipart/form-data; boundary=WebKitFormBoundary
 
 --WebKitFormBoundary
-Content-Disposition: form-data; name="user_name"
+Content-Disposition: form-data; name="name"
+
+Gabrielli   
+--WebKitFormBoundary
+Content-Disposition: form-data; name="nickname"
 
 Gabi
 --WebKitFormBoundary
 Content-Disposition: form-data; name="email"
 
-gabizinha@example.com
+gabizina@example.com
 --WebKitFormBoundary
 Content-Disposition: form-data; name="password"
 
 password
+--WebKitFormBoundary
+Content-Disposition: form-data; name="phone_number"
+
+71999258225
+--WebKitFormBoundary
+Content-Disposition: form-data; name="pix_type"
+
+cpf_cnpj
+--WebKitFormBoundary
+Content-Disposition: form-data; name="pix_value"
+
+86231101533
 --WebKitFormBoundary
 Content-Disposition: form-data; name="image"; filename="moon-sunset-horizon-1920x1080-15494.jpg"
 Content-Type: application/jpg

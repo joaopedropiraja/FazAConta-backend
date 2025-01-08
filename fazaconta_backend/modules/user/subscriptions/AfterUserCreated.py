@@ -18,4 +18,4 @@ class AfterUserCreated(IHandle):
         DomainEvents.register(self.on_user_created, UserCreated.__name__)
 
     def on_user_created(self, event: UserCreated) -> None:
-        logger.info("Bateu aqui")
+        logger.info("Usuário criado com sucesso!")

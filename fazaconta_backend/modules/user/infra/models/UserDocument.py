@@ -1,14 +1,21 @@
 from typing import Annotated
 from beanie import Indexed
+from pydantic import BaseModel
+from fazaconta_backend.modules.user.domain.Device import Device
+from fazaconta_backend.modules.user.domain.Pix import Pix
+from fazaconta_backend.shared.domain.files.FileData import FileData
 from fazaconta_backend.shared.infra.database.mongodb.BaseDocument import BaseDocument
 
 
 class UserDocument(BaseDocument):
-    user_name: Annotated[str, Indexed(unique=True)]
+    name: str
+    nickname: str
     email: Annotated[str, Indexed(unique=True)]
     password: str
-    image_src: str | None
-    pix: str | None
+    phone_number: str
+    profile_photo: FileData | None
+    pix: Pix | None
+    devices: list[Device] | None
 
     class Settings:
         name = "users"

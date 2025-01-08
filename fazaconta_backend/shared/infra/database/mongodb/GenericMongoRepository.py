@@ -27,7 +27,7 @@ class GenericMongoRepository(Generic[T, D], AbstractGenericRepository[T], ABC):
         self._session = session
 
     async def get_by_id(self, id: UniqueEntityId) -> Optional[T]:
-        doc = await self._model_cls.get(id)
+        doc = await self._model_cls.get(id.value)
         return await self._mapper.to_domain(doc) if doc else None
 
     async def get_one(self, **filters) -> T | None:

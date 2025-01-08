@@ -88,23 +88,14 @@ enum PixType {
 }
 
 class Device {
-  - id: UUID
+  - device_id: str
   - device_name: str
-  - platform: Plataform
+  - platform: Platform
   - push_token: str
   - last_login_at: datetime
-
-  + <<getter>> id: UUID
-  + <<getter>> device_name: str
-  + <<getter>> platform: str
-  + <<getter>> push_token: str
-  + <<getter>> last_login_at: datetime
-
-  + <<setter>> push_token: None
-  + <<setter>> last_login_at: None
 }
 
-enum Plataform {
+enum Platform {
   ios, android
 }
 
@@ -127,7 +118,7 @@ User "1" *-- "n" Device
 
 FileData --> ContentType
 Pix --> PixType
-Device --> Plataform
+Device --> Platform
 
 UserDetail o-- User
 

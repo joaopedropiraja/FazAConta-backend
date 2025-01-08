@@ -1,19 +1,9 @@
 from fazaconta_backend.shared.domain.exceptions import DomainException
 
 
-class InvalidEmail(DomainException):
-    def __init__(self):
-        super().__init__("Invalid or badly formatted e-mail")
-
-
 class InvalidPhoneNumber(DomainException):
     def __init__(self):
         super().__init__("Invalid phone number")
-
-
-class InvalidPlatform(DomainException):
-    def __init__(self, plataform: str):
-        super().__init__(f"Invalid plataform: {plataform}")
 
 
 class InvalidPixValue(DomainException):

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Binance Real-Time BTC/BRL Updates</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f9f9f9;
+        color: #333;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        text-align: center;
+        color: #444;
+      }
+      .trade-info {
+        font-size: 18px;
+        margin: 10px 0;
+      }
+      .highlight {
+        color: #007bff;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Real-Time BTC/BRL Updates</h1>
+      <div class="trade-info">
+        <p>
+          <strong>Price:</strong>
+          <span id="price" class="highlight">-</span> BRL
+        </p>
+        <p>
+          <strong>Quantity:</strong>
+          <span id="quantity" class="highlight">-</span> BTC
+        </p>
+        <p>
+          <strong>Trade ID:</strong>
+          <span id="trade-id" class="highlight">-</span>
+        </p>
+      </div>
+    </div>
+
+    <script>
+      // Binance WebSocket URL
+      const socketUrl = "wss://stream.binance.com:9443/ws/btcbrl@trade";
+
+      // Open a WebSocket connection
+      const socket = new WebSocket(socketUrl);
+
+      // Handle incoming messages
+      socket.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+
+        // Extract relevant information
+        const price = data.p; // Price
+        const quantity = data.q; // Quantity
+        const tradeId = data.t; // Trade ID
+
+        // Update HTML elements with real-time data
+        document.getElementById("price").textContent =
+          parseFloat(price).toFixed(2);
+        document.getElementById("quantity").textContent =
+          parseFloat(quantity).toFixed(4);
+        document.getElementById("trade-id").textContent = tradeId;
+      };
+
+      // Handle errors
+      socket.onerror = (error) => {
+        console.error("WebSocket Error: ", error);
+      };
+
+      // Handle connection close
+      socket.onclose = () => {
+        console.warn("WebSocket connection closed.");
+      };
+    </script>
+  </body>
+</html>

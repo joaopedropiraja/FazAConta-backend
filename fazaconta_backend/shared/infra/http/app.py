@@ -74,6 +74,7 @@ class MyAPIApp:
         self.__app.include_router(users_router)
 
         if Settings().ENV == "development":
+            # Disponibiliza os arquivos salvos na pasta "/temp"
             os.makedirs(Settings().FILES_PATH, exist_ok=True)
             self.__app.mount(
                 "/files", StaticFiles(directory=Settings().FILES_PATH), name="files"
@@ -119,9 +120,9 @@ class MyAPIApp:
             request: Request, exc: ValidationError
         ):
             return JSONResponse(
-                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                status_code=status.HTTP_400_BAD_REQUEST,
                 content={
-                    "message": "Pydantic validation error",
+                    "message": "Bad request",
                     "errors": exc.errors(),
                 },
             )
