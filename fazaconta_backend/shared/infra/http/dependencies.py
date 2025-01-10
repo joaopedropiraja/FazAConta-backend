@@ -1,6 +1,8 @@
 from typing import Any
 from fastapi import Request
-from fazaconta_backend.shared.domain.files.CloudUpload import CloudUpload
+from fazaconta_backend.shared.domain.files.AbstractFileHandler import (
+    AbstractFileHandler,
+)
 
 
 class UnitOfWork:
@@ -9,5 +11,5 @@ class UnitOfWork:
 
 
 class FileHandler:
-    def __call__(self, request: Request) -> CloudUpload:
+    def __call__(self, request: Request) -> AbstractFileHandler:
         return request.state.file_handler

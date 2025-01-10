@@ -10,37 +10,6 @@ from fazaconta_backend.shared.domain.UniqueEntityId import UniqueEntityId
 from fazaconta_backend.shared.domain.files.FileData import FileData
 
 
-# class User(Entity):
-#     user_name: str
-#     email: UserEmail
-#     password: UserPassword
-#     image_src: str | None
-#     pix: str | None
-
-#     def __init__(
-#         self,
-#         email: UserEmail,
-#         user_name: str,
-#         password: UserPassword,
-#         image_src: str | None = None,
-#         pix: str | None = None,
-#         id: UniqueEntityId | None = None,
-#     ):
-#         super().__init__(id)
-
-#         Guard.against_undefined(argument=user_name, argument_name="user_name")
-
-#         self.email = email
-#         self.password = password
-#         self.user_name = user_name
-#         self.image_src = image_src
-#         self.pix = pix
-
-#         is_new_user = id is None
-#         if is_new_user:
-#             self.add_domain_event(UserCreated(self.id))
-
-
 # The User class
 class User(Entity):
 
@@ -58,6 +27,12 @@ class User(Entity):
     ) -> None:
 
         Guard.against_undefined_bulk(
+            [
+                {"argument": name, "argumentName": "name"},
+                {"argument": nickname, "argumentName": "nickname"},
+            ]
+        )
+        Guard.against_empty_str_bulk(
             [
                 {"argument": name, "argumentName": "name"},
                 {"argument": nickname, "argumentName": "nickname"},

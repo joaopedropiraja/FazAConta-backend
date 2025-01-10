@@ -1,4 +1,7 @@
 from beanie import init_beanie
+from fazaconta_backend.modules.transference.infra.models.TransferenceDocument import (
+    TransferenceDocument,
+)
 from fazaconta_backend.modules.user.infra.models.UserDocument import UserDocument
 from fazaconta_backend.shared.infra.config.logger import logger
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -10,10 +13,10 @@ class MongoManager:
 
     @staticmethod
     async def connect() -> AsyncIOMotorClient:
-        client = AsyncIOMotorClient(Settings().MONGO_URI)
+        client = AsyncIOMotorClient(Settings().MONGO_URI, uuidRepresentation="standard")
         await init_beanie(
             database=client[Settings().DATABASE_NAME],
-            document_models=[UserDocument],
+            document_models=[UserDocument, TransferenceDocument],
         )
         logger.info("✅ Established connection with mongodb")
 

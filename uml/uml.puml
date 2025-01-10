@@ -34,17 +34,11 @@ class User {
 }
 
 class UserEmail {
-  - email: str
-  + value: str
-
-  + is_valid(email: str) : bool
-  + format(email: str) : str
+  - value
 }
 
 class UserPassword {
-  - password: str
-  - hashed: bool
-  + value: str
+  - value
 
   # bcrypt_compare(plain_text: str, hashed: str): bool
   # hash_password(password: str): str
@@ -101,11 +95,13 @@ enum Platform {
 
 class UserDetail {
   - user_id: UUID
-  - user_nickname: str
+  - email: str
+  - nickname: str
   - pix: Pix
 
   + <<getter>> user_id: UUID
-  + <<getter>> user_nickname: str
+  + <<getter>> email: str
+  + <<getter>> nickname: str
   + <<getter>> pix: Pix
 }
 

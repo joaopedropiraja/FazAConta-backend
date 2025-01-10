@@ -8,7 +8,10 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import ValidationError
-from fazaconta_backend.modules.user.infra.routes import users_router
+from fazaconta_backend.modules.user.infra.routes.users import users_router
+from fazaconta_backend.modules.transference.infra.routes.transferences import (
+    transferences_router,
+)
 from fazaconta_backend.modules.user.subscriptions import init_user_handlers
 from fazaconta_backend.shared.domain.Guard import GuardException
 from fazaconta_backend.shared.infra.config.settings import Settings
@@ -72,6 +75,7 @@ class MyAPIApp:
 
     def _set_routers(self) -> None:
         self.__app.include_router(users_router)
+        self.__app.include_router(transferences_router)
 
         if Settings().ENV == "development":
             # Disponibiliza os arquivos salvos na pasta "/temp"

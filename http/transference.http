@@ -1,0 +1,29 @@
+### Variables 
+@host = http://0.0.0.0:8000
+@route = transferences
+
+# @name createTransference
+POST {{host}}/{{route}}
+Content-Type: application/application/json
+
+{
+    "group_id": "151de6be-f7ac-4515-a4d2-b8e1c4ec5015",
+    "title": "Bebidas",
+    "amount": 300,
+    "paid_by": {
+        "user_id": "151de6be-f7ac-4515-a4d2-b8e1c4ec5015",
+        "email": "jplp100@hotmail.com",
+        "nickname": "Pirajá",
+        "pix": {
+            "type": "cpf_cnpj",
+            "value": "86231101533"
+        }
+    }
+}
+###
+
+# @name getTransferences
+GET {{host}}/{{route}}
+
+
+###

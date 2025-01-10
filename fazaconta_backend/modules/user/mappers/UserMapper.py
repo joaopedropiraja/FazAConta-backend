@@ -11,7 +11,8 @@ from fazaconta_backend.shared.infra.database.Mapper import Mapper
 
 class UserMapper(Mapper[User, UserDocument]):
 
-    async def to_domain(self, model: UserDocument) -> User:
+    @staticmethod
+    async def to_domain(model: UserDocument) -> User:
         id = UniqueEntityId(model.id)
         email = UserEmail(value=model.email)
         password = UserPassword(value=model.password, hashed=True)
@@ -29,7 +30,8 @@ class UserMapper(Mapper[User, UserDocument]):
             profile_photo=model.profile_photo,
         )
 
-    async def to_model(self, entity: User) -> UserDocument:
+    @staticmethod
+    async def to_model(entity: User) -> UserDocument:
         if entity.password.is_already_hashed():
             password = entity.password.value
         else:

@@ -6,12 +6,4 @@ from fazaconta_backend.shared.infra.database.mongodb.GenericMongoRepository impo
 )
 
 
-class MongoUserRepo(GenericMongoRepository[User, UserDocument], AbstractUserRepo):
-    ...
-    # async def find_by_email_or_user_name(
-    #     self, email: str, user_name: str
-    # ) -> User | None:
-    #     doc = await self._model_cls.find_one(
-    #         {"$or": [{"email": email}, {"user_name": user_name}]}
-    #     )
-    #     return await self._mapper.to_domain(doc) if doc else None
+class MongoUserRepo(GenericMongoRepository[User, UserDocument], AbstractUserRepo): ...

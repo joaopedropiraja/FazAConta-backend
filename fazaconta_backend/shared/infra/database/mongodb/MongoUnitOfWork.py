@@ -1,5 +1,14 @@
 from __future__ import annotations
 from abc import ABC
+from fazaconta_backend.modules.transference.infra.models.TransferenceDocument import (
+    TransferenceDocument,
+)
+from fazaconta_backend.modules.transference.mappers.TransferenceMapper import (
+    TransferenceMapper,
+)
+from fazaconta_backend.modules.transference.repos.implmentations.MongoTransferenceRepo import (
+    MongoTransferenceRepo,
+)
 from fazaconta_backend.modules.user.infra.models.UserDocument import UserDocument
 from fazaconta_backend.modules.user.mappers.UserMapper import UserMapper
 from fazaconta_backend.modules.user.repos.implementations.MongoUserRepo import (
@@ -12,12 +21,16 @@ from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorClientSession
 
 
 from fazaconta_backend.modules.user.repos.AbstractUserRepo import AbstractUserRepo
+from fazaconta_backend.modules.transference.repos.AbstractTransferenceRepo import (
+    AbstractTransferenceRepo,
+)
 
 
 class MongoUnitOfWork(AbstractUnitOfWork, ABC):
     _client: AsyncIOMotorClient
     _session: AsyncIOMotorClientSession
     users: AbstractUserRepo
+    transferences: AbstractTransferenceRepo
 
     def __init__(self, client: AsyncIOMotorClient) -> None:
         self._client = client
@@ -27,6 +40,9 @@ class MongoUnitOfWork(AbstractUnitOfWork, ABC):
         self._session.start_transaction()
 
         self.users = MongoUserRepo(UserDocument, UserMapper, self._session)
+        self.transferences = MongoTransferenceRepo(
+            TransferenceDocument, TransferenceMapper, self._session
+        )
 
         return self
 

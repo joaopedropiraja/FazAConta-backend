@@ -23,7 +23,9 @@ from fazaconta_backend.modules.user.useCases.getUsers.GetUsersDTO import GetUser
 from fazaconta_backend.modules.user.useCases.getUsers.GetUsersUseCase import (
     GetUsersUseCase,
 )
-from fazaconta_backend.shared.domain.files.CloudUpload import CloudUpload
+from fazaconta_backend.shared.domain.files.AbstractFileHandler import (
+    AbstractFileHandler,
+)
 from fazaconta_backend.shared.infra.database.AbstractUnitOfWork import (
     AbstractUnitOfWork,
 )
@@ -33,7 +35,10 @@ users_router = APIRouter()
 
 
 @users_router.post(
-    "/users", status_code=status.HTTP_201_CREATED, response_model=UserDTO
+    "/users",
+    status_code=status.HTTP_201_CREATED,
+    response_model=UserDTO,
+    tags=["users"],
 )
 async def create_user(
     name: Annotated[str, Form(...)],
@@ -42,7 +47,7 @@ async def create_user(
     password: Annotated[str, Form(...)],
     phone_number: Annotated[str, Form(...)],
     uow: Annotated[AbstractUnitOfWork, Depends(UnitOfWork())],
-    file_handler: Annotated[CloudUpload, Depends(FileHandler())],
+    file_handler: Annotated[AbstractFileHandler, Depends(FileHandler())],
     pix_type: Annotated[str | None, Form()] = None,
     pix_value: Annotated[str | None, Form()] = None,
     image: Annotated[UploadFile | None, File()] = None,
@@ -73,7 +78,10 @@ async def create_user(
 
 
 @users_router.get(
-    "/users", status_code=status.HTTP_200_OK, response_model=list[UserDTO]
+    "/users",
+    status_code=status.HTTP_200_OK,
+    response_model=list[UserDTO],
+    tags=["users"],
 )
 async def get_users(
     uow: Annotated[AbstractUnitOfWork, Depends(UnitOfWork())],
@@ -84,7 +92,10 @@ async def get_users(
 
 
 @users_router.get(
-    "/users/{user_id}", status_code=status.HTTP_200_OK, response_model=UserDTO
+    "/users/{user_id}",
+    status_code=status.HTTP_200_OK,
+    response_model=UserDTO,
+    tags=["users"],
 )
 async def get_user_by_id(
     uow: Annotated[AbstractUnitOfWork, Depends(UnitOfWork())],

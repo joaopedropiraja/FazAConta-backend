@@ -4,13 +4,15 @@ from typing import Coroutine
 import uuid
 from fastapi import UploadFile
 
-from fazaconta_backend.shared.domain.files.CloudUpload import CloudUpload
+from fazaconta_backend.shared.domain.files.AbstractFileHandler import (
+    AbstractFileHandler,
+)
 from fazaconta_backend.shared.domain.files.FileData import FileData
 from fazaconta_backend.shared.domain.exceptions import DomainException
 from fazaconta_backend.shared.infra.config.settings import Settings
 
 
-class LocalFileHandler(CloudUpload):
+class LocalFileHandler(AbstractFileHandler):
     base_path: str
 
     async def upload(self, file: UploadFile) -> FileData:

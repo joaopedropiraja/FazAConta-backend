@@ -5,13 +5,15 @@ import uuid
 import boto3
 from fastapi import UploadFile
 
-from fazaconta_backend.shared.domain.files.CloudUpload import CloudUpload
+from fazaconta_backend.shared.domain.files.AbstractFileHandler import (
+    AbstractFileHandler,
+)
 from fazaconta_backend.shared.domain.files.FileData import FileData
 from fazaconta_backend.shared.domain.exceptions import DomainException
 from fazaconta_backend.shared.infra.config.settings import Settings
 
 
-class S3FileHandler(CloudUpload):
+class S3FileHandler(AbstractFileHandler):
     @property
     @cache
     def client(self):

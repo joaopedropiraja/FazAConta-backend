@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 from typing import TypeVar, Generic, Any
-
 from fazaconta_backend.shared.domain.Entity import Entity
 from fazaconta_backend.shared.infra.database.mongodb.BaseDocument import BaseDocument
 
@@ -10,11 +9,13 @@ D = TypeVar("D", bound=BaseDocument)
 
 class Mapper(Generic[T, D], ABC):
 
+    @staticmethod
     @abstractmethod
-    async def to_domain(self, model: D) -> T: ...
+    async def to_domain(model: D) -> T: ...
 
+    @staticmethod
     @abstractmethod
-    async def to_model(self, entity: T) -> D: ...
+    async def to_model(entity: T) -> D: ...
 
     @staticmethod
     @abstractmethod

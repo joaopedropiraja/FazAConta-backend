@@ -23,30 +23,42 @@ class GenericMongoRepository(Generic[T, D], AbstractGenericRepository[T], ABC):
         session: AsyncIOMotorClientSession | None,
     ):
         self._model_cls = model_cls
-        self._mapper = mapper()
+        self._mapper = mapper
         self._session = session
 
     async def get_by_id(self, id: UniqueEntityId) -> Optional[T]:
-        doc = await self._model_cls.get(id.value)
+        doc = await self._model_cls.get(
+            id.value, session=self._session, fetch_links=True
+        )
         return await self._mapper.to_domain(doc) if doc else None
 
     async def get_one(self, **filters) -> T | None:
-        doc = await self._model_cls.find_one(filters)
+        doc = await self._model_cls.find_one(
+            filters, session=self._session, fetch_links=True
+        )
         return await self._mapper.to_domain(doc) if doc else None
 
     async def get(self, limit: int = 0, skip: int = 0, **filters) -> List[T]:
-        query = self._model_cls.find(filters).limit(limit).skip(skip)
+        query = (
+            self._model_cls.find(filters, session=self._session, fetch_links=True)
+            .limit(limit)
+            .skip(skip)
+        )
         docs = await query.to_list()
         return [await self._mapper.to_domain(doc) for doc in docs]
 
     async def create(self, entity: T) -> T:
         doc = await self._mapper.to_model(entity)
         createdDoc = await doc.insert(session=self._session)
+
+        await createdDoc.fetch_all_links()
         return await self._mapper.to_domain(createdDoc)
 
     async def update(self, entity: T) -> T:
         doc = await self._mapper.to_model(entity)
         updatedDoc = await doc.save(session=self._session)
+
+        await updatedDoc.fetch_all_links()
         return await self._mapper.to_domain(updatedDoc)
 
     async def delete(self, id: UniqueEntityId) -> None:

@@ -7,6 +7,14 @@ class GuardException(Exception): ...
 
 class Guard:
     @staticmethod
+    def against_empty_list(argument: list, argument_name) -> None:
+        """
+        Raises GuardException if argument is an empty list.
+        """
+        if len(argument) == 0:
+            raise GuardException(f"{argument_name} cannot be empty.")
+
+    @staticmethod
     def greater_than(min_value: float, actual_value: float) -> None:
         """
         Raises GuardException if actual_value is NOT strictly greater than min_value.
@@ -15,6 +23,28 @@ class Guard:
             raise GuardException(
                 f"Number given ({actual_value}) is not greater than ({min_value})."
             )
+
+    @staticmethod
+    def against_empty_str(argument: object, argument_name: str) -> None:
+        """
+        Raises GuardException if argument is a empty string.
+        """
+        if str(argument) == "":
+            raise GuardException(f"{argument_name} cannot be a empty.")
+
+    @staticmethod
+    def against_empty_str_bulk(args: list[dict]) -> None:
+        """
+        Expects a list of dicts with keys: 'argument' and 'argumentName'.
+        For each item, raises GuardException if the argument is an empty string.
+        Example of args:
+          [
+            {"argument": user_input, "argumentName": "user_input"},
+            {"argument": count,      "argumentName": "count"}
+          ]
+        """
+        for arg_item in args:
+            Guard.against_empty_str(arg_item["argument"], arg_item["argumentName"])
 
     @staticmethod
     def against_at_least(num_chars: int, text: str) -> None:

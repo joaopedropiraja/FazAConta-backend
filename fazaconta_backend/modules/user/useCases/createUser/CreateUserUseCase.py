@@ -12,7 +12,9 @@ from fazaconta_backend.modules.user.useCases.createUser.CreateUserExceptions imp
     DuplicateEmailException,
 )
 from fazaconta_backend.shared.application.UseCase import IUseCase
-from fazaconta_backend.shared.domain.files.CloudUpload import CloudUpload
+from fazaconta_backend.shared.domain.files.AbstractFileHandler import (
+    AbstractFileHandler,
+)
 from fazaconta_backend.shared.infra.database.AbstractUnitOfWork import (
     AbstractUnitOfWork,
 )
@@ -20,9 +22,11 @@ from fazaconta_backend.shared.infra.database.AbstractUnitOfWork import (
 
 class CreateUserUseCase(IUseCase[CreateUserDTO, UserDTO]):
     uow: AbstractUnitOfWork
-    file_handler: CloudUpload
+    file_handler: AbstractFileHandler
 
-    def __init__(self, uow: AbstractUnitOfWork, file_handler: CloudUpload) -> None:
+    def __init__(
+        self, uow: AbstractUnitOfWork, file_handler: AbstractFileHandler
+    ) -> None:
         self.uow = uow
         self.file_handler = file_handler
 

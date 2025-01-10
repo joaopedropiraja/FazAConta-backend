@@ -4,7 +4,7 @@ from fastapi import UploadFile
 from fazaconta_backend.shared.domain.files.FileData import FileData
 
 
-class CloudUpload(ABC):
+class AbstractFileHandler(ABC):
     @abstractmethod
     async def upload(self, file: UploadFile) -> FileData: ...
 
