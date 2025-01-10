@@ -8,8 +8,11 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import ValidationError
-from fazaconta_backend.modules.user.infra.routes.users import users_router
-from fazaconta_backend.modules.transference.infra.routes.transferences import (
+from fazaconta_backend.modules.user.infra.routes.user import users_router
+from fazaconta_backend.modules.group.infra.routes.group import (
+    groups_router,
+)
+from fazaconta_backend.modules.group.infra.routes.transference import (
     transferences_router,
 )
 from fazaconta_backend.modules.user.subscriptions import init_user_handlers
@@ -75,6 +78,7 @@ class MyAPIApp:
 
     def _set_routers(self) -> None:
         self.__app.include_router(users_router)
+        self.__app.include_router(groups_router)
         self.__app.include_router(transferences_router)
 
         if Settings().ENV == "development":

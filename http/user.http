@@ -1,0 +1,62 @@
+### Variables 
+@host = http://0.0.0.0:8000
+@route = user
+@userName = João Pedro Lima Pirajá
+@userNickname = Pirajá
+@userEmail = jplp100@hotmail.com
+@userPassword = 123456
+@userPhoneNumber = 71999258225
+@userPixType = cpf_cnpj
+@userPixValue = 86231101533
+@userProfilePhotoPath=./moon-sunset-horizon-1920x1080-15494.jpg
+
+# @name createUser
+POST {{host}}/{{route}}
+Content-Type: multipart/form-data; boundary=WebKitFormBoundary
+
+--WebKitFormBoundary
+Content-Disposition: form-data; name="name"
+
+{{userName}}  
+--WebKitFormBoundary
+Content-Disposition: form-data; name="nickname"
+
+{{userNickname}}
+--WebKitFormBoundary
+Content-Disposition: form-data; name="email"
+
+{{userEmail}}
+--WebKitFormBoundary
+Content-Disposition: form-data; name="password"
+
+{{userPassword}}
+--WebKitFormBoundary
+Content-Disposition: form-data; name="phone_number"
+
+{{userPhoneNumber}}
+--WebKitFormBoundary
+Content-Disposition: form-data; name="pix_type"
+
+{{userPixType}}
+--WebKitFormBoundary
+Content-Disposition: form-data; name="pix_value"
+
+{{userPixValue}}
+--WebKitFormBoundary
+Content-Disposition: form-data; name="image"; filename="moon-sunset-horizon-1920x1080-15494.jpg"
+Content-Type: application/jpg
+
+< {{userProfilePhotoPath}}
+--WebKitFormBoundary--
+
+###
+
+# @name getUsers
+GET {{host}}/{{route}}
+
+@userId = {{getUsers.response.body.0.id}}
+
+###
+
+# @name getUserById
+GET {{host}}/{{route}}/{{userId}} HTTP/1.1

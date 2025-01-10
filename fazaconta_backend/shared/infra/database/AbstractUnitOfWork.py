@@ -1,8 +1,6 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
-
-
-from fazaconta_backend.modules.transference.repos.AbstractTransferenceRepo import (
+from fazaconta_backend.modules.group.repos.AbstractTransferenceRepo import (
     AbstractTransferenceRepo,
 )
 from fazaconta_backend.modules.user.repos.AbstractUserRepo import AbstractUserRepo

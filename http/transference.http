@@ -1,6 +1,6 @@
 ### Variables 
 @host = http://0.0.0.0:8000
-@route = transferences
+@route = transference
 
 # @name createTransference
 POST {{host}}/{{route}}

@@ -1,12 +1,12 @@
 from __future__ import annotations
 from abc import ABC
-from fazaconta_backend.modules.transference.infra.models.TransferenceDocument import (
+from fazaconta_backend.modules.group.infra.models.TransferenceDocument import (
     TransferenceDocument,
 )
-from fazaconta_backend.modules.transference.mappers.TransferenceMapper import (
+from fazaconta_backend.modules.group.mappers.TransferenceMapper import (
     TransferenceMapper,
 )
-from fazaconta_backend.modules.transference.repos.implmentations.MongoTransferenceRepo import (
+from fazaconta_backend.modules.group.repos.implmentations.MongoTransferenceRepo import (
     MongoTransferenceRepo,
 )
 from fazaconta_backend.modules.user.infra.models.UserDocument import UserDocument
@@ -21,7 +21,7 @@ from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorClientSession
 
 
 from fazaconta_backend.modules.user.repos.AbstractUserRepo import AbstractUserRepo
-from fazaconta_backend.modules.transference.repos.AbstractTransferenceRepo import (
+from fazaconta_backend.modules.group.repos.AbstractTransferenceRepo import (
     AbstractTransferenceRepo,
 )
 

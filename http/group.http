@@ -1,0 +1,27 @@
+### Variables 
+@host = http://0.0.0.0:8000
+@route = group
+
+# @name createGroup
+POST {{host}}/{{route}}
+Content-Type: multipart/form-data; boundary=WebKitFormBoundary
+
+--WebKitFormBoundary
+Content-Disposition: form-data; name="title"
+
+Bebidas
+--WebKitFormBoundary
+Content-Disposition: form-data; name="image"; filename="moon-sunset-horizon-1920x1080-15494.jpg"
+Content-Type: application/jpg
+
+< ./moon-sunset-horizon-1920x1080-15494.jpg
+--WebKitFormBoundary--
+
+
+###
+
+# @name getGroups
+GET {{host}}/{{route}}
+
+
+###

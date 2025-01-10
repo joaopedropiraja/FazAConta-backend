@@ -28,14 +28,14 @@ class User(Entity):
 
         Guard.against_undefined_bulk(
             [
-                {"argument": name, "argumentName": "name"},
-                {"argument": nickname, "argumentName": "nickname"},
+                {"argument": name, "argument_name": "name"},
+                {"argument": nickname, "argument_name": "nickname"},
             ]
         )
         Guard.against_empty_str_bulk(
             [
-                {"argument": name, "argumentName": "name"},
-                {"argument": nickname, "argumentName": "nickname"},
+                {"argument": name, "argument_name": "name"},
+                {"argument": nickname, "argument_name": "nickname"},
             ]
         )
 

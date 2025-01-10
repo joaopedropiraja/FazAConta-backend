@@ -7,4 +7,4 @@ class UserDetail(ValueObject):
     user_id: UUID
     email: str
     nickname: str
-    pix: Pix | None
+    pix: Pix | None = None
