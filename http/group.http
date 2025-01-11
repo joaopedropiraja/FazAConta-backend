@@ -24,6 +24,14 @@ Content-Type: application/jpg
 
 ###
 
+@group_id = b2fa7ba5-06ad-4793-a1bc-74c7101f7720
+
+# @name getGroupById
+GET {{host}}/{{route}}/{{group_id}}
+
+
+###
+
 @user_id = 151de6be-f7ac-4515-a4d2-b8e1c4ec5015
 
 # @name getGroupsByUserId

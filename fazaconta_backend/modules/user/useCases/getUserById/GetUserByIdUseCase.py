@@ -24,8 +24,8 @@ class GetUserUseCase(IUseCase[UUID, UserDTO]):
     async def execute(self, user_id: UUID) -> UserDTO:
 
         async with self.uow as uow:
-            foundUser = await uow.users.get_by_id(UniqueEntityId(user_id))
-            if foundUser is None:
+            found_user = await uow.users.get_by_id(UniqueEntityId(user_id))
+            if found_user is None:
                 raise UserNotFoundException()
 
-            return UserMapper.to_dto(foundUser)
+            return UserMapper.to_dto(found_user)

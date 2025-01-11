@@ -7,6 +7,7 @@ from fazaconta_backend.modules.group.dtos.TransferenceDTO import TransferenceDTO
 from fazaconta_backend.modules.group.mappers.TransferenceMapper import (
     TransferenceMapper,
 )
+from fazaconta_backend.shared.domain.Guard import Guard
 from .CreateTransferenceDTO import (
     CreateTransferenceDTO,
 )

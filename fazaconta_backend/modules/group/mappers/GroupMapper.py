@@ -70,6 +70,7 @@ class GroupMapper(Mapper[Group, GroupDocument]):
             created_at=entity.created_at,
             members=members,
             pending_payments=pending_payments,
+            image=entity.image,
         )
 
     @staticmethod

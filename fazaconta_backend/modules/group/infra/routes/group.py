@@ -14,6 +14,9 @@ from fazaconta_backend.modules.group.useCases.group.createGroup.CreateGroupUseCa
 from fazaconta_backend.modules.group.useCases.group.createGroup.CreateGroupUseCaseDTO import (
     CreateGroupUseCaseDTO,
 )
+from fazaconta_backend.modules.group.useCases.group.getGroupById.GetGroupByIdUseCase import (
+    GetGroupByIdUseCase,
+)
 from fazaconta_backend.modules.group.useCases.group.getGroupsByUserId.GetGroupsByUserIdDTO import (
     GetGroupsByUserIdDTO,
 )
@@ -56,6 +59,21 @@ async def create_group(
     use_case = CreateGroupUseCase(uow=uow, file_handler=file_handler)
 
     return await use_case.execute(dto)
+
+
+@groups_router.get(
+    f"{route}/{{group_id}}",
+    status_code=status.HTTP_200_OK,
+    response_model=GroupDTO,
+    tags=["groups"],
+)
+async def get_group_by_id(
+    uow: Annotated[AbstractUnitOfWork, Depends(UnitOfWork())],
+    group_id: UUID,
+) -> GroupDTO:
+    use_case = GetGroupByIdUseCase(uow=uow)
+
+    return await use_case.execute(group_id)
 
 
 @groups_router.get(
