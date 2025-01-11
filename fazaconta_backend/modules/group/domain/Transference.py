@@ -1,12 +1,12 @@
 from datetime import datetime
 from enum import Enum
-from fazaconta_backend.modules.group.domain.GroupDetail import GroupDetail
+from fazaconta_backend.modules.group.domain.Group import Group
 from fazaconta_backend.modules.group.domain.Participant import Participant
 from fazaconta_backend.modules.group.domain.exceptions import (
     ParticipantsListHasMoreThanOneUserException,
     ParticipantsTotalAmountNotEqualToTransferenceAmountException,
 )
-from fazaconta_backend.modules.user.domain.UserDetail import UserDetail
+from fazaconta_backend.modules.user.domain.User import User
 from fazaconta_backend.shared.domain.Entity import Entity
 from fazaconta_backend.shared.domain.Guard import Guard
 from fazaconta_backend.shared.domain.UniqueEntityId import UniqueEntityId
@@ -21,10 +21,10 @@ class TransferenceType(str, Enum):
 class Transference(Entity):
     def __init__(
         self,
-        group: GroupDetail,
+        group: Group,
         title: str,
         amount: float,
-        paid_by: UserDetail,
+        paid_by: User,
         transference_type: TransferenceType,
         participants: list[Participant],
         created_at: datetime = datetime.now(),
@@ -76,7 +76,7 @@ class Transference(Entity):
             raise ParticipantsListHasMoreThanOneUserException()
 
     @property
-    def group(self) -> GroupDetail:
+    def group(self) -> Group:
         return self._group
 
     @property
@@ -88,7 +88,7 @@ class Transference(Entity):
         return self._amount
 
     @property
-    def paid_by(self) -> UserDetail:
+    def paid_by(self) -> User:
         return self._paid_by
 
     @property

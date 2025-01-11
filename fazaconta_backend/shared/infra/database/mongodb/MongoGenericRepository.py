@@ -1,6 +1,8 @@
 from abc import ABC
 from typing import Type, TypeVar, Generic, Optional, List
 
+from beanie import DeleteRules, WriteRules
+
 from fazaconta_backend.shared.domain.AbstractGenericRepository import (
     AbstractGenericRepository,
 )
@@ -49,19 +51,21 @@ class MongoGenericRepository(Generic[T, D], AbstractGenericRepository[T], ABC):
 
     async def create(self, entity: T) -> T:
         doc = await self._mapper.to_model(entity)
-        createdDoc = await doc.insert(session=self._session)
+        created_doc = await doc.insert(
+            link_rule=WriteRules.WRITE, session=self._session
+        )
 
-        await createdDoc.fetch_all_links()
-        return await self._mapper.to_domain(createdDoc)
+        return await self._mapper.to_domain(created_doc)
 
     async def update(self, entity: T) -> T:
         doc = await self._mapper.to_model(entity)
-        updatedDoc = await doc.save(session=self._session)
+        updatedDoc = await doc.save(link_rule=WriteRules.WRITE, session=self._session)
 
-        await updatedDoc.fetch_all_links()
         return await self._mapper.to_domain(updatedDoc)
 
     async def delete(self, id: UniqueEntityId) -> None:
         document = await self._model_cls.get(id)
         if document:
-            await document.delete(session=self._session)
+            await document.delete(
+                link_rule=DeleteRules.DELETE_LINKS, session=self._session
+            )

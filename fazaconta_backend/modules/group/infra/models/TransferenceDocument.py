@@ -18,7 +18,7 @@ class TransferenceDocument(BaseDocument):
     amount: float
     paid_by: Link[UserDocument]
     transference_type: str
-    date: datetime
+    created_at: datetime
     participants: list[Link[ParticipantDocument]]
 
     class Settings:

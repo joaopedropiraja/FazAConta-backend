@@ -1,99 +1,76 @@
 from typing import Annotated
 from uuid import UUID
-from fastapi import APIRouter, Depends, File, Form, UploadFile, status
+from click import group
+from fastapi import APIRouter, Depends, File, Form, Query, UploadFile, status
 from fastapi.responses import JSONResponse
 
 from fazaconta_backend.modules.group.domain.Group import Group
+from fazaconta_backend.modules.group.dtos.GroupDTO import GroupDTO
 from fazaconta_backend.modules.group.infra.models.GroupDocument import GroupDocument
 from fazaconta_backend.modules.group.infra.models.MemberDocument import MemberDocument
+from fazaconta_backend.modules.group.useCases.group.createGroup.CreateGroupUseCase import (
+    CreateGroupUseCase,
+)
+from fazaconta_backend.modules.group.useCases.group.createGroup.CreateGroupUseCaseDTO import (
+    CreateGroupUseCaseDTO,
+)
+from fazaconta_backend.modules.group.useCases.group.getGroupsByUserId.GetGroupsByUserIdDTO import (
+    GetGroupsByUserIdDTO,
+)
+from fazaconta_backend.modules.group.useCases.group.getGroupsByUserId.GetGroupsByUserIdUseCase import (
+    GetGroupsByUserIdUseCase,
+)
 from fazaconta_backend.modules.user.domain.UserDetail import UserDetail
 from fazaconta_backend.shared.domain.UniqueEntityId import UniqueEntityId
+from fazaconta_backend.shared.domain.files.AbstractFileHandler import (
+    AbstractFileHandler,
+)
 from fazaconta_backend.shared.infra.database.AbstractUnitOfWork import (
     AbstractUnitOfWork,
 )
-from fazaconta_backend.shared.infra.http.dependencies import UnitOfWork
+from fazaconta_backend.shared.infra.http.dependencies import FileHandler, UnitOfWork
 
 
 groups_router = APIRouter()
-route = "/group"
+route = "/groups"
 
 
 @groups_router.post(
     route,
     status_code=status.HTTP_201_CREATED,
-    # response_model=TransferenceDTO,
-    tags=["group"],
+    response_model=GroupDTO,
+    tags=["groups"],
 )
 async def create_group(
     uow: Annotated[AbstractUnitOfWork, Depends(UnitOfWork())],
+    file_handler: Annotated[AbstractFileHandler, Depends(FileHandler())],
     title: Annotated[str, Form()],
+    created_by_user_id: Annotated[UUID, Form()],
     image: Annotated[UploadFile | None, File()] = None,
-    # dto: Annotated[CreateTransferenceDTO, Body()],
-):  # -> TransferenceDTO | JSONResponse:
+) -> GroupDTO:
+    dto = CreateGroupUseCaseDTO(
+        created_by_user_id=created_by_user_id,
+        title=title,
+        image=image,
+    )
+    use_case = CreateGroupUseCase(uow=uow, file_handler=file_handler)
 
-    async with uow as uow_conn:
-        doc = await GroupDocument.get(
-            "a03bf5ed-6a48-4066-849c-43fe816504cd", fetch_links=True
-        )
-        print(doc)
-        # logged_user = await uow_conn.users.get_by_id(
-        #     UniqueEntityId(UUID("151de6be-f7ac-4515-a4d2-b8e1c4ec5015"))
-        # )
-        # created_by = UserDetail(
-        #     user_id=logged_user.id.value,
-        #     email=logged_user.email.value,
-        #     nickname=logged_user.nickname,
-        # )
-        # group = Group(title=title, created_by=created_by)
-        # group_doc = GroupDocument(
-        #     title=title,
-        #     created_by=logged_user.id.value,
-        #     created_at=group.created_at,
-        #     total_expense=group.total_expense,
-        # )
-        # await group_doc.save()
-
-        # member_doc = MemberDocument(
-        #     user=logged_user.id.value, group=group_doc.id, balance=0.0
-        # )
-        # await member_doc.save()
-
-        # # await group_doc.fetch_all_links()
-
-        # print(group_doc)
-
-    return JSONResponse(doc)
-
-    # try:
-    #     use_case = CreateTransferenceUseCase(uow)
-
-    #     return await use_case.execute(dto)
-    # except GroupNotFoundException as exc:
-    #     return JSONResponse(
-    #         status_code=status.HTTP_404_NOT_FOUND,
-    #         content={
-    #             "message": "Not found",
-    #             "errors": str(exc),
-    #         },
-    #     )
-    # except ParticipantsTotalAmountNotEqualToTransferenceAmountException as exc:
-    #     return JSONResponse(
-    #         status_code=status.HTTP_400_BAD_REQUEST,
-    #         content={
-    #             "message": "Bad request",
-    #             "errors": str(exc),
-    #         },
-    #     )
+    return await use_case.execute(dto)
 
 
 @groups_router.get(
-    "/groups",
+    f"{route}/{{user_id}}/users",
     status_code=status.HTTP_200_OK,
-    # response_model=TransferenceDTO,
+    response_model=list[GroupDTO],
     tags=["groups"],
 )
-async def get_groups(
+async def get_groups_by_user_id(
     uow: Annotated[AbstractUnitOfWork, Depends(UnitOfWork())],
-    # dto: Annotated[CreateTransferenceDTO, Body()],
-):  # -> TransferenceDTO | JSONResponse:
-    return []
+    user_id: UUID,
+    limit: Annotated[int, Query()] = 0,
+    skip: Annotated[int, Query()] = 0,
+) -> list[GroupDTO] | JSONResponse:
+    use_case = GetGroupsByUserIdUseCase(uow=uow)
+    dto = GetGroupsByUserIdDTO(user_id=user_id, limit=limit, skip=skip)
+
+    return await use_case.execute(dto)

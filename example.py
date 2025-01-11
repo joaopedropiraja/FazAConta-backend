@@ -124,7 +124,7 @@ async def initialize():
     # await member.insert()
 
     group = GroupDocument(title="Bebidas", members=[member])
-    await group.insert()
+    await group.insert(link_rule=WriteRules.WRITE)
 
     # doc = await GroupDocument.get(
     #     "3ffce8f8-13c0-47e8-9099-79871ae0df5d", fetch_links=True

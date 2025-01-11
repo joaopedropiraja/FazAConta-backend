@@ -1,12 +1,12 @@
 from datetime import datetime
+from typing import Any
 from fazaconta_backend.modules.group.domain.Member import Member
 from fazaconta_backend.modules.group.domain.PendingPayment import PendingPayment
-from fazaconta_backend.modules.group.domain.Transference import Transference
 from fazaconta_backend.modules.group.domain.exceptions import (
     GroupTotalBalanceDiffFromZeroException,
     PaymentsDoNotCoverMembersBalancesException,
 )
-from fazaconta_backend.modules.user.domain.UserDetail import UserDetail
+from fazaconta_backend.modules.user.domain.User import User
 from fazaconta_backend.shared.domain.Entity import Entity
 from fazaconta_backend.shared.domain.Guard import Guard
 from fazaconta_backend.shared.domain.UniqueEntityId import UniqueEntityId
@@ -17,14 +17,17 @@ class Group(Entity):
     def __init__(
         self,
         title: str,
-        created_by: UserDetail,
+        created_by: User,
         total_expense: float = 0.0,
         created_at: datetime | None = None,
-        members: list[Member] = [],
-        pending_payments: list[PendingPayment] = [],
+        members: list[Member] | None = None,
+        pending_payments: list[PendingPayment] | None = None,
         image: FileData | None = None,
         id: UniqueEntityId | None = None,
     ):
+        members = members or []
+        pending_payments = pending_payments or []
+
         # Quando o grupo estiver sendo criado
         is_new_group = id is None
         if is_new_group:
@@ -52,25 +55,27 @@ class Group(Entity):
         self._total_expense = total_expense
         self._image = image
         self._created_at = created_at
+        self._created_by = created_by
 
     def add_member(self, member: Member):
         Guard.against_undefined(member, "member")
         self._members.append(member)
 
-    def manage_new_transference(self, transference: Transference):
+    def manage_new_transference(self, transference: Any):
         Guard.against_undefined(transference, "transference")
+
+        self._update_balances(transference)
+        self._update_payments(transference)
         # Logic to distribute expenses among members based on transference
         pass
 
-    def update_balances(self, transference: Transference):
-        Guard.against_undefined(transference, "transference")
+    def _update_balances(self, transference: Any):
         # Logic to update member balances
-        pass
+        ...
 
-    def update_payments(self, transference: Transference):
-        Guard.against_undefined(transference, "transference")
+    def _update_payments(self, transference: Any):
         # Logic to resolve pending payments
-        pass
+        ...
 
     def _validate_members_total_balance(self):
         total_balance = sum([m.balance for m in self.members])
@@ -78,11 +83,11 @@ class Group(Entity):
             raise GroupTotalBalanceDiffFromZeroException()
 
     def _validate_payments_amounts(self):
-        members_dict = {m.user.user_id: m.balance for m in self.members}
+        members_dict = {m.user.id.value: m.balance for m in self.members}
 
         for payment in self.pending_payments:
-            members_dict[payment.from_user.user_id] += payment.amount_to_pay
-            members_dict[payment.to_user.user_id] -= payment.amount_to_pay
+            members_dict[payment.from_user.id.value] += payment.amount_to_pay
+            members_dict[payment.to_user.id.value] -= payment.amount_to_pay
 
         if any(balance != 0.0 for balance in members_dict.values()):
             raise PaymentsDoNotCoverMembersBalancesException()
@@ -98,6 +103,10 @@ class Group(Entity):
     @property
     def total_expense(self) -> float:
         return self._total_expense
+
+    @property
+    def created_by(self) -> User:
+        return self._created_by
 
     @property
     def created_at(self) -> datetime:

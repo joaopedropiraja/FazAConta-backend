@@ -1,21 +1,14 @@
-from fazaconta_backend.modules.user.domain.UserDetail import UserDetail
+from fazaconta_backend.modules.user.domain.User import User
 from fazaconta_backend.shared.domain.Entity import Entity
 from fazaconta_backend.shared.domain.Guard import Guard
 from fazaconta_backend.shared.domain.UniqueEntityId import UniqueEntityId
 
 
-# class PendingPayment(ValueObject):
-#     from_user: UserDetail
-#     to_user: UserDetail
-#     amount_to_be_paid: float = Field(ge=0)
-
-
-# PendingPayment Class
 class PendingPayment(Entity):
     def __init__(
         self,
-        from_user: UserDetail,
-        to_user: UserDetail,
+        from_user: User,
+        to_user: User,
         amount_to_pay: float,
         id: UniqueEntityId | None = None,
     ):
@@ -35,11 +28,11 @@ class PendingPayment(Entity):
         self._amount_to_pay = amount_to_pay
 
     @property
-    def from_user(self) -> UserDetail:
+    def from_user(self) -> User:
         return self._from_user
 
     @property
-    def to_user(self) -> UserDetail:
+    def to_user(self) -> User:
         return self._to_user
 
     @property

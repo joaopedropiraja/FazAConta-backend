@@ -32,14 +32,14 @@ from fazaconta_backend.shared.infra.database.AbstractUnitOfWork import (
 from fazaconta_backend.shared.infra.http.dependencies import FileHandler, UnitOfWork
 
 users_router = APIRouter()
-route = "/user"
+route = "/users"
 
 
 @users_router.post(
     route,
     status_code=status.HTTP_201_CREATED,
     response_model=UserDTO,
-    tags=["user"],
+    tags=["users"],
 )
 async def create_user(
     name: Annotated[str, Form(...)],
@@ -82,7 +82,7 @@ async def create_user(
     route,
     status_code=status.HTTP_200_OK,
     response_model=list[UserDTO],
-    tags=["user"],
+    tags=["users"],
 )
 async def get_users(
     uow: Annotated[AbstractUnitOfWork, Depends(UnitOfWork())],
@@ -96,7 +96,7 @@ async def get_users(
     f"{route}/{{user_id}}",
     status_code=status.HTTP_200_OK,
     response_model=UserDTO,
-    tags=["user"],
+    tags=["users"],
 )
 async def get_user_by_id(
     uow: Annotated[AbstractUnitOfWork, Depends(UnitOfWork())],

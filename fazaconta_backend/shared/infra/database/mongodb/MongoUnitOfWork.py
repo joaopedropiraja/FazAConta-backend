@@ -1,10 +1,15 @@
 from __future__ import annotations
 from abc import ABC
+from fazaconta_backend.modules.group.infra.models.GroupDocument import GroupDocument
 from fazaconta_backend.modules.group.infra.models.TransferenceDocument import (
     TransferenceDocument,
 )
+from fazaconta_backend.modules.group.mappers.GroupMapper import GroupMapper
 from fazaconta_backend.modules.group.mappers.TransferenceMapper import (
     TransferenceMapper,
+)
+from fazaconta_backend.modules.group.repos.implmentations.MongoGroupRepo import (
+    MongoGroupRepo,
 )
 from fazaconta_backend.modules.group.repos.implmentations.MongoTransferenceRepo import (
     MongoTransferenceRepo,
@@ -43,6 +48,7 @@ class MongoUnitOfWork(AbstractUnitOfWork, ABC):
         self.transferences = MongoTransferenceRepo(
             TransferenceDocument, TransferenceMapper, self._session
         )
+        self.groups = MongoGroupRepo(GroupDocument, GroupMapper, self._session)
 
         return self
 

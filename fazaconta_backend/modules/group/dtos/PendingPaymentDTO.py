@@ -5,7 +5,7 @@ from fazaconta_backend.modules.user.domain.UserDetail import UserDetail
 
 
 class PendingPaymentDTO(BaseModel):
-    id: UUID
     from_user: UserDetail
     to_user: UserDetail
-    amount_to_be_paid: float = Field(ge=0)
+    amount_to_pay: float = Field(ge=0)
+    id: UUID | None = None

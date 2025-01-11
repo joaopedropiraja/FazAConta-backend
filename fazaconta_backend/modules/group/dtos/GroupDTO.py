@@ -10,7 +10,6 @@ from fazaconta_backend.shared.domain.files.FileData import FileData
 
 
 class GroupDTO(BaseModel):
-    id: UUID
     title: str
     created_by: UserDetail
     total_expense: float
@@ -18,3 +17,4 @@ class GroupDTO(BaseModel):
     members: list[MemberDTO]
     pending_payments: list[PendingPaymentDTO]
     image: FileData | None = None
+    id: UUID | None = None

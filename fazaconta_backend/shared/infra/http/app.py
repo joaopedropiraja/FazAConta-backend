@@ -16,7 +16,9 @@ from fazaconta_backend.modules.group.infra.routes.transference import (
     transferences_router,
 )
 from fazaconta_backend.modules.user.subscriptions import init_user_handlers
+from fazaconta_backend.shared.application.exceptions import ApplicationException
 from fazaconta_backend.shared.domain.Guard import GuardException
+from fazaconta_backend.shared.domain.exceptions import DomainException
 from fazaconta_backend.shared.infra.config.settings import Settings
 from fazaconta_backend.shared.infra.database.mongodb.MongoManager import MongoManager
 from fazaconta_backend.shared.infra.config.redis import RedisManager
@@ -115,6 +117,28 @@ class MyAPIApp:
 
         @self.__app.exception_handler(GuardException)
         async def guard_exception_handler(request: Request, exc: GuardException):
+            return JSONResponse(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                content={
+                    "message": "Bad request",
+                    "errors": str(exc),
+                },
+            )
+
+        @self.__app.exception_handler(DomainException)
+        async def domain_exception_handler(request: Request, exc: DomainException):
+            return JSONResponse(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                content={
+                    "message": "Bad request",
+                    "errors": str(exc),
+                },
+            )
+
+        @self.__app.exception_handler(ApplicationException)
+        async def application_exception_handler(
+            request: Request, exc: ApplicationException
+        ):
             return JSONResponse(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 content={

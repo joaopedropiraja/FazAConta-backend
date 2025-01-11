@@ -1,8 +1,9 @@
+from uuid import UUID
+from fastapi import UploadFile
 from pydantic import BaseModel
-
-from fazaconta_backend.shared.domain.files.FileData import FileData
 
 
 class CreateGroupUseCaseDTO(BaseModel):
     title: str
-    image: FileData | None = None
+    created_by_user_id: UUID
+    image: UploadFile | None = None

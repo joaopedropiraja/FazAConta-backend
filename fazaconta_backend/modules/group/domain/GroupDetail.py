@@ -7,6 +7,5 @@ from fazaconta_backend.shared.domain.files.FileData import FileData
 class GroupDetail(ValueObject):
     group_id: UUID
     title: str
-    description: str
     created_by: UserDetail
     image: FileData | None

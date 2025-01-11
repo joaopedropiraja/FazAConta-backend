@@ -1,4 +1,4 @@
-from fazaconta_backend.modules.user.domain.UserDetail import UserDetail
+from fazaconta_backend.modules.user.domain.User import User
 from fazaconta_backend.shared.domain.Entity import Entity
 from fazaconta_backend.shared.domain.Guard import Guard
 from fazaconta_backend.shared.domain.UniqueEntityId import UniqueEntityId
@@ -6,7 +6,7 @@ from fazaconta_backend.shared.domain.UniqueEntityId import UniqueEntityId
 
 class Participant(Entity):
     def __init__(
-        self, user: UserDetail, amount_to_pay: float, id: UniqueEntityId | None = None
+        self, user: User, amount_to_pay: float, id: UniqueEntityId | None = None
     ):
         Guard.against_undefined_bulk(
             [
@@ -22,7 +22,7 @@ class Participant(Entity):
         self._amount_to_pay = amount_to_pay
 
     @property
-    def user(self) -> UserDetail:
+    def user(self) -> User:
         return self._user
 
     @property

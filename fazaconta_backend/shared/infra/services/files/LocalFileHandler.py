@@ -30,16 +30,6 @@ class LocalFileHandler(AbstractFileHandler):
         with open(local_path, "wb") as f:
             f.write(content)
 
-        print(
-            FileData(
-                key=key,
-                src=f"http://{Settings().HOST}:{Settings().PORT}/files/{key}",
-                size=len(content),
-                filename=file.filename,
-                content_type=file.content_type,
-            )
-        )
-
         return FileData(
             key=key,
             src=f"http://{Settings().HOST}:{Settings().PORT}/files/{key}",

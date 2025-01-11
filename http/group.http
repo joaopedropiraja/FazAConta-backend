@@ -1,6 +1,6 @@
 ### Variables 
 @host = http://0.0.0.0:8000
-@route = group
+@route = groups
 
 # @name createGroup
 POST {{host}}/{{route}}
@@ -11,6 +11,10 @@ Content-Disposition: form-data; name="title"
 
 Bebidas
 --WebKitFormBoundary
+Content-Disposition: form-data; name="created_by_user_id"
+
+151de6be-f7ac-4515-a4d2-b8e1c4ec5015
+--WebKitFormBoundary
 Content-Disposition: form-data; name="image"; filename="moon-sunset-horizon-1920x1080-15494.jpg"
 Content-Type: application/jpg
 
@@ -20,8 +24,10 @@ Content-Type: application/jpg
 
 ###
 
-# @name getGroups
-GET {{host}}/{{route}}
+@user_id = 151de6be-f7ac-4515-a4d2-b8e1c4ec5015
+
+# @name getGroupsByUserId
+GET {{host}}/{{route}}/{{user_id}}/users
 
 
 ###
