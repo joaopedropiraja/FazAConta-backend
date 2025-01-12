@@ -67,6 +67,4 @@ class CreateTransferenceUseCase(IUseCase[CreateTransferenceDTO, TransferenceDTO]
             found_group.manage_new_transference(created_transference)
             await uow.groups.update(found_group)
 
-            await uow.commit()
-
             return TransferenceMapper.to_dto(created_transference)

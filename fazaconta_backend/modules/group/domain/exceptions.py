@@ -16,6 +16,11 @@ class PaymentsDoNotCoverMembersBalancesException(DomainException):
         )
 
 
+class MemberAlreadyInGroupException(DomainException):
+    def __init__(self):
+        super().__init__("User is already in group")
+
+
 # Transference
 class ParticipantsTotalAmountNotEqualToTransferenceAmountException(DomainException):
     def __init__(self):

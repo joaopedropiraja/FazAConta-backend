@@ -4,6 +4,6 @@ from fazaconta_backend.modules.user.dtos.UserDTO import UserDTO
 
 
 class MemberDTO(BaseModel):
+    id: UUID
     user: UserDTO
     balance: float = Field(default=0.0)
-    id: UUID | None = None

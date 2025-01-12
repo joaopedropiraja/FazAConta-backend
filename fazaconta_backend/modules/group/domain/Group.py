@@ -4,6 +4,7 @@ from fazaconta_backend.modules.group.domain.Member import Member
 from fazaconta_backend.modules.group.domain.PendingPayment import PendingPayment
 from fazaconta_backend.modules.group.domain.exceptions import (
     GroupTotalBalanceDiffFromZeroException,
+    MemberAlreadyInGroupException,
     PaymentsDoNotCoverMembersBalancesException,
 )
 from fazaconta_backend.modules.user.domain.User import User
@@ -59,6 +60,9 @@ class Group(Entity):
 
     def add_member(self, member: Member):
         Guard.against_undefined(member, "member")
+        if any(member.user.id.value == m.user.id.value for m in self.members):
+            raise MemberAlreadyInGroupException()
+
         self._members.append(member)
 
     def manage_new_transference(self, transference: Any):

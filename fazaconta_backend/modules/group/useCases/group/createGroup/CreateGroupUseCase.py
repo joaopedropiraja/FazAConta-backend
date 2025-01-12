@@ -43,6 +43,4 @@ class CreateGroupUseCase(IUseCase[CreateGroupUseCaseDTO, GroupDTO]):
                 Group(title=dto.title, created_by=created_by, image=image)  # type: ignore
             )
 
-            await uow.commit()
-
             return GroupMapper.to_dto(created_group)

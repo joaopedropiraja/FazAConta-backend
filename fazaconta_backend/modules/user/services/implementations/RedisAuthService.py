@@ -1,6 +1,6 @@
 import asyncio
 import jwt
-from uuid import UUID, uuid4
+from uuid import uuid4
 from redis.asyncio import Redis
 from datetime import datetime, timedelta, timezone
 from fazaconta_backend.modules.user.domain.User import User

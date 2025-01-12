@@ -8,6 +8,7 @@ from fazaconta_backend.modules.user.dtos.UserDTO import UserDTO
 
 
 class TransferenceDTO(BaseModel):
+    id: UUID
     group: GroupDTO
     title: str
     amount: float
@@ -15,4 +16,3 @@ class TransferenceDTO(BaseModel):
     transference_type: str
     created_at: datetime
     participants: list[ParticipantDTO]
-    id: UUID | None = None

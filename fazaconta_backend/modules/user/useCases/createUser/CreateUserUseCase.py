@@ -63,6 +63,5 @@ class CreateUserUseCase(IUseCase[CreateUserDTO, UserDTO]):
                     devices=None,
                 )
             )
-            await uow.commit()
 
             return UserMapper.to_dto(created_user)

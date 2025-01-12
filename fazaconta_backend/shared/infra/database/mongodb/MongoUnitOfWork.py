@@ -54,7 +54,9 @@ class MongoUnitOfWork(AbstractUnitOfWork, ABC):
 
     async def __aexit__(self, exc_type, exc_value, traceback):
         try:
-            if exc_type is not None:
+            if exc_type is None:
+                await self.commit()
+            else:
                 await self.rollback()
         finally:
             await self._session.end_session()
