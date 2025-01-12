@@ -11,8 +11,8 @@ from fazaconta_backend.modules.group.infra.models.ParticipantDocument import (
 from fazaconta_backend.modules.group.infra.models.PendingPaymentDocument import (
     PendingPaymentDocument,
 )
-from fazaconta_backend.modules.group.infra.models.TransferenceDocument import (
-    TransferenceDocument,
+from fazaconta_backend.modules.group.infra.models.TransactionDocument import (
+    TransactionDocument,
 )
 from fazaconta_backend.modules.user.infra.models.UserDocument import UserDocument
 from fazaconta_backend.shared.infra.config.logger import logger
@@ -33,7 +33,7 @@ class MongoManager:
                 UserDocument,
                 MemberDocument,
                 GroupDocument,
-                TransferenceDocument,
+                TransactionDocument,
                 ParticipantDocument,
                 PendingPaymentDocument,
             ],

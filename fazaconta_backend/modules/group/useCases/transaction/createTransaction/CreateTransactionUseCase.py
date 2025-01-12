@@ -1,18 +1,17 @@
 import asyncio
 from fazaconta_backend.modules.group.domain.Participant import Participant
-from fazaconta_backend.modules.group.domain.Transference import (
-    Transference,
-    TransferenceType,
+from fazaconta_backend.modules.group.domain.Transaction import (
+    Transaction,
+    TransactionType,
 )
-from fazaconta_backend.modules.group.dtos.TransferenceDTO import TransferenceDTO
-from fazaconta_backend.modules.group.mappers.TransferenceMapper import (
-    TransferenceMapper,
+from fazaconta_backend.modules.group.dtos.TransactionDTO import TransactionDTO
+from fazaconta_backend.modules.group.mappers.TransactionMapper import (
+    TransactionMapper,
 )
-from fazaconta_backend.shared.domain.Guard import Guard
-from .CreateTransferenceDTO import (
-    CreateTransferenceDTO,
+from .CreateTransactionDTO import (
+    CreateTransactionDTO,
 )
-from .CreateTransferenceExceptions import (
+from .CreateTransactionExceptions import (
     GroupNotFoundException,
     PaidByNotFoundInGroupException,
     ParticipantNotFoundInGroupException,
@@ -24,13 +23,13 @@ from fazaconta_backend.shared.infra.database.AbstractUnitOfWork import (
 )
 
 
-class CreateTransferenceUseCase(IUseCase[CreateTransferenceDTO, TransferenceDTO]):
+class CreateTransactionUseCase(IUseCase[CreateTransactionDTO, TransactionDTO]):
     uow: AbstractUnitOfWork
 
     def __init__(self, uow: AbstractUnitOfWork) -> None:
         self.uow = uow
 
-    async def execute(self, dto: CreateTransferenceDTO) -> TransferenceDTO:
+    async def execute(self, dto: CreateTransactionDTO) -> TransactionDTO:
 
         async with self.uow as uow:
             found_group = await uow.groups.get_by_id(UniqueEntityId(dto.group_id))
@@ -52,15 +51,15 @@ class CreateTransferenceUseCase(IUseCase[CreateTransferenceDTO, TransferenceDTO]
                 participant = Participant(user=user, amount_to_pay=p.amount_to_pay)
                 participants.append(participant)
 
-            transference_type = TransferenceType(dto.transference_type)
+            transaction_type = TransactionType(dto.transaction_type)
 
-            created_transference = await uow.transferences.create(
-                Transference(
+            created_transaction = await uow.transactions.create(
+                Transaction(
                     group=found_group,
                     title=dto.title,
                     amount=dto.amount,
                     paid_by=paid_by,
-                    transference_type=transference_type,
+                    transaction_type=transaction_type,
                     participants=participants,
                 )
             )
@@ -71,13 +70,14 @@ class CreateTransferenceUseCase(IUseCase[CreateTransferenceDTO, TransferenceDTO]
                     for p in found_group.pending_payments
                 ]
             )
-            found_group.manage_new_transference(
-                paid_by=created_transference.paid_by,
-                participants=created_transference.participants,
-                amount=created_transference.amount,
+            found_group.manage_new_transaction(
+                transaction_type=created_transaction.transaction_type,
+                paid_by=created_transaction.paid_by,
+                participants=created_transaction.participants,
+                amount=created_transaction.amount,
             )
             await uow.groups.update(found_group)
 
-            created_transference.group = found_group
+            created_transaction.group = found_group
 
-            return TransferenceMapper.to_dto(created_transference)
+            return TransactionMapper.to_dto(created_transaction)

@@ -1,9 +1,9 @@
-from fazaconta_backend.modules.group.domain.Transference import Transference
-from fazaconta_backend.modules.group.infra.models.TransferenceDocument import (
-    TransferenceDocument,
+from fazaconta_backend.modules.group.domain.Transaction import Transaction
+from fazaconta_backend.modules.group.infra.models.TransactionDocument import (
+    TransactionDocument,
 )
-from fazaconta_backend.modules.group.repos.AbstractTransferenceRepo import (
-    AbstractTransferenceRepo,
+from fazaconta_backend.modules.group.repos.AbstractTransactionRepo import (
+    AbstractTransactionRepo,
 )
 from fazaconta_backend.shared.domain.UniqueEntityId import UniqueEntityId
 from fazaconta_backend.shared.infra.database.mongodb.MongoGenericRepository import (
@@ -11,12 +11,12 @@ from fazaconta_backend.shared.infra.database.mongodb.MongoGenericRepository impo
 )
 
 
-class MongoTransferenceRepo(
-    MongoGenericRepository[Transference, TransferenceDocument], AbstractTransferenceRepo
+class MongoTransactionRepo(
+    MongoGenericRepository[Transaction, TransactionDocument], AbstractTransactionRepo
 ):
     async def get_by_group_id(
         self, group_id: UniqueEntityId, limit: int, skip: int
-    ) -> list[Transference] | None:
+    ) -> list[Transaction] | None:
         groups = (
             await self._model_cls.find(
                 self._model_cls.group.id == group_id.value,

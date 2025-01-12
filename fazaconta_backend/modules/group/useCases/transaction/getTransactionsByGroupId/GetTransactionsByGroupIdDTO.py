@@ -2,7 +2,7 @@ from uuid import UUID
 from pydantic import BaseModel, Field
 
 
-class GetTransferencesByGroupIdDTO(BaseModel):
+class GetTransactionsByGroupIdDTO(BaseModel):
     group_id: UUID
     logged_user_id: UUID
 

@@ -4,8 +4,8 @@ from fazaconta_backend.modules.group.repos.AbstractGroupRepo import AbstractGrou
 from fazaconta_backend.modules.group.repos.AbstractPendingPaymentRepo import (
     AbstractPendingPaymentRepo,
 )
-from fazaconta_backend.modules.group.repos.AbstractTransferenceRepo import (
-    AbstractTransferenceRepo,
+from fazaconta_backend.modules.group.repos.AbstractTransactionRepo import (
+    AbstractTransactionRepo,
 )
 from fazaconta_backend.modules.user.repos.AbstractUserRepo import AbstractUserRepo
 
@@ -13,7 +13,7 @@ from fazaconta_backend.modules.user.repos.AbstractUserRepo import AbstractUserRe
 class AbstractUnitOfWork(ABC):
     users: AbstractUserRepo
     groups: AbstractGroupRepo
-    transferences: AbstractTransferenceRepo
+    transactions: AbstractTransactionRepo
     pending_payments: AbstractPendingPaymentRepo
 
     @abstractmethod

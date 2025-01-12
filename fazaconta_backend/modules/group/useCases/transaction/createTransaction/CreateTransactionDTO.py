@@ -7,18 +7,18 @@ class ParticipantDTO(BaseModel):
     amount_to_pay: float
 
 
-class CreateTransferenceRequest(BaseModel):
+class CreateTransactionRequest(BaseModel):
     group_id: UUID
     title: str
     amount: float
-    transference_type: str
+    transaction_type: str
     participants: list[ParticipantDTO]
 
 
-class CreateTransferenceDTO(BaseModel):
+class CreateTransactionDTO(BaseModel):
     group_id: UUID
     title: str
     amount: float
     paid_by_user_id: UUID
-    transference_type: str
+    transaction_type: str
     participants: list[ParticipantDTO]

@@ -12,14 +12,14 @@ from fazaconta_backend.modules.user.infra.models.UserDocument import UserDocumen
 from fazaconta_backend.shared.infra.database.mongodb.BaseDocument import BaseDocument
 
 
-class TransferenceDocument(BaseDocument):
+class TransactionDocument(BaseDocument):
     group: Link[GroupDocument]
     title: str
     amount: float
     paid_by: Link[UserDocument]
-    transference_type: str
+    transaction_type: str
     created_at: datetime
     participants: list[Link[ParticipantDocument]]
 
     class Settings:
-        name = "transferences"
+        name = "transactions"

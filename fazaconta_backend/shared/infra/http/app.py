@@ -13,8 +13,8 @@ from fazaconta_backend.modules.user.infra.routes.session import sessions_router
 from fazaconta_backend.modules.group.infra.routes.group import (
     groups_router,
 )
-from fazaconta_backend.modules.group.infra.routes.transference import (
-    transferences_router,
+from fazaconta_backend.modules.group.infra.routes.transaction import (
+    transactions_router,
 )
 from fazaconta_backend.modules.user.services.implementations.RedisAuthService import (
     RedisAuthService,
@@ -88,7 +88,7 @@ class MyAPIApp:
         self.__app.include_router(users_router)
         self.__app.include_router(sessions_router)
         self.__app.include_router(groups_router)
-        self.__app.include_router(transferences_router)
+        self.__app.include_router(transactions_router)
 
         if Settings().ENV == "development":
             # Disponibiliza os arquivos salvos na pasta "/temp"

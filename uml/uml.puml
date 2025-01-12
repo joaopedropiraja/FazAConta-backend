@@ -140,10 +140,10 @@ class Group {
   + <<setter>> image: None
 
   + add_member(member: Member): None
-  + manage_new_transference(transference: Transference): None
+  + manage_new_transaction(transaction: Transaction): None
 
-  # update_balances(transference: Transference): None
-  # update_payments(transference: Transference): None
+  # update_balances(transaction: Transaction): None
+  # update_payments(transaction: Transaction): None
 }
 
 class Member {
@@ -157,13 +157,13 @@ class Member {
   + <<setter>> balance: None
 }
 
-class Transference {
+class Transaction {
   - id: UUID
   - group_id: UUID
   - title: str
   - amount: float
   - paid_by: UserDetail
-  - type: TransferenceType
+  - type: TransactionType
   - participants: List<Participant>
 
   + <<getter>> id: UUID
@@ -171,14 +171,14 @@ class Transference {
   + <<getter>> title: str
   + <<getter>> amount: float
   + <<getter>> paid_by: UserDetail
-  + <<getter>> type: TransferenceType
+  + <<getter>> type: TransactionType
   + <<getter>> participants: List<Participant>
 
   + add_participant(participant: Participant): None
   + remove_participant(participant: Participant): None
 }
 
-enum TransferenceType {
+enum TransactionType {
   send, expense, reimbursement
 }
 
@@ -209,10 +209,10 @@ Group *-- FileData
 Member *-- UserDetail
 PendingPayment *-- UserDetail
 
-Transference o-- Group
-Transference *-- UserDetail
-Transference "1" *-- "1..*" Participant
-Transference --> TransferenceType
+Transaction o-- Group
+Transaction *-- UserDetail
+Transaction "1" *-- "1..*" Participant
+Transaction --> TransactionType
 
 Participant *-- UserDetail
 

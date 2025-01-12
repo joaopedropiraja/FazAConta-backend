@@ -4,24 +4,24 @@ from click import group
 from fastapi import APIRouter, Body, Depends, Query, status
 from fastapi.responses import JSONResponse
 
-from fazaconta_backend.modules.group.dtos.TransferenceDTO import TransferenceDTO
+from fazaconta_backend.modules.group.dtos.TransactionDTO import TransactionDTO
 
-from fazaconta_backend.modules.group.useCases.transference.createTransference.CreateTransferenceDTO import (
-    CreateTransferenceDTO,
-    CreateTransferenceRequest,
+from fazaconta_backend.modules.group.useCases.transaction.createTransaction.CreateTransactionDTO import (
+    CreateTransactionDTO,
+    CreateTransactionRequest,
 )
-from fazaconta_backend.modules.group.useCases.transference.createTransference.CreateTransferenceExceptions import (
+from fazaconta_backend.modules.group.useCases.transaction.createTransaction.CreateTransactionExceptions import (
     GroupNotFoundException,
 )
 
-from fazaconta_backend.modules.group.useCases.transference.createTransference.CreateTransferenceUseCase import (
-    CreateTransferenceUseCase,
+from fazaconta_backend.modules.group.useCases.transaction.createTransaction.CreateTransactionUseCase import (
+    CreateTransactionUseCase,
 )
-from fazaconta_backend.modules.group.useCases.transference.getTransferencesByGroupId.GetTransferencesByGroupIdDTO import (
-    GetTransferencesByGroupIdDTO,
+from fazaconta_backend.modules.group.useCases.transaction.getTransactionsByGroupId.GetTransactionsByGroupIdDTO import (
+    GetTransactionsByGroupIdDTO,
 )
-from fazaconta_backend.modules.group.useCases.transference.getTransferencesByGroupId.GetTransferencesByGroupIdUseCase import (
-    GetTransferencesByGroupIdUseCase,
+from fazaconta_backend.modules.group.useCases.transaction.getTransactionsByGroupId.GetTransactionsByGroupIdUseCase import (
+    GetTransactionsByGroupIdUseCase,
 )
 from fazaconta_backend.modules.user.domain.jwt import JWTData
 from fazaconta_backend.shared.infra.database.AbstractUnitOfWork import (
@@ -30,24 +30,24 @@ from fazaconta_backend.shared.infra.database.AbstractUnitOfWork import (
 from fazaconta_backend.shared.infra.http.dependencies import JWTBearer, UnitOfWork
 
 
-transferences_router = APIRouter()
-route = "/transferences"
+transactions_router = APIRouter()
+route = "/transactions"
 
 
-@transferences_router.post(
+@transactions_router.post(
     route,
     status_code=status.HTTP_201_CREATED,
-    response_model=TransferenceDTO,
-    tags=["transferences"],
+    response_model=TransactionDTO,
+    tags=["transactions"],
 )
-async def create_transference(
+async def create_transaction(
     uow: Annotated[AbstractUnitOfWork, Depends(UnitOfWork())],
     jwt_data: Annotated[JWTData, Depends(JWTBearer())],
-    body: Annotated[CreateTransferenceRequest, Body()],
-) -> TransferenceDTO | JSONResponse:
+    body: Annotated[CreateTransactionRequest, Body()],
+) -> TransactionDTO | JSONResponse:
     try:
-        use_case = CreateTransferenceUseCase(uow)
-        dto = CreateTransferenceDTO(
+        use_case = CreateTransactionUseCase(uow)
+        dto = CreateTransactionDTO(
             **body.model_dump(), paid_by_user_id=jwt_data.user.id
         )
 
@@ -62,23 +62,23 @@ async def create_transference(
         )
 
 
-@transferences_router.get(
+@transactions_router.get(
     f"{route}/{{group_id}}/groups",
     status_code=status.HTTP_200_OK,
-    response_model=list[TransferenceDTO],
-    tags=["transference"],
+    response_model=list[TransactionDTO],
+    tags=["transaction"],
 )
-async def get_transferences_by_group_id(
+async def get_transactions_by_group_id(
     uow: Annotated[AbstractUnitOfWork, Depends(UnitOfWork())],
     jwt_data: Annotated[JWTData, Depends(JWTBearer())],
     group_id: UUID,
     limit: Annotated[int, Query()] = 0,
     skip: Annotated[int, Query()] = 0,
-) -> list[TransferenceDTO] | JSONResponse:
+) -> list[TransactionDTO] | JSONResponse:
 
     try:
-        use_case = GetTransferencesByGroupIdUseCase(uow)
-        dto = GetTransferencesByGroupIdDTO(
+        use_case = GetTransactionsByGroupIdUseCase(uow)
+        dto = GetTransactionsByGroupIdDTO(
             group_id=group_id, logged_user_id=jwt_data.user.id, limit=limit, skip=skip
         )
         return await use_case.execute(dto)

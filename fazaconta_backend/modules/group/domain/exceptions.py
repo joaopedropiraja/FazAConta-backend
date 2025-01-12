@@ -26,8 +26,15 @@ class MemberNotFoundInGroupException(DomainException):
         super().__init__("Member not found in group")
 
 
-# Transference
-class ParticipantsTotalAmountNotEqualToTransferenceAmountException(DomainException):
+class PendingPaymentNotFoundForReimbursementException(DomainException):
+    def __init__(self):
+        super().__init__(
+            "The pending payment related to the reimbursement was not found in the group"
+        )
+
+
+# Transaction
+class ParticipantsTotalAmountNotEqualToTransactionAmountException(DomainException):
     def __init__(self):
         super().__init__(
             "The total amount to be paid by the participants needs to be equal to transfer amount"

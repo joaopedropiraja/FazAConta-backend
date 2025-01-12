@@ -2,7 +2,7 @@
 name = "fazaconta-backend"
 version = "0.1.0"
 description = ""
-authors = ["João Pedro Lima Pirajá <jplp100@hotmail.com>"]
+authors = ["Marcele Louise Silva Araponga", "João Pedro Lima Pirajá"]
 readme = "README.md"
 
 [tool.poetry.dependencies]

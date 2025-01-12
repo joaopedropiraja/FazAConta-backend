@@ -3,11 +3,13 @@ from copy import deepcopy
 from fazaconta_backend.modules.group.domain.Member import Member
 from fazaconta_backend.modules.group.domain.Participant import Participant
 from fazaconta_backend.modules.group.domain.PendingPayment import PendingPayment
+from fazaconta_backend.modules.group.domain.TransactionType import TransactionType
 from fazaconta_backend.modules.group.domain.exceptions import (
     GroupTotalBalanceDiffFromZeroException,
     MemberAlreadyInGroupException,
     MemberNotFoundInGroupException,
     PaymentsDoNotCoverMembersBalancesException,
+    PendingPaymentNotFoundForReimbursementException,
 )
 from fazaconta_backend.modules.user.domain.User import User
 from fazaconta_backend.shared.domain.Entity import Entity
@@ -67,11 +69,17 @@ class Group(Entity):
 
         self._members.append(member)
 
-    def manage_new_transference(
-        self, paid_by: User, participants: list[Participant], amount: float
+    def manage_new_transaction(
+        self,
+        transaction_type: TransactionType,
+        paid_by: User,
+        participants: list[Participant],
+        amount: float,
     ):
         Guard.against_undefined_bulk(
             [
+                {"argument": transaction_type, "argument_name": "transaction_type"},
+                {"argument": paid_by, "argument_name": "paid_by"},
                 {"argument": participants, "argument_name": "participants"},
                 {"argument": amount, "argument_name": "amount"},
             ]
@@ -79,7 +87,7 @@ class Group(Entity):
         Guard.against_empty_list(argument=participants, argument_name="participants")
 
         self._update_balances(paid_by, participants, amount)
-        self._update_payments()
+        self._update_payments(transaction_type, paid_by, participants, amount)
 
         self._validate_members_total_balance()
         self._validate_payments_amounts()
@@ -101,7 +109,20 @@ class Group(Entity):
 
         payer.balance += amount
 
-    def _update_payments(self):
+    def _update_payments(
+        self,
+        transaction_type: TransactionType,
+        paid_by: User,
+        participants: list[Participant],
+        amount: float,
+    ):
+        if transaction_type == TransactionType.REIMBURSEMENT:
+            self._remove_pending_payment_related_to_reimbursement(paid_by, participants)
+            return
+
+        if transaction_type == TransactionType.EXPENSE:
+            self._total_expense += amount
+
         self._pending_payments = []
 
         # Separate balances into two lists: positive and negative.
@@ -148,6 +169,24 @@ class Group(Entity):
             # If creditor is fully settled, move to the previous creditor
             if pos[j][1] == 0:
                 j -= 1
+
+    def _remove_pending_payment_related_to_reimbursement(
+        self, paid_by: User, participants: list[Participant]
+    ):
+        for pending_payment in self._pending_payments:
+            is_same_from_user = pending_payment.from_user.id.value == paid_by.id.value
+            is_same_to_user = (
+                pending_payment.to_user.id.value == participants[0].user.id.value
+            )
+            is_same_amount = (
+                pending_payment.amount_to_pay == participants[0].amount_to_pay
+            )
+
+            if is_same_from_user and is_same_to_user and is_same_amount:
+                self._pending_payments.remove(pending_payment)
+                return
+
+        raise PendingPaymentNotFoundForReimbursementException()
 
     def _validate_members_total_balance(self):
         total_balance = sum([m.balance for m in self.members])

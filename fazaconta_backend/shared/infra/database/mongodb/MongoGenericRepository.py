@@ -64,7 +64,7 @@ class MongoGenericRepository(Generic[T, D], AbstractGenericRepository[T], ABC):
         return await self._mapper.to_domain(updatedDoc)
 
     async def delete(self, id: UniqueEntityId) -> None:
-        document = await self._model_cls.get(id)
+        document = await self._model_cls.get(id.value)
         if document:
             await document.delete(
                 link_rule=DeleteRules.DELETE_LINKS, session=self._session
