@@ -1,0 +1,22 @@
+@host = http://0.0.0.0:8000
+@route = sessions
+
+# @name login
+POST {{host}}/{{route}}/login
+Content-Type: application/json
+
+{
+    "email": "jplp100@hotmail.com",
+    "password": "123456"
+}
+
+###
+
+# @name logout
+POST {{host}}/{{route}}/logout
+Content-Type: application/json
+
+{
+    "email": "jplp100@hotmail.com",
+    "password": "123456"
+}

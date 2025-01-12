@@ -13,7 +13,7 @@ class GetUsersUseCase(IUseCase[GetUsersDTO, list[UserDTO]]):
     def __init__(self, uow: AbstractUnitOfWork) -> None:
         self.uow = uow
 
-    async def execute(self, dto=GetUsersDTO) -> list[UserDTO]:
+    async def execute(self, dto: GetUsersDTO) -> list[UserDTO]:
 
         async with self.uow as uow:
             limit = dto.limit

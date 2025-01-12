@@ -23,13 +23,17 @@ from fazaconta_backend.modules.user.useCases.getUsers.GetUsersDTO import GetUser
 from fazaconta_backend.modules.user.useCases.getUsers.GetUsersUseCase import (
     GetUsersUseCase,
 )
+from fazaconta_backend.modules.user.useCases.login.LoginUseCase import LoginUseCase
 from fazaconta_backend.shared.domain.files.AbstractFileHandler import (
     AbstractFileHandler,
 )
 from fazaconta_backend.shared.infra.database.AbstractUnitOfWork import (
     AbstractUnitOfWork,
 )
-from fazaconta_backend.shared.infra.http.dependencies import FileHandler, UnitOfWork
+from fazaconta_backend.shared.infra.http.dependencies import (
+    FileHandler,
+    UnitOfWork,
+)
 
 users_router = APIRouter()
 route = "/users"
