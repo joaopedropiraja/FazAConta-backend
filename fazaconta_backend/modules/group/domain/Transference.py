@@ -5,6 +5,7 @@ from fazaconta_backend.modules.group.domain.Participant import Participant
 from fazaconta_backend.modules.group.domain.exceptions import (
     ParticipantsListHasMoreThanOneUserException,
     ParticipantsTotalAmountNotEqualToTransferenceAmountException,
+    PayerUserNotInParticipantsListException,
 )
 from fazaconta_backend.modules.user.domain.User import User
 from fazaconta_backend.shared.domain.Entity import Entity
@@ -51,6 +52,7 @@ class Transference(Entity):
         super().__init__(id)
 
         self._participants = participants
+        self._check_payer_user_in_participants()
         self._check_participants_amount()
 
         self._transference_type = transference_type
@@ -61,6 +63,11 @@ class Transference(Entity):
         self._amount = amount
         self._paid_by = paid_by
         self._created_at = created_at
+
+    def _check_payer_user_in_participants(self):
+        participant_ids = [p.user.id for p in self.participants]
+        if self.paid_by.id not in participant_ids:
+            raise PayerUserNotInParticipantsListException()
 
     def _check_participants_amount(self):
         total_amount_to_be_paid = sum([p.amount_to_pay for p in self.participants])

@@ -32,3 +32,8 @@ class ParticipantsTotalAmountNotEqualToTransferenceAmountException(DomainExcepti
 class ParticipantsListHasMoreThanOneUserException(DomainException):
     def __init__(self):
         super().__init__("Invalid participants list")
+
+
+class PayerUserNotInParticipantsListException(DomainException):
+    def __init__(self):
+        super().__init__("The payer user needs to be in participants list")

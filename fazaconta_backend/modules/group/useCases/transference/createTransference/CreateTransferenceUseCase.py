@@ -38,15 +38,15 @@ class CreateTransferenceUseCase(IUseCase[CreateTransferenceDTO, TransferenceDTO]
 
             users_in_group_dict = {m.user.id.value: m.user for m in found_group.members}
 
-            paid_by = users_in_group_dict.get(dto.paid_by.user_id)
+            paid_by = users_in_group_dict.get(dto.paid_by_user_id)
             if paid_by is None:
                 raise PaidByNotFoundInGroupException()
 
             participants = []
             for p in dto.participants:
-                user = users_in_group_dict.get(p.user.user_id)
+                user = users_in_group_dict.get(p.user_id)
                 if user is None:
-                    raise ParticipantNotFoundInGroupException(p.user.nickname)
+                    raise ParticipantNotFoundInGroupException()
 
                 participant = Participant(user=user, amount_to_pay=p.amount_to_pay)
                 participants.append(participant)

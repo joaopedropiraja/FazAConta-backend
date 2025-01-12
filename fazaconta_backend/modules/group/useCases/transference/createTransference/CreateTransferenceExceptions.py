@@ -12,5 +12,5 @@ class PaidByNotFoundInGroupException(ApplicationException):
 
 
 class ParticipantNotFoundInGroupException(ApplicationException):
-    def __init__(self, nickname: str):
-        super().__init__(f"Participant {nickname} not found in group")
+    def __init__(self):
+        super().__init__(f"Participant not found in group")
