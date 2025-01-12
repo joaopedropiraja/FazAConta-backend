@@ -101,7 +101,7 @@ class Group(Entity):
             if member is None:
                 raise MemberNotFoundInGroupException()
 
-            member.balance -= participant.amount_to_pay
+            member.balance -= participant.amount
 
         payer = members_dict.get(paid_by.id.value)
         if payer is None:
@@ -151,7 +151,7 @@ class Group(Entity):
             settle_amount = min(credit_amount, abs(debt_amount))
 
             pending_payment = PendingPayment(
-                from_user=debtor, to_user=creditor, amount_to_pay=settle_amount
+                from_user=debtor, to_user=creditor, amount=settle_amount
             )
             self._pending_payments.append(pending_payment)
 
@@ -178,9 +178,7 @@ class Group(Entity):
             is_same_to_user = (
                 pending_payment.to_user.id.value == participants[0].user.id.value
             )
-            is_same_amount = (
-                pending_payment.amount_to_pay == participants[0].amount_to_pay
-            )
+            is_same_amount = pending_payment.amount == participants[0].amount
 
             if is_same_from_user and is_same_to_user and is_same_amount:
                 self._pending_payments.remove(pending_payment)
@@ -197,8 +195,8 @@ class Group(Entity):
         members_dict = {m.user.id.value: m.balance for m in self.members}
 
         for payment in self.pending_payments:
-            members_dict[payment.from_user.id.value] += payment.amount_to_pay
-            members_dict[payment.to_user.id.value] -= payment.amount_to_pay
+            members_dict[payment.from_user.id.value] += payment.amount
+            members_dict[payment.to_user.id.value] -= payment.amount
 
         if any(balance != 0.0 for balance in members_dict.values()):
             raise PaymentsDoNotCoverMembersBalancesException()

@@ -10,10 +10,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiZ
 {
     "group_id": "9fb1f2e4-613c-4142-9d52-d5ad979a8ef0",
     "title": "Reembolso",
-    "amount": 700,
-    "transaction_type": "reimbursement",
+    "amount": 1750,
+    "transaction_type": "expense",
     "participants": [
-        { "user_id": "5e4b5a7f-d862-428c-80b2-a853d133cba5", "amount_to_pay": 700 }
+        { "user_id": "5e4b5a7f-d862-428c-80b2-a853d133cba5", "amount": 100 },
+        { "user_id": "dfed7a69-f7f8-4319-bec4-6a349c57308d", "amount": 1650 }  
+        
     ]
 }
 

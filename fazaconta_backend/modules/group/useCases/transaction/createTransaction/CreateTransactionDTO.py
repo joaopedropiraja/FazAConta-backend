@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 class ParticipantDTO(BaseModel):
     user_id: UUID
-    amount_to_pay: float
+    amount: float
 
 
 class CreateTransactionRequest(BaseModel):

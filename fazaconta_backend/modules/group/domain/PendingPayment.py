@@ -9,23 +9,23 @@ class PendingPayment(Entity):
         self,
         from_user: User,
         to_user: User,
-        amount_to_pay: float,
+        amount: float,
         id: UniqueEntityId | None = None,
     ):
         Guard.against_undefined_bulk(
             [
                 {"argument": from_user, "argument_name": "from_user"},
                 {"argument": to_user, "argument_name": "to_user"},
-                {"argument": amount_to_pay, "argument_name": "amount_to_pay"},
+                {"argument": amount, "argument_name": "amount"},
             ]
         )
-        Guard.greater_than(0, amount_to_pay)
+        Guard.greater_than(0, amount)
 
         super().__init__(id)
 
         self._from_user = from_user
         self._to_user = to_user
-        self._amount_to_pay = amount_to_pay
+        self._amount = amount
 
     @property
     def from_user(self) -> User:
@@ -36,5 +36,5 @@ class PendingPayment(Entity):
         return self._to_user
 
     @property
-    def amount_to_pay(self) -> float:
-        return self._amount_to_pay
+    def amount(self) -> float:
+        return self._amount

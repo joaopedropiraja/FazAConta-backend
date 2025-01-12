@@ -16,19 +16,15 @@ class ParticipantMapper(Mapper[Participant, ParticipantDocument]):
         id = UniqueEntityId(model.id)
         user = await UserMapper.to_domain(model.user)
 
-        return Participant(id=id, user=user, amount_to_pay=model.amount_to_pay)
+        return Participant(id=id, user=user, amount=model.amount)
 
     @staticmethod
     async def to_model(entity: Participant) -> ParticipantDocument:
         user = await UserMapper.to_model(entity.user)
 
-        return ParticipantDocument(
-            id=entity.id.value, user=user, amount_to_pay=entity.amount_to_pay
-        )
+        return ParticipantDocument(id=entity.id.value, user=user, amount=entity.amount)
 
     @staticmethod
     def to_dto(entity: Participant) -> Any:
         user = UserMapper.to_dto(entity.user)
-        return ParticipantDTO(
-            id=entity.id.value, user=user, amount_to_pay=entity.amount_to_pay
-        )
+        return ParticipantDTO(id=entity.id.value, user=user, amount=entity.amount)

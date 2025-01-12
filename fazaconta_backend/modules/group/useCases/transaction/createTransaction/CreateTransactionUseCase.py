@@ -48,7 +48,7 @@ class CreateTransactionUseCase(IUseCase[CreateTransactionDTO, TransactionDTO]):
                 if user is None:
                     raise ParticipantNotFoundInGroupException()
 
-                participant = Participant(user=user, amount_to_pay=p.amount_to_pay)
+                participant = Participant(user=user, amount=p.amount)
                 participants.append(participant)
 
             transaction_type = TransactionType(dto.transaction_type)

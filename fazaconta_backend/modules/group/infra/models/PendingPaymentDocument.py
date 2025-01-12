@@ -7,7 +7,7 @@ from fazaconta_backend.shared.infra.database.mongodb.BaseDocument import BaseDoc
 class PendingPaymentDocument(BaseDocument):
     from_user: Link[UserDocument]
     to_user: Link[UserDocument]
-    amount_to_pay: float
+    amount: float
 
     class Settings:
         name = "pending_payments"

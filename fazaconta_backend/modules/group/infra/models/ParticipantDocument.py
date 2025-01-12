@@ -6,7 +6,7 @@ from fazaconta_backend.shared.infra.database.mongodb.BaseDocument import BaseDoc
 
 class ParticipantDocument(BaseDocument):
     user: Link[UserDocument]
-    amount_to_pay: float
+    amount: float
 
     class Settings:
         name = "participants"

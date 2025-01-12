@@ -184,22 +184,22 @@ enum TransactionType {
 
 class Participant {
   - user: UserDetail
-  - amount_to_pay: float
+  - amount: float
 
   + <<getter>> user: UserDetail 
-  + <<getter>> amount_to_pay: float
+  + <<getter>> amount: float
 
-  + <<setter>> amount_to_pay: None
+  + <<setter>> amount: None
 }
 
 class PendingPayment {
   - from_user: UserDetail
   - to_user: UserDetail
-  - amount_to_pay: float
+  - amount: float
 
   + <<getter>> from_user: UserDetail
   + <<getter>> to_user: UserDetail 
-  + <<getter>> amount_to_pay: float  
+  + <<getter>> amount: float  
 }
 
 Group "1" *-- "1..*" Member

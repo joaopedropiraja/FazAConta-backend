@@ -5,26 +5,24 @@ from fazaconta_backend.shared.domain.UniqueEntityId import UniqueEntityId
 
 
 class Participant(Entity):
-    def __init__(
-        self, user: User, amount_to_pay: float, id: UniqueEntityId | None = None
-    ):
+    def __init__(self, user: User, amount: float, id: UniqueEntityId | None = None):
         Guard.against_undefined_bulk(
             [
                 {"argument": user, "argument_name": "user"},
-                {"argument": amount_to_pay, "argument_name": "amount_to_pay"},
+                {"argument": amount, "argument_name": "amount"},
             ]
         )
-        Guard.greater_than(0, amount_to_pay)
+        Guard.greater_than(0, amount)
 
         super().__init__(id)
 
         self._user = user
-        self._amount_to_pay = amount_to_pay
+        self._amount = amount
 
     @property
     def user(self) -> User:
         return self._user
 
     @property
-    def amount_to_pay(self) -> float:
-        return self._amount_to_pay
+    def amount(self) -> float:
+        return self._amount

@@ -8,4 +8,4 @@ class PendingPaymentDTO(BaseModel):
     id: UUID
     from_user: UserDTO
     to_user: UserDTO
-    amount_to_pay: float = Field(ge=0)
+    amount: float = Field(ge=0)

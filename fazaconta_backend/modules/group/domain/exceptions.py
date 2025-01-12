@@ -37,14 +37,14 @@ class PendingPaymentNotFoundForReimbursementException(DomainException):
 class ParticipantsTotalAmountNotEqualToTransactionAmountException(DomainException):
     def __init__(self):
         super().__init__(
-            "The total amount to be paid by the participants needs to be equal to transfer amount"
+            "The total amount to be paid by the participants needs to be equal to transaction amount"
         )
 
 
 class ParticipantsListHasMoreThanOneUserException(DomainException):
     def __init__(self):
         super().__init__(
-            "Participants list has more than one user in a send or reimbursement transfer"
+            "Participants list has more than one user in a send or reimbursement transaction"
         )
 
 

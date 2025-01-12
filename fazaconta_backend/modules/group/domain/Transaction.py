@@ -68,7 +68,7 @@ class Transaction(Entity):
             raise PayerUserNotInParticipantsListException()
 
     def _check_participants_amount(self):
-        total_amount_to_be_paid = sum([p.amount_to_pay for p in self.participants])
+        total_amount_to_be_paid = sum([p.amount for p in self.participants])
         if self.amount != total_amount_to_be_paid:
             raise ParticipantsTotalAmountNotEqualToTransactionAmountException()
 

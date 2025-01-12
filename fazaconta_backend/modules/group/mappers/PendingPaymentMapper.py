@@ -21,7 +21,7 @@ class PendingPaymentMapper(Mapper[PendingPayment, PendingPaymentDocument]):
             id=id,
             from_user=from_user,
             to_user=to_user,
-            amount_to_pay=model.amount_to_pay,
+            amount=model.amount,
         )
 
     @staticmethod
@@ -33,7 +33,7 @@ class PendingPaymentMapper(Mapper[PendingPayment, PendingPaymentDocument]):
             id=entity.id.value,
             from_user=from_user,
             to_user=to_user,
-            amount_to_pay=entity.amount_to_pay,
+            amount=entity.amount,
         )
 
     @staticmethod
@@ -45,5 +45,5 @@ class PendingPaymentMapper(Mapper[PendingPayment, PendingPaymentDocument]):
             id=entity.id.value,
             from_user=from_user,
             to_user=to_user,
-            amount_to_pay=entity.amount_to_pay,
+            amount=entity.amount,
         )
