@@ -56,12 +56,12 @@ route = "/groups"
 async def create_group(
     uow: Annotated[AbstractUnitOfWork, Depends(UnitOfWork())],
     file_handler: Annotated[AbstractFileHandler, Depends(FileHandler())],
+    jwt_data: Annotated[JWTData, Depends(JWTBearer())],
     title: Annotated[str, Form()],
-    created_by_user_id: Annotated[UUID, Form()],
     image: Annotated[UploadFile | None, File()] = None,
 ) -> GroupDTO:
     dto = CreateGroupUseCaseDTO(
-        created_by_user_id=created_by_user_id,
+        created_by_user_id=jwt_data.user.id,
         title=title,
         image=image,
     )

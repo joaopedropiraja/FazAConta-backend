@@ -51,8 +51,11 @@ class Transference(Entity):
 
         super().__init__(id)
 
+        self._paid_by = paid_by
         self._participants = participants
         self._check_payer_user_in_participants()
+
+        self._amount = amount
         self._check_participants_amount()
 
         self._transference_type = transference_type
@@ -60,8 +63,6 @@ class Transference(Entity):
 
         self._group = group
         self._title = title
-        self._amount = amount
-        self._paid_by = paid_by
         self._created_at = created_at
 
     def _check_payer_user_in_participants(self):

@@ -5,23 +5,25 @@
 # @name createTransference
 POST {{host}}/{{route}}
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiMTUxZGU2YmUtZjdhYy00NTE1LWE0ZDItYjhlMWM0ZWM1MDE1IiwibmFtZSI6IkpvXHUwMGUzbyBQZWRybyBMaW1hIFBpcmFqXHUwMGUxIiwibmlja25hbWUiOiJQaXJhalx1MDBlMSIsImVtYWlsIjoianBscDEwMEBob3RtYWlsLmNvbSIsInBob25lX251bWJlciI6IjcxOTk5MjU4MjI1IiwicHJvZmlsZV9waG90byI6eyJrZXkiOiJmYzJjNDBkMi1mYjMyLTQ4MWUtOGZmNS0wYjhhODRlYjhjZTVfbW9vbi1zdW5zZXQtaG9yaXpvbi0xOTIweDEwODAtMTU0OTQuanBnIiwic3JjIjoiaHR0cDovLzAuMC4wLjA6ODAwMC9maWxlcy9mYzJjNDBkMi1mYjMyLTQ4MWUtOGZmNS0wYjhhODRlYjhjZTVfbW9vbi1zdW5zZXQtaG9yaXpvbi0xOTIweDEwODAtMTU0OTQuanBnIiwic2l6ZSI6Mzk2MTg3LCJmaWxlbmFtZSI6Im1vb24tc3Vuc2V0LWhvcml6b24tMTkyMHgxMDgwLTE1NDk0LmpwZyIsImNvbnRlbnRfdHlwZSI6ImFwcGxpY2F0aW9uL2pwZyJ9LCJwaXgiOnsidHlwZSI6ImNwZl9jbnBqIiwidmFsdWUiOiI4NjIzMTEwMTUzMyJ9fSwiZXhwIjoxNzM2NjkwMDE5fQ.-1QQ6YNDHKKo3_e3jRDb0Ri0P_GHm5a9yLdmSrVoY2o
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNWU0YjVhN2YtZDg2Mi00MjhjLTgwYjItYTg1M2QxMzNjYmE1IiwibmFtZSI6IkdhYnJpZWxsaSBWYWxlbGlhIiwibmlja25hbWUiOiJHYWJpIiwiZW1haWwiOiJnYWJyaWVsbGlzaWx2YTExMDJAZ21haWwuY29tIiwicGhvbmVfbnVtYmVyIjoiMjg5OTkzNDg1MzciLCJwcm9maWxlX3Bob3RvIjp7ImtleSI6ImY1YTYwZDVhLTg3MmUtNGIwNy1hYTFmLWE0NjllMDA5ZDYxMV9tb29uLXN1bnNldC1ob3Jpem9uLTE5MjB4MTA4MC0xNTQ5NC5qcGciLCJzcmMiOiJodHRwOi8vMC4wLjAuMDo4MDAwL2ZpbGVzL2Y1YTYwZDVhLTg3MmUtNGIwNy1hYTFmLWE0NjllMDA5ZDYxMV9tb29uLXN1bnNldC1ob3Jpem9uLTE5MjB4MTA4MC0xNTQ5NC5qcGciLCJzaXplIjozOTYxODcsImZpbGVuYW1lIjoibW9vbi1zdW5zZXQtaG9yaXpvbi0xOTIweDEwODAtMTU0OTQuanBnIiwiY29udGVudF90eXBlIjoiYXBwbGljYXRpb24vanBnIn0sInBpeCI6eyJ0eXBlIjoiZW1haWwiLCJ2YWx1ZSI6ImdhYnJpZWxsaXNpbHZhMTEwMkBnbWFpbC5jb20ifX0sImV4cCI6MTczNjY5MDgwNX0.uW1Rzk8p7KJKTt4kHaAjOk66n1fCkgTt6ubLoBcutEI
 
 {
-    "group_id": "151de6be-f7ac-4515-a4d2-b8e1c4ec5015",
-    "title": "Bebidas",
-    "amount": 300,
+    "group_id": "9fb1f2e4-613c-4142-9d52-d5ad979a8ef0",
+    "title": "Puteiro",
+    "amount": 1500,
     "transference_type": "expense",
     "participants": [
-        { "user_id": "151de6be-f7ac-4515-a4d2-b8e1c4ec5015", "amount_to_pay": 150 },
-        { "user_id": "649173a2-b39f-473c-b456-e71aa8ef57dd", "amount_to_pay": 150 }        
+        { "user_id": "5e4b5a7f-d862-428c-80b2-a853d133cba5", "amount_to_pay": 750 },
+        { "user_id": "dfed7a69-f7f8-4319-bec4-6a349c57308d", "amount_to_pay": 550 }        
     ]
 }
 
 ###
 
-# @name getTransferences
-GET {{host}}/{{route}}
+@group_id = 9fb1f2e4-613c-4142-9d52-d5ad979a8ef0
 
+# @name getTransferencesByGroupId
+GET {{host}}/{{route}}/{{group_id}}/groups
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNWU0YjVhN2YtZDg2Mi00MjhjLTgwYjItYTg1M2QxMzNjYmE1IiwibmFtZSI6IkdhYnJpZWxsaSBWYWxlbGlhIiwibmlja25hbWUiOiJHYWJpIiwiZW1haWwiOiJnYWJyaWVsbGlzaWx2YTExMDJAZ21haWwuY29tIiwicGhvbmVfbnVtYmVyIjoiMjg5OTkzNDg1MzciLCJwcm9maWxlX3Bob3RvIjp7ImtleSI6ImY1YTYwZDVhLTg3MmUtNGIwNy1hYTFmLWE0NjllMDA5ZDYxMV9tb29uLXN1bnNldC1ob3Jpem9uLTE5MjB4MTA4MC0xNTQ5NC5qcGciLCJzcmMiOiJodHRwOi8vMC4wLjAuMDo4MDAwL2ZpbGVzL2Y1YTYwZDVhLTg3MmUtNGIwNy1hYTFmLWE0NjllMDA5ZDYxMV9tb29uLXN1bnNldC1ob3Jpem9uLTE5MjB4MTA4MC0xNTQ5NC5qcGciLCJzaXplIjozOTYxODcsImZpbGVuYW1lIjoibW9vbi1zdW5zZXQtaG9yaXpvbi0xOTIweDEwODAtMTU0OTQuanBnIiwiY29udGVudF90eXBlIjoiYXBwbGljYXRpb24vanBnIn0sInBpeCI6eyJ0eXBlIjoiZW1haWwiLCJ2YWx1ZSI6ImdhYnJpZWxsaXNpbHZhMTEwMkBnbWFpbC5jb20ifX0sImV4cCI6MTczNjY5Mjc5MH0.i6WH3MzaOzUGxpEFfkSYDla_QwPuNH6JB6wrO_P_Fq0
 
 ###

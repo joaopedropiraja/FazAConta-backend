@@ -10,8 +10,8 @@ class Participant(Entity):
     ):
         Guard.against_undefined_bulk(
             [
-                {"argument": user, "argumentName": "user"},
-                {"argument": amount_to_pay, "argumentName": "amount_to_pay"},
+                {"argument": user, "argument_name": "user"},
+                {"argument": amount_to_pay, "argument_name": "amount_to_pay"},
             ]
         )
         Guard.greater_than(0, amount_to_pay)

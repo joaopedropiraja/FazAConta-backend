@@ -1,5 +1,7 @@
 from typing import Annotated
-from fastapi import APIRouter, Body, Depends, status
+from uuid import UUID
+from click import group
+from fastapi import APIRouter, Body, Depends, Query, status
 from fastapi.responses import JSONResponse
 
 from fazaconta_backend.modules.group.dtos.TransferenceDTO import TransferenceDTO
@@ -14,6 +16,12 @@ from fazaconta_backend.modules.group.useCases.transference.createTransference.Cr
 
 from fazaconta_backend.modules.group.useCases.transference.createTransference.CreateTransferenceUseCase import (
     CreateTransferenceUseCase,
+)
+from fazaconta_backend.modules.group.useCases.transference.getTransferencesByGroupId.GetTransferencesByGroupIdDTO import (
+    GetTransferencesByGroupIdDTO,
+)
+from fazaconta_backend.modules.group.useCases.transference.getTransferencesByGroupId.GetTransferencesByGroupIdUseCase import (
+    GetTransferencesByGroupIdUseCase,
 )
 from fazaconta_backend.modules.user.domain.jwt import JWTData
 from fazaconta_backend.shared.infra.database.AbstractUnitOfWork import (
@@ -54,26 +62,31 @@ async def create_transference(
         )
 
 
-# @transferences_router.get(
-#     f"{route}/{{group_id}}/groups",
-#     status_code=status.HTTP_200_OK,
-#     response_model=list[TransferenceDTO],
-#     tags=["transference"],
-# )
-# async def get_transferences_by_group_id(
-#     uow: Annotated[AbstractUnitOfWork, Depends(UnitOfWork())],
-#     group_id: UUID
-# ) -> list[TransferenceDTO] | JSONResponse:
+@transferences_router.get(
+    f"{route}/{{group_id}}/groups",
+    status_code=status.HTTP_200_OK,
+    response_model=list[TransferenceDTO],
+    tags=["transference"],
+)
+async def get_transferences_by_group_id(
+    uow: Annotated[AbstractUnitOfWork, Depends(UnitOfWork())],
+    jwt_data: Annotated[JWTData, Depends(JWTBearer())],
+    group_id: UUID,
+    limit: Annotated[int, Query()] = 0,
+    skip: Annotated[int, Query()] = 0,
+) -> list[TransferenceDTO] | JSONResponse:
 
-#     try:
-#         use_case = GetTransferencesByGroupId(uow)
-#   dto = GetTrans
-#         return await use_case.execute(group_id)
-#     except GroupNotFoundException as exc:
-#         return JSONResponse(
-#             status_code=status.HTTP_404_NOT_FOUND,
-#             content={
-#                 "message": "Not found",
-#                 "errors": str(exc),
-#             },
-#         )
+    try:
+        use_case = GetTransferencesByGroupIdUseCase(uow)
+        dto = GetTransferencesByGroupIdDTO(
+            group_id=group_id, logged_user_id=jwt_data.user.id, limit=limit, skip=skip
+        )
+        return await use_case.execute(dto)
+    except GroupNotFoundException as exc:
+        return JSONResponse(
+            status_code=status.HTTP_404_NOT_FOUND,
+            content={
+                "message": "Not found",
+                "errors": str(exc),
+            },
+        )

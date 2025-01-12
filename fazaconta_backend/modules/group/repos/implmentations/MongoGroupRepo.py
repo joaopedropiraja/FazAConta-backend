@@ -30,7 +30,9 @@ class MongoGroupRepo(MongoGenericRepository[Group, GroupDocument], AbstractGroup
         group_ids = [g["_id"] for g in result]
 
         groups = (
-            await self._model_cls.find({"_id": {"$in": group_ids}}, fetch_links=True)
+            await self._model_cls.find(
+                {"_id": {"$in": group_ids}}, fetch_links=True, session=self._session
+            )
             .limit(limit)
             .skip(skip)
             .to_list()
