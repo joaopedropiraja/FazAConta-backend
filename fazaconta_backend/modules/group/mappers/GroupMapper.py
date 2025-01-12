@@ -1,13 +1,10 @@
-from typing import Any
 from fazaconta_backend.modules.group.domain.Group import Group
-from fazaconta_backend.modules.group.domain.GroupDetail import GroupDetail
 from fazaconta_backend.modules.group.dtos.GroupDTO import GroupDTO
 from fazaconta_backend.modules.group.infra.models.GroupDocument import GroupDocument
 from fazaconta_backend.modules.group.mappers.MemberMapper import MemberMapper
 from fazaconta_backend.modules.group.mappers.PendingPaymentMapper import (
     PendingPaymentMapper,
 )
-from fazaconta_backend.modules.user.domain.UserDetail import UserDetail
 from fazaconta_backend.modules.user.mappers.UserMapper import UserMapper
 from fazaconta_backend.shared.domain.UniqueEntityId import UniqueEntityId
 from fazaconta_backend.shared.infra.database.Mapper import Mapper
@@ -56,7 +53,7 @@ class GroupMapper(Mapper[Group, GroupDocument]):
 
     @staticmethod
     def to_dto(entity: Group) -> GroupDTO:
-        created_by = UserMapper.to_user_detail(entity.created_by)
+        created_by = UserMapper.to_dto(entity.created_by)
         members = [MemberMapper.to_dto(m) for m in entity.members]
         pending_payments = [
             PendingPaymentMapper.to_dto(p) for p in entity.pending_payments
@@ -70,15 +67,5 @@ class GroupMapper(Mapper[Group, GroupDocument]):
             created_at=entity.created_at,
             members=members,
             pending_payments=pending_payments,
-            image=entity.image,
-        )
-
-    @staticmethod
-    def to_group_detail(entity: Group) -> GroupDetail:
-        created_by = UserMapper.to_user_detail(entity.created_by)
-        return GroupDetail(
-            group_id=entity.id.value,
-            title=entity.title,
-            created_by=created_by,
             image=entity.image,
         )

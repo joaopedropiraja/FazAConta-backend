@@ -31,5 +31,4 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_SECRET: str = "accesss_token_secret"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30  # 30 minutes
-    REFRESH_TOKEN_SECRET: str = "refresh_token_secret"
-    REFRESH_TOKEN_EXPIRE_MINUTES: int = 1440  # 1 day
+    REFRESH_TOKEN_EXPIRE_SECONDS: int = 86400  # 1 day

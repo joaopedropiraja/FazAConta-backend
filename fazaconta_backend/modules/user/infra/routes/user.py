@@ -3,6 +3,7 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, File, Form, Query, UploadFile, status
 from fastapi.responses import JSONResponse
 
+from fazaconta_backend.modules.user.domain.jwt import JWTData
 from fazaconta_backend.modules.user.dtos.UserDTO import UserDTO
 from fazaconta_backend.modules.user.useCases.createUser.CreateUserDTO import (
     CreateUserDTO,
@@ -32,6 +33,7 @@ from fazaconta_backend.shared.infra.database.AbstractUnitOfWork import (
 )
 from fazaconta_backend.shared.infra.http.dependencies import (
     FileHandler,
+    JWTBearer,
     UnitOfWork,
 )
 
@@ -109,6 +111,29 @@ async def get_user_by_id(
     try:
         use_case = GetUserUseCase(uow)
         return await use_case.execute(user_id)
+    except UserNotFoundException as exc:
+        return JSONResponse(
+            status_code=status.HTTP_404_NOT_FOUND,
+            content={
+                "message": "Not found",
+                "errors": str(exc),
+            },
+        )
+
+
+@users_router.get(
+    "/me",
+    status_code=status.HTTP_200_OK,
+    response_model=UserDTO,
+    tags=["users"],
+)
+async def get_logged_user(
+    uow: Annotated[AbstractUnitOfWork, Depends(UnitOfWork())],
+    jwt_data: Annotated[JWTData, Depends(JWTBearer())],
+) -> UserDTO | JSONResponse:
+    try:
+        use_case = GetUserUseCase(uow)
+        return await use_case.execute(jwt_data.user.id)
     except UserNotFoundException as exc:
         return JSONResponse(
             status_code=status.HTTP_404_NOT_FOUND,

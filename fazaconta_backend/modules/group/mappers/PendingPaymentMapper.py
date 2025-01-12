@@ -38,8 +38,8 @@ class PendingPaymentMapper(Mapper[PendingPayment, PendingPaymentDocument]):
 
     @staticmethod
     def to_dto(entity: PendingPayment) -> Any:
-        from_user = UserMapper.to_user_detail(entity.from_user)
-        to_user = UserMapper.to_user_detail(entity.to_user)
+        from_user = UserMapper.to_dto(entity.from_user)
+        to_user = UserMapper.to_dto(entity.to_user)
 
         return PendingPaymentDTO(
             id=entity.id.value,

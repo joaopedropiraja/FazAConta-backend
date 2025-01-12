@@ -2,7 +2,6 @@ from typing import Any
 from fazaconta_backend.modules.group.domain.Member import Member
 from fazaconta_backend.modules.group.dtos.MemberDTO import MemberDTO
 from fazaconta_backend.modules.group.infra.models.MemberDocument import MemberDocument
-from fazaconta_backend.modules.user.domain.UserDetail import UserDetail
 from fazaconta_backend.modules.user.mappers.UserMapper import UserMapper
 from fazaconta_backend.shared.domain.UniqueEntityId import UniqueEntityId
 from fazaconta_backend.shared.infra.database.Mapper import Mapper
@@ -23,6 +22,6 @@ class MemberMapper(Mapper[Member, MemberDocument]):
 
     @staticmethod
     def to_dto(entity: Member) -> Any:
-        user = UserMapper.to_user_detail(entity.user)
+        user = UserMapper.to_dto(entity.user)
 
         return MemberDTO(id=entity.id.value, user=user, balance=entity.balance)

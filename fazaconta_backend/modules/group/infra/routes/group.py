@@ -23,8 +23,6 @@ from fazaconta_backend.modules.group.useCases.group.getGroupsByUserId.GetGroupsB
 from fazaconta_backend.modules.group.useCases.group.getGroupsByUserId.GetGroupsByUserIdUseCase import (
     GetGroupsByUserIdUseCase,
 )
-from fazaconta_backend.modules.user.domain.UserDetail import UserDetail
-from fazaconta_backend.shared.domain.UniqueEntityId import UniqueEntityId
 from fazaconta_backend.shared.domain.files.AbstractFileHandler import (
     AbstractFileHandler,
 )

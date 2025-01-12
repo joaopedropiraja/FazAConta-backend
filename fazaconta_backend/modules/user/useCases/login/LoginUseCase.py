@@ -31,7 +31,8 @@ class LoginUseCase(IUseCase[LoginDTO, LoginDTOResponse]):
                 raise UnauthorizedAccessException("Wrong e-mail or password")
 
             access_token, refresh_token = self.auth_service.sign_jwt_tokens(found_user)
-            await self.auth_service.save_authenticated_user(found_user, refresh_token)
+            user_id = str(found_user.id.value)
+            await self.auth_service.save_authenticated_user(user_id, refresh_token)
 
             return LoginDTOResponse(
                 access_token=access_token, refresh_token=refresh_token

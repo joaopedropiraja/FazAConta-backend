@@ -58,8 +58,8 @@ class TransferenceMapper(Mapper[Transference, TransferenceDocument]):
 
     @staticmethod
     def to_dto(entity: Transference) -> Any:
-        group = GroupMapper.to_group_detail(entity.group)
-        paid_by = UserMapper.to_user_detail(entity.paid_by)
+        group = GroupMapper.to_dto(entity.group)
+        paid_by = UserMapper.to_dto(entity.paid_by)
         participants = [ParticipantMapper.to_dto(p) for p in entity.participants]
 
         return TransferenceDTO(

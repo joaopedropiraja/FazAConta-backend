@@ -1,5 +1,3 @@
-from typing import Any
-from fazaconta_backend.modules.user.domain.UserDetail import UserDetail
 from fazaconta_backend.modules.user.domain.UserPhoneNumber import UserPhoneNumber
 from fazaconta_backend.modules.user.dtos.UserDTO import UserDTO
 from fazaconta_backend.modules.user.infra.models.UserDocument import UserDocument
@@ -60,13 +58,4 @@ class UserMapper(Mapper[User, UserDocument]):
             nickname=entity.nickname,
             pix=entity.pix,
             profile_photo=entity.profile_photo,
-        )
-
-    @staticmethod
-    def to_user_detail(entity: User) -> UserDetail:
-        return UserDetail(
-            user_id=entity.id.value,
-            email=entity.email.value,
-            nickname=entity.nickname,
-            pix=entity.pix,
         )

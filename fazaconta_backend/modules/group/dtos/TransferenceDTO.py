@@ -2,16 +2,16 @@ from datetime import datetime
 from uuid import UUID
 from pydantic import BaseModel
 
-from fazaconta_backend.modules.group.domain.GroupDetail import GroupDetail
+from fazaconta_backend.modules.group.dtos.GroupDTO import GroupDTO
 from fazaconta_backend.modules.group.dtos.ParticipantDTO import ParticipantDTO
-from fazaconta_backend.modules.user.domain.UserDetail import UserDetail
+from fazaconta_backend.modules.user.dtos.UserDTO import UserDTO
 
 
 class TransferenceDTO(BaseModel):
-    group: GroupDetail
+    group: GroupDTO
     title: str
     amount: float
-    paid_by: UserDetail
+    paid_by: UserDTO
     transference_type: str
     created_at: datetime
     participants: list[ParticipantDTO]

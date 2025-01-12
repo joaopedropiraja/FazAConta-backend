@@ -4,7 +4,6 @@ from fazaconta_backend.modules.group.dtos.ParticipantDTO import ParticipantDTO
 from fazaconta_backend.modules.group.infra.models.ParticipantDocument import (
     ParticipantDocument,
 )
-from fazaconta_backend.modules.user.domain.UserDetail import UserDetail
 from fazaconta_backend.modules.user.mappers.UserMapper import UserMapper
 from fazaconta_backend.shared.domain.UniqueEntityId import UniqueEntityId
 from fazaconta_backend.shared.infra.database.Mapper import Mapper
@@ -29,7 +28,7 @@ class ParticipantMapper(Mapper[Participant, ParticipantDocument]):
 
     @staticmethod
     def to_dto(entity: Participant) -> Any:
-        user = UserMapper.to_user_detail(entity.user)
+        user = UserMapper.to_dto(entity.user)
         return ParticipantDTO(
             id=entity.id.value, user=user, amount_to_pay=entity.amount_to_pay
         )

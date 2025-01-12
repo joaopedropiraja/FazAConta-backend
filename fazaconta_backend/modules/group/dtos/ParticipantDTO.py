@@ -1,10 +1,10 @@
 from uuid import UUID
 from pydantic import BaseModel
 
-from fazaconta_backend.modules.user.domain.UserDetail import UserDetail
+from fazaconta_backend.modules.user.dtos.UserDTO import UserDTO
 
 
 class ParticipantDTO(BaseModel):
-    user: UserDetail
+    user: UserDTO
     amount_to_pay: float
     id: UUID | None = None
