@@ -21,6 +21,11 @@ class MemberAlreadyInGroupException(DomainException):
         super().__init__("User is already in group")
 
 
+class MemberNotFoundInGroupException(DomainException):
+    def __init__(self):
+        super().__init__("Member not found in group")
+
+
 # Transference
 class ParticipantsTotalAmountNotEqualToTransferenceAmountException(DomainException):
     def __init__(self):
@@ -31,7 +36,9 @@ class ParticipantsTotalAmountNotEqualToTransferenceAmountException(DomainExcepti
 
 class ParticipantsListHasMoreThanOneUserException(DomainException):
     def __init__(self):
-        super().__init__("Invalid participants list")
+        super().__init__(
+            "Participants list has more than one user in a send or reimbursement transfer"
+        )
 
 
 class PayerUserNotInParticipantsListException(DomainException):

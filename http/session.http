@@ -6,7 +6,7 @@ POST {{host}}/{{route}}/login
 Content-Type: application/json
 
 {
-    "email": "gabriellisilva1102@gmail.com",
+    "email": "jplp100@hotmail.com",
     "password": "123456"
 }
 

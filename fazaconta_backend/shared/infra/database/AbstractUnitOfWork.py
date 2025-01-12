@@ -1,6 +1,9 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 from fazaconta_backend.modules.group.repos.AbstractGroupRepo import AbstractGroupRepo
+from fazaconta_backend.modules.group.repos.AbstractPendingPaymentRepo import (
+    AbstractPendingPaymentRepo,
+)
 from fazaconta_backend.modules.group.repos.AbstractTransferenceRepo import (
     AbstractTransferenceRepo,
 )
@@ -11,6 +14,7 @@ class AbstractUnitOfWork(ABC):
     users: AbstractUserRepo
     groups: AbstractGroupRepo
     transferences: AbstractTransferenceRepo
+    pending_payments: AbstractPendingPaymentRepo
 
     @abstractmethod
     async def __aenter__(self) -> AbstractUnitOfWork: ...

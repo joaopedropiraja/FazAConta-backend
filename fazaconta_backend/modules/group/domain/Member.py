@@ -9,7 +9,6 @@ class Member(Entity):
         self, user: User, balance: float = 0.0, id: UniqueEntityId | None = None
     ):
         Guard.against_undefined(user, "user")
-        Guard.greater_equal_than(0, balance)
 
         super().__init__(id)
 
@@ -26,5 +25,4 @@ class Member(Entity):
 
     @balance.setter
     def balance(self, value: float):
-        Guard.greater_equal_than(0, value)
         self._balance = value

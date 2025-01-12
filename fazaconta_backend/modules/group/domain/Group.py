@@ -1,10 +1,12 @@
 from datetime import datetime
-from typing import Any
+from copy import deepcopy
 from fazaconta_backend.modules.group.domain.Member import Member
+from fazaconta_backend.modules.group.domain.Participant import Participant
 from fazaconta_backend.modules.group.domain.PendingPayment import PendingPayment
 from fazaconta_backend.modules.group.domain.exceptions import (
     GroupTotalBalanceDiffFromZeroException,
     MemberAlreadyInGroupException,
+    MemberNotFoundInGroupException,
     PaymentsDoNotCoverMembersBalancesException,
 )
 from fazaconta_backend.modules.user.domain.User import User
@@ -65,21 +67,87 @@ class Group(Entity):
 
         self._members.append(member)
 
-    def manage_new_transference(self, transference: Any):
-        Guard.against_undefined(transference, "transference")
+    def manage_new_transference(
+        self, paid_by: User, participants: list[Participant], amount: float
+    ):
+        Guard.against_undefined_bulk(
+            [
+                {"argument": participants, "argument_name": "participants"},
+                {"argument": amount, "argument_name": "amount"},
+            ]
+        )
+        Guard.against_empty_list(argument=participants, argument_name="participants")
 
-        self._update_balances(transference)
-        self._update_payments(transference)
-        # Logic to distribute expenses among members based on transference
-        pass
+        self._update_balances(paid_by, participants, amount)
+        self._update_payments()
 
-    def _update_balances(self, transference: Any):
-        # Logic to update member balances
-        ...
+        self._validate_members_total_balance()
+        self._validate_payments_amounts()
 
-    def _update_payments(self, transference: Any):
-        # Logic to resolve pending payments
-        ...
+    def _update_balances(
+        self, paid_by: User, participants: list[Participant], amount: float
+    ):
+        members_dict = {m.user.id.value: m for m in self.members}
+        for participant in participants:
+            member = members_dict.get(participant.user.id.value)
+            if member is None:
+                raise MemberNotFoundInGroupException()
+
+            member.balance -= participant.amount_to_pay
+
+        payer = members_dict.get(paid_by.id.value)
+        if payer is None:
+            raise MemberNotFoundInGroupException()
+
+        payer.balance += amount
+
+    def _update_payments(self):
+        self._pending_payments = []
+
+        # Separate balances into two lists: positive and negative.
+        pos: list[list] = []
+        neg: list[list] = []
+        for member in self.members:
+            if member.balance > 0:
+                pos.append([member.user, member.balance])
+            elif member.balance < 0:
+                neg.append([member.user, member.balance])
+
+        # Sort lists:
+        pos.sort(key=lambda x: x[1])  # smallest -> largest
+        neg.sort(key=lambda x: x[1])  # most negative -> least negative
+
+        # Greedy settle:
+        # Use two pointers: i (for neg) from start, j (for pos) from end
+        i = 0
+        j = len(pos) - 1
+
+        while i < len(neg) and j >= 0:
+            debtor, debt_amount = neg[i]
+            creditor, credit_amount = pos[j]
+
+            # The amount to settle is the smaller (in absolute terms) of the two
+            settle_amount = min(credit_amount, abs(debt_amount))
+
+            pending_payment = PendingPayment(
+                from_user=debtor, to_user=creditor, amount_to_pay=settle_amount
+            )
+            self._pending_payments.append(pending_payment)
+
+            # Update balances after this payment
+
+            # debt_amount += settle_amount (moves it toward 0)
+            neg[i][1] += settle_amount
+            # credit_amount -= settle_amount
+            pos[j][1] -= settle_amount
+
+            # If debtor is fully settled, move to the next debtor
+            if neg[i][1] == 0:
+                i += 1
+
+            # If creditor is fully settled, move to the previous creditor
+            if pos[j][1] == 0:
+                j -= 1
 
     def _validate_members_total_balance(self):
         total_balance = sum([m.balance for m in self.members])

@@ -1,3 +1,4 @@
+import asyncio
 from fazaconta_backend.modules.group.domain.Participant import Participant
 from fazaconta_backend.modules.group.domain.Transference import (
     Transference,
@@ -64,7 +65,19 @@ class CreateTransferenceUseCase(IUseCase[CreateTransferenceDTO, TransferenceDTO]
                 )
             )
 
-            found_group.manage_new_transference(created_transference)
+            await asyncio.gather(
+                *[
+                    uow.pending_payments.delete(p.id)
+                    for p in found_group.pending_payments
+                ]
+            )
+            found_group.manage_new_transference(
+                paid_by=created_transference.paid_by,
+                participants=created_transference.participants,
+                amount=created_transference.amount,
+            )
             await uow.groups.update(found_group)
+
+            created_transference.group = found_group
 
             return TransferenceMapper.to_dto(created_transference)

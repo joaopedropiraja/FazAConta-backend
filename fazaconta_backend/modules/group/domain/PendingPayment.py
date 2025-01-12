@@ -14,9 +14,9 @@ class PendingPayment(Entity):
     ):
         Guard.against_undefined_bulk(
             [
-                {"argument": from_user, "argumentName": "from_user"},
-                {"argument": to_user, "argumentName": "to_user"},
-                {"argument": amount_to_pay, "argumentName": "amount_to_pay"},
+                {"argument": from_user, "argument_name": "from_user"},
+                {"argument": to_user, "argument_name": "to_user"},
+                {"argument": amount_to_pay, "argument_name": "amount_to_pay"},
             ]
         )
         Guard.greater_than(0, amount_to_pay)

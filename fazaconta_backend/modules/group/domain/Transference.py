@@ -51,21 +51,24 @@ class Transference(Entity):
 
         super().__init__(id)
 
-        self._paid_by = paid_by
         self._participants = participants
+        self._transference_type = transference_type
+        self._check_transference_type()
+
+        self._paid_by = paid_by
         self._check_payer_user_in_participants()
 
         self._amount = amount
         self._check_participants_amount()
-
-        self._transference_type = transference_type
-        self._check_transference_type()
 
         self._group = group
         self._title = title
         self._created_at = created_at
 
     def _check_payer_user_in_participants(self):
+        if self.transference_type != TransferenceType.EXPENSE:
+            return
+
         participant_ids = [p.user.id for p in self.participants]
         if self.paid_by.id not in participant_ids:
             raise PayerUserNotInParticipantsListException()
@@ -86,6 +89,10 @@ class Transference(Entity):
     @property
     def group(self) -> Group:
         return self._group
+
+    @group.setter
+    def group(self, group: Group) -> None:
+        self._group = group
 
     @property
     def title(self) -> str:
