@@ -28,23 +28,29 @@ from fazaconta_backend.modules.user.mappers.UserMapper import UserMapper
 from fazaconta_backend.modules.user.repos.implementations.MongoUserRepo import (
     MongoUserRepo,
 )
-from fazaconta_backend.shared.infra.database.AbstractUnitOfWork import (
-    AbstractUnitOfWork,
+from fazaconta_backend.shared.infra.database.IUnitOfWork import (
+    IUnitOfWork,
 )
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorClientSession
 
 
 from fazaconta_backend.modules.user.repos.IUserRepo import IUserRepo
+from fazaconta_backend.modules.group.repos.IGroupRepo import IGroupRepo
+from fazaconta_backend.modules.group.repos.IPendingPaymentRepo import (
+    IPendingPaymentRepo,
+)
 from fazaconta_backend.modules.group.repos.ITransactionRepo import (
     ITransactionRepo,
 )
 
 
-class MongoUnitOfWork(AbstractUnitOfWork, ABC):
+class MongoUnitOfWork(IUnitOfWork, ABC):
     _client: AsyncIOMotorClient
     _session: AsyncIOMotorClientSession
     users: IUserRepo
+    groups: IGroupRepo
     transactions: ITransactionRepo
+    pending_payments: IPendingPaymentRepo
 
     def __init__(self, client: AsyncIOMotorClient) -> None:
         self._client = client

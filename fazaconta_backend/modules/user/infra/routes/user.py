@@ -25,11 +25,11 @@ from fazaconta_backend.modules.user.useCases.getUsers.GetUsersUseCase import (
     GetUsersUseCase,
 )
 from fazaconta_backend.modules.user.useCases.login.LoginUseCase import LoginUseCase
-from fazaconta_backend.shared.domain.files.AbstractFileHandler import (
-    AbstractFileHandler,
+from fazaconta_backend.shared.domain.files.IFileHandler import (
+    IFileHandler,
 )
-from fazaconta_backend.shared.infra.database.AbstractUnitOfWork import (
-    AbstractUnitOfWork,
+from fazaconta_backend.shared.infra.database.IUnitOfWork import (
+    IUnitOfWork,
 )
 from fazaconta_backend.shared.infra.http.dependencies import (
     FileHandler,
@@ -53,8 +53,8 @@ async def create_user(
     email: Annotated[str, Form(...)],
     password: Annotated[str, Form(...)],
     phone_number: Annotated[str, Form(...)],
-    uow: Annotated[AbstractUnitOfWork, Depends(UnitOfWork())],
-    file_handler: Annotated[AbstractFileHandler, Depends(FileHandler())],
+    uow: Annotated[IUnitOfWork, Depends(UnitOfWork())],
+    file_handler: Annotated[IFileHandler, Depends(FileHandler())],
     pix_type: Annotated[str | None, Form()] = None,
     pix_value: Annotated[str | None, Form()] = None,
     image: Annotated[UploadFile | None, File()] = None,
@@ -91,7 +91,7 @@ async def create_user(
     tags=["users"],
 )
 async def get_users(
-    uow: Annotated[AbstractUnitOfWork, Depends(UnitOfWork())],
+    uow: Annotated[IUnitOfWork, Depends(UnitOfWork())],
     dto: Annotated[GetUsersDTO, Query()],
 ) -> list[UserDTO]:
     use_case = GetUsersUseCase(uow)
@@ -105,7 +105,7 @@ async def get_users(
     tags=["users"],
 )
 async def get_user_by_id(
-    uow: Annotated[AbstractUnitOfWork, Depends(UnitOfWork())],
+    uow: Annotated[IUnitOfWork, Depends(UnitOfWork())],
     user_id: UUID,
 ) -> UserDTO | JSONResponse:
     try:
@@ -128,7 +128,7 @@ async def get_user_by_id(
     tags=["users"],
 )
 async def get_logged_user(
-    uow: Annotated[AbstractUnitOfWork, Depends(UnitOfWork())],
+    uow: Annotated[IUnitOfWork, Depends(UnitOfWork())],
     jwt_data: Annotated[JWTData, Depends(JWTBearer())],
 ) -> UserDTO | JSONResponse:
     try:

@@ -17,8 +17,8 @@ from fazaconta_backend.modules.user.useCases.logout.LogoutExceptions import (
     UserNotFoundException,
 )
 from fazaconta_backend.modules.user.useCases.logout.LogoutUseCase import LogoutUseCase
-from fazaconta_backend.shared.infra.database.AbstractUnitOfWork import (
-    AbstractUnitOfWork,
+from fazaconta_backend.shared.infra.database.IUnitOfWork import (
+    IUnitOfWork,
 )
 from fazaconta_backend.shared.infra.http.dependencies import (
     AuthService,
@@ -38,7 +38,7 @@ route = "/sessions"
     tags=["sessions"],
 )
 async def login(
-    uow: Annotated[AbstractUnitOfWork, Depends(UnitOfWork())],
+    uow: Annotated[IUnitOfWork, Depends(UnitOfWork())],
     auth_service: Annotated[IAuthService, Depends(AuthService())],
     dto: Annotated[LoginDTO, Body()],
 ) -> LoginDTOResponse | JSONResponse:
@@ -69,7 +69,7 @@ async def login(
     tags=["sessions"],
 )
 async def logout(
-    uow: Annotated[AbstractUnitOfWork, Depends(UnitOfWork())],
+    uow: Annotated[IUnitOfWork, Depends(UnitOfWork())],
     auth_service: Annotated[IAuthService, Depends(AuthService())],
     jwt_data: Annotated[JWTData, Depends(JWTBearer())],
 ) -> JSONResponse:

@@ -6,13 +6,13 @@ from fazaconta_backend.modules.group.repos.ITransactionRepo import (
     ITransactionRepo,
 )
 from fazaconta_backend.shared.domain.UniqueEntityId import UniqueEntityId
-from fazaconta_backend.shared.infra.database.mongodb.MongoGenericRepository import (
-    MongoGenericRepository,
+from fazaconta_backend.shared.infra.database.mongodb.AbstractMongoGenericRepository import (
+    AbstractMongoGenericRepository,
 )
 
 
 class MongoTransactionRepo(
-    MongoGenericRepository[Transaction, TransactionDocument], ITransactionRepo
+    AbstractMongoGenericRepository[Transaction, TransactionDocument], ITransactionRepo
 ):
     async def get_by_group_id(
         self, group_id: UniqueEntityId, limit: int, skip: int

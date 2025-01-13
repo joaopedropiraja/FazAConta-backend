@@ -1,9 +1,9 @@
 ### Variables 
 @host = http://0.0.0.0:8000
 @route = users
-@userName = João Pedro Lima Pirajá
-@userNickname = Pirajá
-@userEmail = jplp100@hotmail.com
+@userName = Fulaninho
+@userNickname = Fulano
+@userEmail = fulano@hotmail.com
 @userPassword = 123456
 @userPhoneNumber = 71999258225
 @userPixType = cpf_cnpj

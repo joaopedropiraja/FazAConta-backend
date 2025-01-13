@@ -5,15 +5,16 @@ import uuid
 import boto3
 from fastapi import UploadFile
 
-from fazaconta_backend.shared.domain.files.AbstractFileHandler import (
-    AbstractFileHandler,
+from fazaconta_backend.shared.domain.Guard import Guard
+from fazaconta_backend.shared.domain.files.IFileHandler import (
+    IFileHandler,
 )
 from fazaconta_backend.shared.domain.files.FileData import FileData
 from fazaconta_backend.shared.domain.exceptions import DomainException
 from fazaconta_backend.shared.infra.config.settings import Settings
 
 
-class S3FileHandler(AbstractFileHandler):
+class S3FileHandler(IFileHandler):
     @property
     @cache
     def client(self):
@@ -32,8 +33,13 @@ class S3FileHandler(AbstractFileHandler):
         )
 
     async def upload(self, file: UploadFile) -> FileData:
-        if not file.filename or not file.content_type or not file.size:
-            raise DomainException("Invalid file.")
+        Guard.against_undefined_bulk(
+            [
+                {"argument": file.filename, "argument_name": "filename"},
+                {"argument": file.content_type, "argument_name": "content_type"},
+                {"argument": file.size, "argument_name": "size"},
+            ]
+        )
 
         key = f"{uuid.uuid4()}{file.filename}"
 
@@ -58,3 +64,18 @@ class S3FileHandler(AbstractFileHandler):
     async def multi_upload(self, files: list[UploadFile]):
         tasks = [asyncio.create_task(self.upload(file=file)) for file in files]
         return await asyncio.gather(*tasks)
+
+    async def delete(self, file_key: str) -> None:
+        """
+        Delete a file from the S3 bucket based on the file key.
+        """
+        bucket = Settings().AWS_BUCKET_NAME
+
+        try:
+            await asyncio.to_thread(
+                self.client.delete_object, Bucket=bucket, Key=file_key
+            )
+        except self.client.exceptions.NoSuchKey:
+            raise DomainException(f"File with key '{file_key}' does not exist.")
+        except Exception as e:
+            raise DomainException(f"Failed to delete file: {e}")

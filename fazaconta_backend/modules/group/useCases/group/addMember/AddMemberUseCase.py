@@ -10,15 +10,15 @@ from fazaconta_backend.modules.group.useCases.group.addMember.AddMemberException
 )
 from fazaconta_backend.shared.application.UseCase import IUseCase
 from fazaconta_backend.shared.domain.UniqueEntityId import UniqueEntityId
-from fazaconta_backend.shared.infra.database.AbstractUnitOfWork import (
-    AbstractUnitOfWork,
+from fazaconta_backend.shared.infra.database.IUnitOfWork import (
+    IUnitOfWork,
 )
 
 
 class AddMemberUseCase(IUseCase[AddMemberDTO, GroupDTO]):
-    uow: AbstractUnitOfWork
+    uow: IUnitOfWork
 
-    def __init__(self, uow: AbstractUnitOfWork) -> None:
+    def __init__(self, uow: IUnitOfWork) -> None:
         self.uow = uow
 
     async def execute(self, dto: AddMemberDTO) -> GroupDTO:

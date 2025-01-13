@@ -18,15 +18,15 @@ from .CreateTransactionExceptions import (
 )
 from fazaconta_backend.shared.application.UseCase import IUseCase
 from fazaconta_backend.shared.domain.UniqueEntityId import UniqueEntityId
-from fazaconta_backend.shared.infra.database.AbstractUnitOfWork import (
-    AbstractUnitOfWork,
+from fazaconta_backend.shared.infra.database.IUnitOfWork import (
+    IUnitOfWork,
 )
 
 
 class CreateTransactionUseCase(IUseCase[CreateTransactionDTO, TransactionDTO]):
-    uow: AbstractUnitOfWork
+    uow: IUnitOfWork
 
-    def __init__(self, uow: AbstractUnitOfWork) -> None:
+    def __init__(self, uow: IUnitOfWork) -> None:
         self.uow = uow
 
     async def execute(self, dto: CreateTransactionDTO) -> TransactionDTO:
@@ -64,12 +64,7 @@ class CreateTransactionUseCase(IUseCase[CreateTransactionDTO, TransactionDTO]):
                 )
             )
 
-            await asyncio.gather(
-                *[
-                    uow.pending_payments.delete(p.id)
-                    for p in found_group.pending_payments
-                ]
-            )
+            await uow.pending_payments.delete_many(found_group.pending_payments)
             found_group.manage_new_transaction(
                 transaction_type=created_transaction.transaction_type,
                 paid_by=created_transaction.paid_by,

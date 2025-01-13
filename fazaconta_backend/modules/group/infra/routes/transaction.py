@@ -24,8 +24,8 @@ from fazaconta_backend.modules.group.useCases.transaction.getTransactionsByGroup
     GetTransactionsByGroupIdUseCase,
 )
 from fazaconta_backend.modules.user.domain.jwt import JWTData
-from fazaconta_backend.shared.infra.database.AbstractUnitOfWork import (
-    AbstractUnitOfWork,
+from fazaconta_backend.shared.infra.database.IUnitOfWork import (
+    IUnitOfWork,
 )
 from fazaconta_backend.shared.infra.http.dependencies import JWTBearer, UnitOfWork
 
@@ -41,7 +41,7 @@ route = "/transactions"
     tags=["transactions"],
 )
 async def create_transaction(
-    uow: Annotated[AbstractUnitOfWork, Depends(UnitOfWork())],
+    uow: Annotated[IUnitOfWork, Depends(UnitOfWork())],
     jwt_data: Annotated[JWTData, Depends(JWTBearer())],
     body: Annotated[CreateTransactionRequest, Body()],
 ) -> TransactionDTO | JSONResponse:
@@ -69,7 +69,7 @@ async def create_transaction(
     tags=["transaction"],
 )
 async def get_transactions_by_group_id(
-    uow: Annotated[AbstractUnitOfWork, Depends(UnitOfWork())],
+    uow: Annotated[IUnitOfWork, Depends(UnitOfWork())],
     jwt_data: Annotated[JWTData, Depends(JWTBearer())],
     group_id: UUID,
     limit: Annotated[int, Query()] = 0,

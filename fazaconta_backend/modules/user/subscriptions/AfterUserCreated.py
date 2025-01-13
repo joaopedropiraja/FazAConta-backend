@@ -2,15 +2,15 @@ from fazaconta_backend.modules.user.events.UserCreated import UserCreated
 from fazaconta_backend.shared.domain.events.DomainEvents import DomainEvents
 from fazaconta_backend.shared.domain.events.IHandle import IHandle
 from fazaconta_backend.shared.infra.config.logger import logger
-from fazaconta_backend.shared.infra.database.AbstractUnitOfWork import (
-    AbstractUnitOfWork,
+from fazaconta_backend.shared.infra.database.IUnitOfWork import (
+    IUnitOfWork,
 )
 
 
 class AfterUserCreated(IHandle):
-    uow: AbstractUnitOfWork
+    uow: IUnitOfWork
 
-    def __init__(self, uow: AbstractUnitOfWork) -> None:
+    def __init__(self, uow: IUnitOfWork) -> None:
         self.uow = uow
         self.setup_subscriptions()
 

@@ -5,16 +5,16 @@ from fazaconta_backend.modules.user.useCases.logout.LogoutExceptions import (
 )
 from fazaconta_backend.shared.application.UseCase import IUseCase
 from fazaconta_backend.shared.domain.UniqueEntityId import UniqueEntityId
-from fazaconta_backend.shared.infra.database.AbstractUnitOfWork import (
-    AbstractUnitOfWork,
+from fazaconta_backend.shared.infra.database.IUnitOfWork import (
+    IUnitOfWork,
 )
 
 
 class LogoutUseCase(IUseCase[UUID, None]):
-    uow: AbstractUnitOfWork
+    uow: IUnitOfWork
     auth_service: IAuthService
 
-    def __init__(self, uow: AbstractUnitOfWork, auth_service: IAuthService) -> None:
+    def __init__(self, uow: IUnitOfWork, auth_service: IAuthService) -> None:
         self.uow = uow
         self.auth_service = auth_service
 

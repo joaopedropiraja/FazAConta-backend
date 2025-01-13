@@ -10,14 +10,14 @@ from fazaconta_backend.modules.group.repos.ITransactionRepo import (
 from fazaconta_backend.modules.user.repos.IUserRepo import IUserRepo
 
 
-class AbstractUnitOfWork(ABC):
+class IUnitOfWork(ABC):
     users: IUserRepo
     groups: IGroupRepo
     transactions: ITransactionRepo
     pending_payments: IPendingPaymentRepo
 
     @abstractmethod
-    async def __aenter__(self) -> AbstractUnitOfWork: ...
+    async def __aenter__(self) -> IUnitOfWork: ...
 
     @abstractmethod
     async def __aexit__(self, exc_type, exc_value, traceback): ...

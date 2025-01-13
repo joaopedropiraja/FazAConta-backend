@@ -30,11 +30,11 @@ from fazaconta_backend.modules.group.useCases.group.getGroupsByUserId.GetGroupsB
     GetGroupsByUserIdUseCase,
 )
 from fazaconta_backend.modules.user.domain.jwt import JWTData
-from fazaconta_backend.shared.domain.files.AbstractFileHandler import (
-    AbstractFileHandler,
+from fazaconta_backend.shared.domain.files.IFileHandler import (
+    IFileHandler,
 )
-from fazaconta_backend.shared.infra.database.AbstractUnitOfWork import (
-    AbstractUnitOfWork,
+from fazaconta_backend.shared.infra.database.IUnitOfWork import (
+    IUnitOfWork,
 )
 from fazaconta_backend.shared.infra.http.dependencies import (
     FileHandler,
@@ -54,8 +54,8 @@ route = "/groups"
     tags=["groups"],
 )
 async def create_group(
-    uow: Annotated[AbstractUnitOfWork, Depends(UnitOfWork())],
-    file_handler: Annotated[AbstractFileHandler, Depends(FileHandler())],
+    uow: Annotated[IUnitOfWork, Depends(UnitOfWork())],
+    file_handler: Annotated[IFileHandler, Depends(FileHandler())],
     jwt_data: Annotated[JWTData, Depends(JWTBearer())],
     title: Annotated[str, Form()],
     image: Annotated[UploadFile | None, File()] = None,
@@ -77,7 +77,7 @@ async def create_group(
     tags=["groups"],
 )
 async def get_groups_by_user_id(
-    uow: Annotated[AbstractUnitOfWork, Depends(UnitOfWork())],
+    uow: Annotated[IUnitOfWork, Depends(UnitOfWork())],
     jwt_data: Annotated[JWTData, Depends(JWTBearer())],
     limit: Annotated[int, Query()] = 0,
     skip: Annotated[int, Query()] = 0,
@@ -95,7 +95,7 @@ async def get_groups_by_user_id(
     tags=["groups"],
 )
 async def add_member(
-    uow: Annotated[AbstractUnitOfWork, Depends(UnitOfWork())],
+    uow: Annotated[IUnitOfWork, Depends(UnitOfWork())],
     jwt_data: Annotated[JWTData, Depends(JWTBearer())],
     group_id: UUID,
 ) -> GroupDTO:
@@ -111,7 +111,7 @@ async def add_member(
     tags=["groups"],
 )
 async def get_group_by_id(
-    uow: Annotated[AbstractUnitOfWork, Depends(UnitOfWork())],
+    uow: Annotated[IUnitOfWork, Depends(UnitOfWork())],
     group_id: UUID,
 ) -> GroupDTO:
     use_case = GetGroupByIdUseCase(uow=uow)

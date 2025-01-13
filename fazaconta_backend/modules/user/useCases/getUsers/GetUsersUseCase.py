@@ -2,15 +2,15 @@ from fazaconta_backend.modules.user.dtos.UserDTO import UserDTO
 from fazaconta_backend.modules.user.mappers.UserMapper import UserMapper
 from fazaconta_backend.modules.user.useCases.getUsers.GetUsersDTO import GetUsersDTO
 from fazaconta_backend.shared.application.UseCase import IUseCase
-from fazaconta_backend.shared.infra.database.AbstractUnitOfWork import (
-    AbstractUnitOfWork,
+from fazaconta_backend.shared.infra.database.IUnitOfWork import (
+    IUnitOfWork,
 )
 
 
 class GetUsersUseCase(IUseCase[GetUsersDTO, list[UserDTO]]):
-    uow: AbstractUnitOfWork
+    uow: IUnitOfWork
 
-    def __init__(self, uow: AbstractUnitOfWork) -> None:
+    def __init__(self, uow: IUnitOfWork) -> None:
         self.uow = uow
 
     async def execute(self, dto: GetUsersDTO) -> list[UserDTO]:

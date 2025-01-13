@@ -7,21 +7,19 @@ from fazaconta_backend.modules.group.useCases.group.createGroup.CreateGroupUseCa
 from fazaconta_backend.shared.application.UseCase import IUseCase
 from fazaconta_backend.shared.domain.Guard import Guard
 from fazaconta_backend.shared.domain.UniqueEntityId import UniqueEntityId
-from fazaconta_backend.shared.domain.files.AbstractFileHandler import (
-    AbstractFileHandler,
+from fazaconta_backend.shared.domain.files.IFileHandler import (
+    IFileHandler,
 )
-from fazaconta_backend.shared.infra.database.AbstractUnitOfWork import (
-    AbstractUnitOfWork,
+from fazaconta_backend.shared.infra.database.IUnitOfWork import (
+    IUnitOfWork,
 )
 
 
 class CreateGroupUseCase(IUseCase[CreateGroupUseCaseDTO, GroupDTO]):
-    uow: AbstractUnitOfWork
-    file_handler: AbstractFileHandler
+    uow: IUnitOfWork
+    file_handler: IFileHandler
 
-    def __init__(
-        self, uow: AbstractUnitOfWork, file_handler: AbstractFileHandler
-    ) -> None:
+    def __init__(self, uow: IUnitOfWork, file_handler: IFileHandler) -> None:
         self.uow = uow
         self.file_handler = file_handler
 

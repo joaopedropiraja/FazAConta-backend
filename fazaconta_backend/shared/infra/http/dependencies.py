@@ -5,8 +5,8 @@ from fastapi import Request
 from jwt import decode
 from fazaconta_backend.modules.user.domain.jwt import JWTData
 from fazaconta_backend.modules.user.services.IAuthService import IAuthService
-from fazaconta_backend.shared.domain.files.AbstractFileHandler import (
-    AbstractFileHandler,
+from fazaconta_backend.shared.domain.files.IFileHandler import (
+    IFileHandler,
 )
 
 
@@ -16,7 +16,7 @@ class UnitOfWork:
 
 
 class FileHandler:
-    def __call__(self, request: Request) -> AbstractFileHandler:
+    def __call__(self, request: Request) -> IFileHandler:
         return request.state.file_handler
 
 

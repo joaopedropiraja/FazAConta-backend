@@ -16,7 +16,7 @@ T = TypeVar("T", bound=Entity)
 D = TypeVar("D", bound=BaseDocument)
 
 
-class MongoGenericRepository(Generic[T, D], IGenericRepository[T], ABC):
+class AbstractMongoGenericRepository(Generic[T, D], IGenericRepository[T], ABC):
 
     def __init__(
         self,

@@ -10,15 +10,15 @@ from fazaconta_backend.shared.application.exceptions import (
     ApplicationException,
 )
 from fazaconta_backend.shared.domain.UniqueEntityId import UniqueEntityId
-from fazaconta_backend.shared.infra.database.AbstractUnitOfWork import (
-    AbstractUnitOfWork,
+from fazaconta_backend.shared.infra.database.IUnitOfWork import (
+    IUnitOfWork,
 )
 
 
 class GetUserUseCase(IUseCase[UUID, UserDTO]):
-    uow: AbstractUnitOfWork
+    uow: IUnitOfWork
 
-    def __init__(self, uow: AbstractUnitOfWork) -> None:
+    def __init__(self, uow: IUnitOfWork) -> None:
         self.uow = uow
 
     async def execute(self, user_id: UUID) -> UserDTO:
