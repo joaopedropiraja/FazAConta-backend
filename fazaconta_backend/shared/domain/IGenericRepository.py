@@ -8,7 +8,7 @@ from fazaconta_backend.shared.domain.UniqueEntityId import UniqueEntityId
 T = TypeVar("T", bound=Entity)
 
 
-class AbstractGenericRepository(Generic[T], ABC):
+class IGenericRepository(Generic[T], ABC):
     @abstractmethod
     async def get_by_id(self, id: UniqueEntityId) -> T | None: ...
 

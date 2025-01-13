@@ -12,17 +12,21 @@ T = TypeVar("T")
 
 
 class Entity(ABC):
-    id: UniqueEntityId = UniqueEntityId()
+    _id: UniqueEntityId = UniqueEntityId()
     _domain_events: list[IDomainEvent] = []
 
     def __init__(self, id: UniqueEntityId | None) -> None:
-        self.id = id if id is not None else UniqueEntityId()
+        self._id = id if id is not None else UniqueEntityId()
 
     def equals(self, obj: Entity):
         if obj is None or not isinstance(obj, Entity):
             return False
 
         return self.id == obj.id
+
+    @property
+    def id(self) -> UniqueEntityId:
+        return self._id
 
     @property
     def domain_events(self) -> list[IDomainEvent]:

@@ -3,8 +3,8 @@ from typing import Type, TypeVar, Generic, Optional, List
 
 from beanie import DeleteRules, WriteRules
 
-from fazaconta_backend.shared.domain.AbstractGenericRepository import (
-    AbstractGenericRepository,
+from fazaconta_backend.shared.domain.IGenericRepository import (
+    IGenericRepository,
 )
 from motor.motor_asyncio import AsyncIOMotorClientSession
 from fazaconta_backend.shared.domain.Entity import Entity
@@ -16,7 +16,7 @@ T = TypeVar("T", bound=Entity)
 D = TypeVar("D", bound=BaseDocument)
 
 
-class MongoGenericRepository(Generic[T, D], AbstractGenericRepository[T], ABC):
+class MongoGenericRepository(Generic[T, D], IGenericRepository[T], ABC):
 
     def __init__(
         self,

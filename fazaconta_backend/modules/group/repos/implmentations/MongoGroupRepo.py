@@ -1,13 +1,13 @@
 from fazaconta_backend.modules.group.domain.Group import Group
 from fazaconta_backend.modules.group.infra.models.GroupDocument import GroupDocument
-from fazaconta_backend.modules.group.repos.AbstractGroupRepo import AbstractGroupRepo
+from fazaconta_backend.modules.group.repos.IGroupRepo import IGroupRepo
 from fazaconta_backend.shared.domain.UniqueEntityId import UniqueEntityId
 from fazaconta_backend.shared.infra.database.mongodb.MongoGenericRepository import (
     MongoGenericRepository,
 )
 
 
-class MongoGroupRepo(MongoGenericRepository[Group, GroupDocument], AbstractGroupRepo):
+class MongoGroupRepo(MongoGenericRepository[Group, GroupDocument], IGroupRepo):
     async def get_by_user_id(
         self, user_id: UniqueEntityId, limit: int, skip: int
     ) -> list[Group]:

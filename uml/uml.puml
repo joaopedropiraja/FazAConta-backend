@@ -1,65 +1,33 @@
 @startuml "FazAConta Classes"
 
+skinparam wrapMessageWidth 100
 skinparam classAttributeIconSize 0
 
-class User {
-  - id: UUID
-  - name: str
-  - nickname: str
-  - email: UserEmail
-  - password: UserPassword
-  - phone_number: UserPhoneNumber
-  - profile_photo: FileData | None
-  - pix: Pix | None
-  - devices: List<Device>
+abstract class Entity {
+  # id: UniqueEntityId
+  + <<getter>> id: UniqueEntityId
 
-  + <<getter>> id: UUID
-  + <<getter>> name: str
-  + <<getter>> nickname: str
-  + <<getter>> email: UserEmail
-  + <<getter>> password: UserPassword
-  + <<getter>> phone_number: PhoneNumber
-  + <<getter>> profile_photo: FileData | None
-  + <<getter>> pix: Pix | None
-  + <<getter>> devices: List<Device>
-
-  + <<setter>> name: None
-  + <<setter>> nickname: None
-  + <<setter>> password: None
-  + <<setter>> phone_number: None  
-  + <<setter>> profile_photo: None
-  + <<setter>> pix: None
-
-  + addDevice(device: Device): None
+  {abstract} + equals(obj: Entity): bool
 }
 
-class UserEmail {
-  - value
+' Grupo
+
+class Member {
+  # user: User
+  # balance: float
+
+  + <<getter>> user: User
+  + <<getter>> balance: float
 }
 
-class UserPassword {
-  - value
+class PendingPayment {
+  # from_user: User
+  # to_user: User
+  # amount: float
 
-  # bcrypt_compare(plain_text: str, hashed: str): bool
-  # hash_password(password: str): str
-  + is_already_hashed(): bool
-  + compare_password(plain_text_password: str): bool
-  + get_hashed_value(): str
-}
-
-class UserPhoneNumber {
-  - phone_number: str
-  + value: str
-
-  + is_valid(phone_number: str) : bool
-}
-
-class FileData {
-  - key: str
-  - src: str
-  - size: int
-  - filename: str
-  - content_type: ContentType
+  + <<getter>> from_user: User
+  + <<getter>> to_user: User
+  + <<getter>> amount: float
 }
 
 enum ContentType {
@@ -69,9 +37,119 @@ enum ContentType {
   image/gif
 }
 
+class FileData {
+  + key: str
+  + src: str
+  + size: int
+  + filename: str
+  + content_type: ContentType
+}
+
+class Group {
+  # title: str
+  # image: FileData | None
+  # total_expense: float
+  # members: list[Member]
+  # pending_payments: list[PendingPayment]
+  # created_at: datetime
+  # created_by: User
+
+  + <<getter>> title: str
+  + <<getter>> image: FileData | None
+  + <<getter>> total_expense: float
+  + <<getter>> members: list[Member]
+  + <<getter>> pending_payments: list[PendingPayment]
+  + <<getter>> created_at: datetime
+  + <<getter>> created_by: User
+
+  + add_member(member: Member): None
+  + manage_new_transaction(transaction_type: TransactionType, paid_by: User, participants: list[Participant], amount: float): None
+
+  # update_balances(paid_by: User, participants: list[Participant], amount: float): None
+  # update_payments(transaction_type: TransactionType, paid_by: User, participants: list[Participant], amount: float): None
+  # remove_pending_payment_related_to_reimbursement(paid_by: User, participants: list[Participant]): None
+  # validate_members_total_balance(): None
+  # validate_payments_amounts(): None
+}
+
+Entity <|-- Group
+Entity <|-- Member
+Entity <|-- PendingPayment
+Group *-- "1..*" Member : possui
+Group *-- "0..*" PendingPayment : gerencia
+Group *-- FileData : imagem
+FileData --> ContentType
+Member o-- User : referencia
+
+' Trasação
+
+enum TransactionType {
+  send, expense, reimbursement
+}
+
+class Participant {
+  # user: User
+  # amount: float
+
+  + <<getter>> user: User
+  + <<getter>> amount: float
+}
+
+class Transaction {
+  # group: Group
+  # title: str
+  # amount: float
+  # paid_by: User
+  # transaction_type: TransactionType
+  # participants: list[Participant]
+  # created_at: datetime
+
+  + <<getter>> group: Group
+  + <<getter>> title: str
+  + <<getter>> amount: float
+  + <<getter>> paid_by: User
+  + <<getter>> transaction_type: TransactionType
+  + <<getter>> created_at: datetime
+  + <<getter>> participants: list[Participant>
+
+  # check_payer_user_in_participants(): None
+  # check_participants_amount(): None
+  # check_transaction_type(): None  
+}
+
+Entity <|-- Participant
+Entity <|-- Transaction
+Group *-- "0..*" Transaction : possui
+Transaction *-- "1..*" Participant : inclui
+Transaction o-- User : realizada por
+Transaction --> TransactionType
+Participant o-- User : referencia
+
+' Usuário
+
+class UserEmail {
+  + value: EmailStr
+}
+
+class UserPassword {
+  + value: str
+  + hashed: bool
+
+  + is_already_hashed(): bool
+  + compare_password(plain_text_password: str): bool
+  + get_hashed_value(): str
+
+  # bcrypt_compare(plain_text: str, hashed: str): bool
+  # hash_password(password: str): str
+}
+
+class UserPhoneNumber {
+  + value: str
+}
+
 class Pix {
-  - type: PixType
-  - value: str
+  + type: PixType
+  + value: str
 }
 
 enum PixType {
@@ -82,152 +160,136 @@ enum PixType {
 }
 
 class Device {
-  - device_id: str
-  - device_name: str
-  - platform: Platform
-  - push_token: str
-  - last_login_at: datetime
+  + device_id: str
+  + device_name: str
+  + platform: Platform
+  + push_token: str
+  + last_login_at: datetime
 }
 
 enum Platform {
   ios, android
 }
 
-class UserDetail {
-  - user_id: UUID
-  - email: str
-  - nickname: str
-  - pix: Pix
+class User {
+  # name: str
+  # nickname: str
+  # email: UserEmail
+  # password: UserPassword
+  # phone_number: UserPhoneNumber
+  # profile_photo: FileData | None
+  # pix: Pix | None
+  # devices: list[Device]
 
-  + <<getter>> user_id: UUID
-  + <<getter>> email: str
+  + <<getter>> name: str
   + <<getter>> nickname: str
-  + <<getter>> pix: Pix
+  + <<getter>> email: UserEmail
+  + <<getter>> password: UserPassword
+  + <<getter>> phone_number: PhoneNumber
+  + <<getter>> profile_photo: FileData | None
+  + <<getter>> pix: Pix | None
+  + <<getter>> devices: list[Device]
+
+  + addDevice(device: Device): None
 }
 
+Entity <|-- User
 User *-- UserEmail
 User *-- UserPassword
 User *-- UserPhoneNumber
-User *-- FileData
+User *-- FileData : profile_photo
 User *-- Pix
-User "1" *-- "n" Device
-
-FileData --> ContentType
+User *-- "0..*" Device : possui
 Pix --> PixType
 Device --> Platform
 
-UserDetail o-- User
+' Utilitários
 
-class Group {
-  - id: UUID
-  - title: str
-  - description: str
-  - image: FileData | None
-  - total_expense: float
-  - members: List<Member>
-  - pending_payments: List<PendingPayment>
-
-  + <<getter>> id: UUID
-  + <<getter>> title: str
-  + <<getter>> description: str
-  + <<getter>> image: FileData | None
-  + <<getter>> total_expense: float
-  + <<getter>> members: List<Member>
-  + <<getter>> pending_payments: List<PendingPayment>
-
-  + <<setter>> title: None
-  + <<setter>> description: None
-  + <<setter>> image: None
-
-  + add_member(member: Member): None
-  + manage_new_transaction(transaction: Transaction): None
-
-  # update_balances(transaction: Transaction): None
-  # update_payments(transaction: Transaction): None
+class Guard {
+  {static} + against_empty_list(argument: list, argument_name: str): None
+  {static} + greater_than(min_value: float, actual_value: float): None
+  {static} + greater_equal_than(min_value: float, actual_value: float): None
+  {static} + against_empty_str(argument: object, argument_name: str): None
+  {static} + against_empty_str_bulk(args: list[Dict[str, object]]): None
+  {static} + against_at_least(num_chars: int, text: str): None
+  {static} + against_at_most(num_chars: int, text: str): None
+  {static} + against_undefined(argument: object, argument_name: str): None
+  {static} + against_undefined_bulk(args: list[Dict[str, object]]): None
+  {static} + is_one_of(value: object, valid_values: list[object], argument_name: str): None
+  {static} + is_one_of_enum(value: Enum, enum_class: Type[Enum], argument_name: str): None
+  {static} + in_range(num: float, min_value: float, max_value: float, argument_name: str): None
+  {static} + all_in_range(numbers: list[float], min_value: float, max_value: float, argument_name: str): None
 }
 
-class Member {
-  - user: UserDetail
-  - balance: float
+' Banco de dados
 
-  + <<getter>> user_id: UUID
-  + <<getter>> user_nickname: str
-  + <<getter>> balance: float
-
-  + <<setter>> balance: None
+interface IGenericRepository<T> {
+  {abstract} + get_by_id(id: UniqueEntityId): T | None
+  {abstract} + get_one(**filters): T | None
+  {abstract} + get(limit: int, skip: int, **filters): list[T]
+  {abstract} + create(entity: T): T
+  {abstract} + update(entity: T): T
+  {abstract} + delete(id: UniqueEntityId): None
 }
 
-class Transaction {
-  - id: UUID
-  - group_id: UUID
-  - title: str
-  - amount: float
-  - paid_by: UserDetail
-  - type: TransactionType
-  - participants: List<Participant>
+class MongoGenericRepository {}
 
-  + <<getter>> id: UUID
-  + <<getter>> group_id: UUID
-  + <<getter>> title: str
-  + <<getter>> amount: float
-  + <<getter>> paid_by: UserDetail
-  + <<getter>> type: TransactionType
-  + <<getter>> participants: List<Participant>
+IGenericRepository <|.. MongoGenericRepository
 
-  + add_participant(participant: Participant): None
-  + remove_participant(participant: Participant): None
+interface IGroupRepo<Group> {
+  {abstract} + get_by_user_id(user_id: UniqueEntityId, limit: int, skip: int): list[Group]
 }
 
-enum TransactionType {
-  send, expense, reimbursement
+class MongoGroupRepo {}
+
+IGenericRepository <|-- IGroupRepo
+IGroupRepo <|.. MongoGroupRepo
+MongoGenericRepository <|-- MongoGroupRepo
+
+interface IPendingPaymentRepo<PendingPayment> {}
+
+class MongoPendingPaymentRepo {}
+
+IGenericRepository <|-- IPendingPaymentRepo
+IPendingPaymentRepo <|.. MongoPendingPaymentRepo
+MongoGenericRepository <|-- MongoPendingPaymentRepo
+
+interface ITransactionRepo<Transaction> {
+  {abstract} + get_by_group_id(self, group_id: UniqueEntityId, limit: int, skip: int) -> list[Transaction]
 }
 
-class Participant {
-  - user: UserDetail
-  - amount: float
+class MongoTransactionRepo {}
 
-  + <<getter>> user: UserDetail 
-  + <<getter>> amount: float
+IGenericRepository <|-- ITransactionRepo
+ITransactionRepo <|.. MongoTransactionRepo
+MongoGenericRepository <|-- MongoTransactionRepo
 
-  + <<setter>> amount: None
+interface IUserRepo<User> {}
+
+class MongoUserRepo {}
+
+IGenericRepository <|-- IUserRepo
+IUserRepo <|.. MongoUserRepo
+MongoGenericRepository <|-- MongoUserRepo
+
+' Serviço de autenticação
+
+interface IAuthService {
+  {abstract} + sign_jwt_tokens(user: User): (str, str)
+  {abstract} + decode_access_token(token: str): JWTData | None
+  {abstract} + save_authenticated_user(user_id: str, refresh_token: str): None
+  {abstract} + de_authenticate_user(user_id: str): None
+  {abstract} + get_tokens(user_id: str): list[str]
+  {abstract} # construct_key(user_id: str, refresh_token: str): str
 }
 
-class PendingPayment {
-  - from_user: UserDetail
-  - to_user: UserDetail
-  - amount: float
-
-  + <<getter>> from_user: UserDetail
-  + <<getter>> to_user: UserDetail 
-  + <<getter>> amount: float  
+class RedisAuthService {
+  + redis_client: Redis
+  + jwt_hash_name: str
+  + token_expire_time: int
 }
 
-Group "1" *-- "1..*" Member
-Group "1" *-- "0..*" PendingPayment
-Group *-- FileData
+IAuthService <|.. RedisAuthService
 
-Member *-- UserDetail
-PendingPayment *-- UserDetail
-
-Transaction o-- Group
-Transaction *-- UserDetail
-Transaction "1" *-- "1..*" Participant
-Transaction --> TransactionType
-
-Participant *-- UserDetail
-
-class Friendship {
-  - id: UUID
-  - user_A: UserDetail
-  - user_B: UserDetail
-  - total_amount_to_be_paid_by_user_A: float
-
-  + <<getter>> id: UUID
-  + <<getter>> user_A: UserDetail
-  + <<getter>> user_B: UserDetail
-  + <<getter>> total_amount_to_be_paid_by_user_A: float
-}
-
-Friendship *-- UserDetail
 
 @enduml

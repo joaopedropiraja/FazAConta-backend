@@ -2,8 +2,8 @@ from fazaconta_backend.modules.group.domain.Transaction import Transaction
 from fazaconta_backend.modules.group.infra.models.TransactionDocument import (
     TransactionDocument,
 )
-from fazaconta_backend.modules.group.repos.AbstractTransactionRepo import (
-    AbstractTransactionRepo,
+from fazaconta_backend.modules.group.repos.ITransactionRepo import (
+    ITransactionRepo,
 )
 from fazaconta_backend.shared.domain.UniqueEntityId import UniqueEntityId
 from fazaconta_backend.shared.infra.database.mongodb.MongoGenericRepository import (
@@ -12,7 +12,7 @@ from fazaconta_backend.shared.infra.database.mongodb.MongoGenericRepository impo
 
 
 class MongoTransactionRepo(
-    MongoGenericRepository[Transaction, TransactionDocument], AbstractTransactionRepo
+    MongoGenericRepository[Transaction, TransactionDocument], ITransactionRepo
 ):
     async def get_by_group_id(
         self, group_id: UniqueEntityId, limit: int, skip: int

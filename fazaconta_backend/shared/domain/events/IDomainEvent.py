@@ -5,7 +5,7 @@ from fazaconta_backend.shared.domain.UniqueEntityId import UniqueEntityId
 
 
 class IDomainEvent(ABC):
-    dateTimeOccurred: datetime.date
+    date_time_occurred: datetime.date
 
     @abstractmethod
     def get_entity_id(self) -> UniqueEntityId: ...

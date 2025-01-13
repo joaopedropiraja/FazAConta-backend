@@ -34,17 +34,17 @@ from fazaconta_backend.shared.infra.database.AbstractUnitOfWork import (
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorClientSession
 
 
-from fazaconta_backend.modules.user.repos.AbstractUserRepo import AbstractUserRepo
-from fazaconta_backend.modules.group.repos.AbstractTransactionRepo import (
-    AbstractTransactionRepo,
+from fazaconta_backend.modules.user.repos.IUserRepo import IUserRepo
+from fazaconta_backend.modules.group.repos.ITransactionRepo import (
+    ITransactionRepo,
 )
 
 
 class MongoUnitOfWork(AbstractUnitOfWork, ABC):
     _client: AsyncIOMotorClient
     _session: AsyncIOMotorClientSession
-    users: AbstractUserRepo
-    transactions: AbstractTransactionRepo
+    users: IUserRepo
+    transactions: ITransactionRepo
 
     def __init__(self, client: AsyncIOMotorClient) -> None:
         self._client = client

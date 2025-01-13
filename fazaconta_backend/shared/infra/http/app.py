@@ -62,7 +62,7 @@ class MyAPIApp:
         uow = MongoUnitOfWork(mongo_client)
         auth_service = RedisAuthService(redis)
 
-        # init_user_handlers(uow)
+        init_user_handlers(uow)
 
         yield {
             "mongo_client": mongo_client,
