@@ -1,0 +1,24 @@
+@startuml Adicionar Membro via Link
+start
+:Receber Link de Convite para o Grupo;
+:Clicar no Link;
+if (Usuário já possui conta?) then (Sim)
+    :Fazer Login;
+else (Não)
+    :Criar Conta;
+    if (Dados de Registro Válidos?) then (Sim)
+        :Conta Criada;
+    else (Não)
+        :Tentar Novamente Registro;
+        stop
+    endif
+endif
+:Verificar Validade do Link;
+if (Link é Válido?) then (Sim)
+    :Adicionar Usuário ao Grupo;
+    :Exibir Mensagem de Sucesso;
+else (Não)
+    :Exibir Erro (Link Inválido ou Expirado);
+endif
+stop
+@enduml

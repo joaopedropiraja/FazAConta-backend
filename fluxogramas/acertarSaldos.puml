@@ -1,0 +1,11 @@
+@startuml Acertar Saldos
+start
+:Ir para o Painel de um Grupo;
+:Clicar em 'Saldos';
+repeat
+:Selecionar Membro para Acertar;
+repeat while (Confirmar Pagamento?) is (Não) not (Sim) 
+:Atualizar Saldos;
+:Pagamento Registrado no Grupo;   
+stop
+@enduml

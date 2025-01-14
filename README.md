@@ -15,7 +15,7 @@ Essa pasta é o coração do sistema, onde os módulos principais da aplicação
 - **`infra`**: Implementa os detalhes de infraestrutura do módulo, como conexões com bancos de dados, integração com APIs externas ou qualquer outro mecanismo que dependa de tecnologia específica.
 - **`mappers`**: Realiza a conversão entre diferentes modelos de dados (como de entidades para DTOs e vice-versa), mantendo a separação clara entre as camadas.
 - **`repos`**: Contém a implementação dos repositórios, que abstraem o acesso aos dados no banco. Essa camada é crucial para garantir que a aplicação interaja com os dados sem se preocupar com os detalhes de persistência.
-- **`services`** (caso aplicável): Define serviços específicos que encapsulam regras de negócio mais complexas ou orquestram a interação entre entidades.
+- **`services`**: Define serviços específicos que encapsulam regras de negócio mais complexas ou orquestram a interação entre entidades.
 - **`useCases`**: Representa os **Casos de Uso** ou **Serviços de Aplicação**, encapsulando a lógica de negócio em um nível mais alto e servindo como ponto de entrada para interações com o domínio.
 
 ---

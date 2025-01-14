@@ -1,0 +1,7 @@
+@startuml Visualizar Saldos
+start
+:Ir para o Painel de um Grupo;
+:Clicar em 'Visualizar Saldos';
+:Exibir Saldos de Todos os Membros;
+stop
+@enduml
