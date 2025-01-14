@@ -1,0 +1,17 @@
+@startuml Autenticação
+start
+
+:Abrir Aplicativo;
+
+if (Registrar ou Login?) then (Registrar)
+    repeat
+        :Preencher Dados de Registro;
+    repeat while (Dados Válidos?) is (Não) not (Sim)    
+else (Fazer Login)
+    repeat
+        :Inserir Credenciais;
+    repeat while (Credenciais Corretas?) is (Não) not (Sim)    
+endif
+stop
+@enduml
+

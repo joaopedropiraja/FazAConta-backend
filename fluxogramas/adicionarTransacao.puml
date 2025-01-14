@@ -1,0 +1,22 @@
+@startuml Criar Transação
+start
+:Ir para o Painel de um Grupo;
+:Clicar no Ícone "+" para Adicionar Transação;
+if (Tipo de Transação?) then (Despesa)
+    :Inserir Nome e Valor em Reais da Despesa;
+    :Atribuir Quem Pagou;
+    if (Como Dividir a Despesa?) then (Igualmente)
+        :Confirmar Despesa;
+    else (Divisão Personalizada)
+        :Inserir Divisão Personalizada;
+        :Confirmar Despesa;
+    endif
+else (Transferência)
+    :Selecionar Destinatário;
+    :Inserir Valor da Transferência;
+    :Confirmar Transferência;
+    :Transferência Registrada;
+endif
+:Transação Adicionada ao Grupo;
+stop
+@enduml

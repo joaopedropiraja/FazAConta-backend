@@ -7,6 +7,7 @@ from fazaconta_backend.shared.domain.UniqueEntityId import UniqueEntityId
 
 
 class ITransactionRepo(IGenericRepository[Transaction], ABC):
+
     @abstractmethod
     async def get_by_group_id(
         self, group_id: UniqueEntityId, limit: int, skip: int

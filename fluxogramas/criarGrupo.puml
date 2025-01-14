@@ -1,0 +1,12 @@
+@startuml Criar Grupo
+
+start
+  :Ir para o Painel de Grupos;
+  :Clicar no Ícone de "+";
+repeat
+  :Inserir Nome e Imagem do Novo Grupo;
+repeat while (Os Dados São Válidos?) is (Não) not (Sim)
+    :Grupo Criado;
+stop
+
+@enduml

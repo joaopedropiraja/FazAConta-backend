@@ -8,10 +8,6 @@ from fazaconta_backend.shared.infra.database.mongodb.AbstractMongoGenericReposit
 
 
 class MongoGroupRepo(AbstractMongoGenericRepository[Group, GroupDocument], IGroupRepo):
-    async def update(self, entity: Group) -> Group:
-
-        return await super().update(entity)
-
     async def get_by_user_id(
         self, user_id: UniqueEntityId, limit: int, skip: int
     ) -> list[Group]:

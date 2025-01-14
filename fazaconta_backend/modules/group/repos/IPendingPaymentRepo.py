@@ -6,5 +6,6 @@ from fazaconta_backend.shared.domain.IGenericRepository import (
 
 
 class IPendingPaymentRepo(IGenericRepository[PendingPayment], ABC):
+
     @abstractmethod
     async def delete_many(self, pending_payments: list[PendingPayment]) -> None: ...
