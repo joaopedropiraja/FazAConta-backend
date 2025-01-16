@@ -17,7 +17,8 @@ class MongoTransactionRepo(
     async def get_by_group_id(
         self, group_id: UniqueEntityId, limit: int, skip: int
     ) -> list[Transaction] | None:
-        groups = (
+
+        transactions = (
             await self._model_cls.find(
                 self._model_cls.group.id == group_id.value,
                 fetch_links=True,
@@ -28,4 +29,4 @@ class MongoTransactionRepo(
             .to_list()
         )
 
-        return [await self._mapper.to_domain(g) for g in groups]
+        return [await self._mapper.to_domain(t) for t in transactions]

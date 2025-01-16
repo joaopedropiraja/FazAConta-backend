@@ -1,6 +1,6 @@
 from datetime import datetime
 from uuid import UUID
-from pydantic import BaseModel
+from pydantic import BaseModel, field_serializer
 
 from fazaconta_backend.modules.user.dtos.UserDTO import UserDTO
 from .MemberDTO import MemberDTO
@@ -17,3 +17,7 @@ class GroupDTO(BaseModel):
     members: list[MemberDTO]
     pending_payments: list[PendingPaymentDTO]
     image: FileData | None = None
+
+    @field_serializer("id")
+    def serialize_dt(self, id: UUID, _info):
+        return str(id)
